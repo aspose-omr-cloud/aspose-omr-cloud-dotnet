@@ -1,0 +1,15 @@
+?image=logo1.jpg
+	align=left
+
+?text=Name__________________________________              Date____________
+
+?grid=ID
+	sections_count=8
+
+?answer_sheet=MainQuestions
+	elements_count=110
+	columns_count=5
+
+?image=logo2.png
+	align=right
+
