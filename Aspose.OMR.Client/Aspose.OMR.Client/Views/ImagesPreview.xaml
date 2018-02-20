@@ -1,0 +1,156 @@
+﻿<UserControl x:Class="Aspose.OMR.Client.Views.ImagesPreview"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:Aspose.OMR.Client.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="250" UseLayoutRounding="True">
+
+    <Grid AllowDrop="True" Drop="ImagesPreviewDrop">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <ListView ItemsSource="{Binding PreviewImages}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedPreviewImage}"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="False">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="Padding" Value="0,0,0,0"/>
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource MainItemsColor}"/>
+                    </Style.Resources>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <!--busy indication-->
+                        <Border Panel.ZIndex="1" Visibility="{Binding IsProcessing, Converter={converters:BoolToVisibilityConverter}}" Width="Auto" MaxWidth="110">
+                            <Border.Background>
+                                <SolidColorBrush Color="DarkGray" Opacity="0.8"></SolidColorBrush>
+                            </Border.Background>
+
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Icons/LoadingWhite16.png" Stretch="None" RenderTransformOrigin="0.5, 0.5">
+                                    <Image.RenderTransform>
+                                        <!-- giving the transform a name tells the framework not to freeze it -->
+                                        <RotateTransform x:Name="noFreeze" />
+                                    </Image.RenderTransform>
+                                    <Image.Triggers>
+                                        <EventTrigger RoutedEvent="Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(Rectangle.RenderTransform).(RotateTransform.Angle)"
+                                                        To="360" Duration="0:0:1" RepeatBehavior="Forever" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                                
+                                <TextBlock Text="{Binding StatusText}" TextWrapping="Wrap" Foreground="White" VerticalAlignment="Center" TextAlignment="Center"/>
+
+                                <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Focusable="False"
+                                        Visibility="{Binding CanCancel, Converter={converters:BoolToVisibilityConverter}}"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.CancelSelectedCommand}"
+                                        CommandParameter="{Binding}" ToolTip="Cancel Image Recognition">
+                                    <Image Source="/Icons/CancelWhite16.png" Stretch="None"/>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+
+                        <Grid Width="100" Margin="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Stretch="Uniform" Width="100" HorizontalAlignment="Center" Margin="0,5,0,0" 
+                                   Opacity="{Binding IsProcessed, Converter={converters:BoolToOpacityConverter}}">
+                                <Image.Source>
+                                    <BitmapImage UriSource="{Binding PathToImage, Converter={converters:ImageConverter}, Mode=OneWay}" DecodePixelWidth="100"/>
+                                </Image.Source>
+                                <Image.Effect>
+                                    <DropShadowEffect Direction="0" BlurRadius="5" ShadowDepth="0" Color="Black"></DropShadowEffect>
+                                </Image.Effect>
+                            </Image>
+
+                            <Image Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Stretch="None" VerticalAlignment="Bottom" 
+                                   Visibility="{Binding IsProcessed, Converter={converters:BoolToVisibilityConverter}}">
+                                <Image.Source>
+                                    <BitmapImage UriSource="/Icons/Check.png"/>
+                                </Image.Source>
+                            </Image>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Title}" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+
+                            <Button Grid.Row="0" Grid.Column="1" ToolTip="Recognize Image" Margin="0,5,0,0" Focusable="False"
+                                    BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Background="White"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.RecognizeSelectedImageCommand}"
+                                    CommandParameter="{Binding}"
+                                    VerticalAlignment="Top" HorizontalAlignment="Right">
+                                <Image Source="/Icons/CloudUpload.png" Stretch="None"/>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!--quick start panel-->
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" Visibility="{Binding InitialPreviewPanelVisibility}" UseLayoutRounding="True">
+            <TextBlock Text="Load images for recognition" FontSize="14" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2" TextWrapping="Wrap"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="2">
+                <Button ToolTip="Load Images" Margin="5" Command="{Binding LoadImagesCommand}" Style="{StaticResource ImageButton}">
+                    <Image Source="/Icons/Picture32.png" Stretch="None" Margin="5"/>
+                </Button>
+                <Button ToolTip="Load Folder" Margin="5" Command="{Binding LoadFolderCommand}" Style="{StaticResource ImageButton}">
+                    <Image Source="/Icons/AddFolder32.png" Stretch="None" Margin="5"/>
+                </Button>
+            </StackPanel>
+
+            <TextBlock Text="You may also add images or folder via Drag &amp; Drop" Margin="5"
+                       HorizontalAlignment="Center" TextAlignment="Center" 
+                       Foreground="Gray" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!--Lower buttons-->
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" ToolTip="Load Images" Margin="2" Command="{Binding LoadImagesCommand}" Focusable="False" Style="{StaticResource ImageButton}"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Image Source="/Icons/Picture32.png"/>
+            </Button>
+
+            <Button Grid.Column="1" ToolTip="Load Folder" Margin="2" Command="{Binding LoadFolderCommand}" Focusable="False" Style="{StaticResource ImageButton}"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Image Source="/Icons/AddFolder32.png"/>
+            </Button>
+
+            <Button Grid.Column="2" ToolTip="Remove Selected Image" Margin="2" Command="{Binding RemoveElementCommand}" Focusable="False" Style="{StaticResource ImageButton}"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Image Source="/Icons/DeleteCross32.png"/>
+            </Button>
+
+        </Grid>
+
+    </Grid>
+</UserControl>

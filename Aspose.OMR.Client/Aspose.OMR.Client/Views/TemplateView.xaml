@@ -1,0 +1,227 @@
+﻿<UserControl x:Class="Aspose.OMR.Client.Views.TemplateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:Aspose.OMR.Client.Controls"
+             xmlns:views="clr-namespace:Aspose.OMR.Client.Views"
+             xmlns:viewModels="clr-namespace:Aspose.OMR.Client.ViewModels"
+             xmlns:converters="clr-namespace:Aspose.OMR.Client.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <converters:GridLengthConverter x:Key="LengthConverter"></converters:GridLengthConverter>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*" MinHeight="200"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="360"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="{Binding Path=PropertiesPanelWidth, Mode=TwoWay, Converter={StaticResource LengthConverter}}" MinWidth="24" MaxWidth="400"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Main area-->
+        <ScrollViewer Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" x:Name="MainScroll"
+                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Focusable="False"
+                      CanContentScroll="True" PreviewMouseWheel="OnPreviewMouseWheel"
+                      AllowDrop="True" Drop="OnImageDrop">
+
+            <Grid Background="LightGray">
+                <Grid.LayoutTransform>
+                    <ScaleTransform CenterX="0" CenterY="0" ScaleX="{Binding PageScale}" ScaleY="{Binding PageScale}"/>
+                </Grid.LayoutTransform>
+
+                <Image SnapsToDevicePixels="True"
+                       Source="{Binding TemplateImage, Mode=OneWay}"
+                       Width="{Binding Path=PageWidth, Mode=OneWay}"
+                       Height="{Binding Path=PageHeight, Mode=OneWay}"
+                       Stretch="Uniform" IsHitTestVisible="False"
+                       UseLayoutRounding="True"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor">
+                </Image>
+
+                <Border BorderBrush="Transparent" BorderThickness="2">
+                    <ItemsControl ItemsSource="{Binding PageQuestions, Mode=OneWay}" Width="{Binding PageWidth, Mode=OneWay}" Height="{Binding PageHeight, Mode=OneWay}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <controls:CustomCanvas Focusable="True" Background="Transparent" ClipToBounds="True" x:Name="RootCanvas"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}"/>
+                                <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}"/>
+                                <Setter Property="Width" Value="{Binding Width, Mode=TwoWay}"/>
+                                <Setter Property="Height" Value="{Binding Height, Mode=TwoWay}"/>
+                                <Setter Property="MinWidth" Value="20"/>
+                                <Setter Property="MinHeight" Value="20"/>
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                        
+                        <ItemsControl.Resources>
+                            
+                            <!--ChoiceBox data template defines how ChoiceBoxViewModel looks-->
+                            <DataTemplate DataType="{x:Type viewModels:ChoiceBoxViewModel}">
+                                <controls:OmrChoiceBox Style="{StaticResource ChoiceBoxStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}">
+                                    <Border BorderThickness="1.5" BorderBrush="{StaticResource MainItemsBrush}">
+                                        <ItemsControl ItemsSource="{Binding Bubbles, Mode=OneWay}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <controls:CustomCanvas ClipToBounds="True"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemContainerStyle>
+                                                <Style TargetType="ContentPresenter">
+                                                    <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}"/>
+                                                    <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}"/>
+                                                    <Setter Property="Width" Value="{Binding Width, Mode=TwoWay}"/>
+                                                    <Setter Property="Height" Value="{Binding Height, Mode=TwoWay}"/>
+                                                    <Setter Property="MinWidth" Value="10"/>
+                                                    <Setter Property="MinHeight" Value="10"/>
+                                                </Style>
+                                            </ItemsControl.ItemContainerStyle>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <controls:OmrBubble Style="{StaticResource BubbleStyle}" IsSelected="{Binding IsSelected}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Border>
+                                </controls:OmrChoiceBox>
+                            </DataTemplate>
+
+                            <!--Grid data template defines how GridViewModel looks-->
+                            <DataTemplate DataType="{x:Type viewModels:GridViewModel}">
+                                <controls:OmrGridElement Style="{StaticResource GridStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}">
+                                    <Border BorderThickness="1.5" BorderBrush="{StaticResource MainItemsBrush}">
+                                        <ItemsControl ItemsSource="{Binding ChoiceBoxes, Mode=OneWay}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <controls:CustomCanvas ClipToBounds="True"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemContainerStyle>
+                                                <Style TargetType="ContentPresenter">
+                                                    <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}"/>
+                                                    <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}"/>
+                                                    <Setter Property="Width" Value="{Binding Width, Mode=TwoWay}"/>
+                                                    <Setter Property="Height" Value="{Binding Height, Mode=TwoWay}"/>
+                                                    <Setter Property="MinWidth" Value="10"/>
+                                                    <Setter Property="MinHeight" Value="10"/>
+                                                </Style>
+                                            </ItemsControl.ItemContainerStyle>
+                                        </ItemsControl>
+                                    </Border>
+                                </controls:OmrGridElement>
+                            </DataTemplate>
+                        </ItemsControl.Resources>
+                    </ItemsControl>
+                </Border>
+
+                <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Orientation="Vertical" Visibility="{Binding StartPanelVisibility, Mode=OneWay}">
+                    <Button HorizontalAlignment="Center" FontSize="18" Command="{Binding LoadTemplateImageCommand}" Style="{StaticResource ImageButton}" 
+                            BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Background="White">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Load Image" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                <Image Source="/Icons/Image24.png" HorizontalAlignment="Center" Margin="5"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <TextBlock Text="You may also Drag &amp; Drop image file to open it" FontSize="16" Foreground="Gray"
+                               VerticalAlignment="Center" Margin="5" HorizontalAlignment="Center"/>
+                </StackPanel>
+
+            </Grid>
+        </ScrollViewer>
+
+        <GridSplitter Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"  BorderThickness="2" BorderBrush="{StaticResource MainItemsBrush}"
+                      HorizontalAlignment="Center" VerticalAlignment="Stretch" Visibility="{Binding ShowPropertiesPanel,Converter={converters:BoolToVisibilityConverter}}"
+                      Background="Transparent" Width="5"/>
+
+        <!--Element Properties-->
+        <DockPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Background="White"
+                   Visibility="{Binding ShowPropertiesPanel, Converter={converters:BoolToVisibilityConverter}}">
+            <Border DockPanel.Dock="Top" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2" Margin="2">
+                <Grid Background="White">
+                    <TextBlock Margin="2" Text="Question Properties" HorizontalAlignment="Center" FontSize="14"/>
+                    <Button Content="X"
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Width="20" Style="{StaticResource ImageButton}"
+                            Command="{Binding HidePropertiesCommand}"></Button>
+                </Grid>
+            </Border>
+
+            <ContentControl DataContext="{Binding PropertiesContext}" Content="{Binding}" >
+                <ContentControl.Resources>
+                    <DataTemplate DataType="{x:Type viewModels:ChoiceBoxViewModel}">
+                        <views:ChoiceBoxPropertiesView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:GridViewModel}">
+                        <views:GridPropertiesView/>
+                    </DataTemplate>
+                </ContentControl.Resources>
+            </ContentControl>
+        </DockPanel>
+
+        <Grid x:Name="PropertiesPan" Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Background="White"
+              Visibility="{Binding ShowPropertiesPanel, Converter={converters:BoolToVisibilityInverseConverter}}" >
+            <Button x:Name="ShowPropertiesEditorButton" Height="24" Width="64" VerticalAlignment="Top" 
+                    Style="{StaticResource ImageButton}" Command="{Binding ShowPropertiesCommand}"
+                    Content="Properties">
+                <Button.LayoutTransform>
+                    <RotateTransform Angle="90" />
+                </Button.LayoutTransform>
+            </Button>
+        </Grid>
+
+        <!--lower toolbar-->
+        <Border Margin="0,3,0,0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+            <Grid Background="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.55*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <Image Source="/Icons/Info32.png" Margin="3"/>
+                    
+                    <TextBlock x:Name="HelpTextBlock" Text="{Binding HelpMessage, UpdateSourceTrigger=PropertyChanged}"
+                               Margin="5,0,5,0" VerticalAlignment="Center" TextWrapping="WrapWithOverflow"></TextBlock>
+                </StackPanel>
+                
+                <ToolBarTray Grid.Column="1" DockPanel.Dock="Bottom" IsLocked="True" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White">
+                    <ToolBar>
+                        <Button Content="Out" Command="{Binding ZoomOutCommand}" Margin="5,0,5,0" ToolTip="Zoom Out"/>
+
+                        <Slider x:Name="Slider"
+                                Orientation="Horizontal" Width="100" 
+                                Minimum="0.1" Maximum="4" Value="{Binding ZoomLevel}" 
+                                SmallChange="0.1" LargeChange="0.2"/>
+
+                        <Button Content="In" Command="{Binding ZoomInCommand}" Margin="5,0,5,0" ToolTip="Zoom In"/>
+
+                        <TextBlock Margin="5,0,5,0" Width="30" Text="{Binding PageScaleDisplayString}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                        <Button Content="Original" Command="{Binding ZoomOriginalCommand}"/>
+
+                        <Button Click="OnFitPageWidth" ToolTip="Fit Page Width" ToolTipService.ShowOnDisabled="True">
+                            <Image Source="/Icons/FitWidth.png" />
+                        </Button>
+
+                        <Button Click="OnFitPageHeight" ToolTip="Fit Whole Page" ToolTipService.ShowOnDisabled="True">
+                            <Image Source="/Icons/FullScreen.png" />
+                        </Button>
+                    </ToolBar>
+                </ToolBarTray>
+            </Grid>
+        </Border>
+    </Grid>
+        
+</UserControl>

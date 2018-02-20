@@ -1,10 +1,10 @@
-<img src="TestFiles/Demonstration/OmrBanner.png">
+<img src="TestData/Demonstration/OmrBanner.png">
 
 
 
 # Aspose.OMR for Cloud
 
-[Aspose.OMR for Cloud](https://products.aspose.cloud/omr/cloud) is a REST API that helps you to perform optical mark recognition in the cloud. You can get [binaries](https://github.com/asposecloud/Aspose.OMR-Cloud/releases) to **start** working **immediately** and recognize various OMR forms. 
+[Aspose.OMR for Cloud](https://products.aspose.cloud/omr/cloud) is a REST API that helps you to perform optical mark recognition in the cloud. You can get [binaries](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/releases) to **start** working **immediately** and recognize various OMR forms. 
 Developers can embed optical recognition in any type of application to extract data from images of tests, exams, questionnaires, surveys, etc. In the repository you can find examples on how to start using Aspose.OMR API in your project. 
 
 
@@ -13,7 +13,7 @@ Developers can embed optical recognition in any type of application to extract d
 
 The repository contains sample applications that demonstrate how to perform common OMR with Aspose.OMR API.
 <p align="center">
-  <a href="https://github.com/asposecloud/Aspose.OMR-Cloud/archive/master.zip">
+  <a href="https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/archive/master.zip">
     <img src="http://i.imgur.com/hwNhrGZ.png" />
   </a>
 </p>
@@ -21,9 +21,10 @@ The repository contains sample applications that demonstrate how to perform comm
 
 Directory | Description
 --------- | -----------
-[ConsoleClient](ConsoleClient)  | A .NET 2.0 console application that demonstrates main Aspose.OMR for Cloud functionality.
-[Aspose.OMR.Client](OMRclient)  | An open source .NET application with GUI that helps you work with OMR templates and perform OMR operations.
-[TestFiles](TestFiles) | Sample images and templates that demonstrate how OMR works on real data.
+[Aspose.OMR.Client](Aspose.OMR.Client)  | An open source .NET application with GUI that helps you work with OMR templates and perform OMR operations.
+[Aspose.OMR.ConsoleClient](Aspose.OMR.ConsoleClient)  | A .NET 2.0 console application that demonstrates main Aspose.OMR for Cloud functionality.
+[Aspose.OMR-Cloud.SDK](SDK)  |Aspose.OMR Cloud SDK provides functionality for using Aspose.OMR for Cloud API to recognize optical marks from sheet images in the cloud.
+[TestData](TestData) | Sample images and templates that demonstrate how OMR works on real data.
 
 
 
@@ -36,7 +37,7 @@ You can perform tasks out of the box without writing a single line of code. That
 Aspose.Cloud credentials are required to use Aspose.OMR for Cloud API. You can acquire App SID and App Key by registrating at [Aspose Cloud Dashboard](https://dashboard.aspose.cloud/). It will take only a couple of minutes.
 
 ### 2. Get OMR Client
-Check [releases](https://github.com/asposecloud/Aspose.OMR-Cloud/releases) section and download MSI package that installs OMR.Client. Using this GUI application you can create OMR templates, correct or update existing OMR templates and perform optical mark recognition using Aspose.OMR.Cloud engine. 
+Check [releases](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/releases) section and download MSI package that installs OMR.Client. Using this GUI application you can create OMR templates, correct or update existing OMR templates and perform optical mark recognition using Aspose.OMR.Cloud engine. 
 
 More info and documentation can be found at: [Client documentation](https://docs.aspose.cloud/display/omrcloud/Aspose.OMR.Client+Application)
 
@@ -46,11 +47,11 @@ It is quite easy to use OMR in your projects. All you need to do is:
 
 1. Get [Aspose Cloud](https://dashboard.aspose.cloud/) credentials - App Key and App Sid.
 2. Install Aspose.OMR Cloud SDK via [nuget](https://www.nuget.org/packages/Aspose.OMR-Cloud/).
-3. Use OMR.Client to create templates or use one from [our examples](https://github.com/asposecloud/Aspose.OMR-Cloud/tree/master/TestFiles).
+3. Use OMR.Client to create templates or use one from [our examples](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/tree/master/TestData).
 3. Start using [OMR functions](https://docs.aspose.cloud/display/omrcloud/API+Specifications) and get recognition results.
 
 
-Check [Console Client](https://github.com/asposecloud/Aspose.OMR-Cloud/tree/master/ConsoleClient) solution for a simple demonstration of how OMR functions can be called from your code.
+Check [Console Client](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/tree/master/Aspose.OMR.ConsoleClient) solution for a simple demonstration of how OMR functions can be called from your code.
 
 ## How does it work?
 
@@ -94,25 +95,25 @@ Simply prepare your questions with our simple markup language. Below you can see
 
 You’ll get a nice and sharp survey ready to print!
 
-<img src="TestFiles/Demonstration/GeneratedImage.png" width=400>
+<img src="TestData/Demonstration/GeneratedImage.png" width=400>
 
-ETA: December 2017
 
 ## What is next?
 
 Simply make mobile snapshots or scan filled forms, upload them into OMR.Client or call API and you have the results!
 
-<img src="TestFiles/Demonstration/AsposePhoto.jpg" height=300> <img src="TestFiles/Demonstration/AsposeRecognition.jpg" height=300> <img src="TestFiles/Demonstration/Answers.png" height=300>
+<img src="TestData/Demonstration/AsposePhoto.jpg" height=300> <img src="TestData/Demonstration/AsposeRecognition.jpg" height=300> <img src="TestData/Demonstration/Answers.png" height=300>
 
 
 ## Roadmap
 In the upcoming releases, we are set to implement a number of new features:
 
+ - [X] reduce your expenses by preprocessing and compressing your images;
+ - [ ] present standalone script for batch processing in Python.
  - [ ] support diverse interviewee’s marks (ticks, crosses, corrections, etc) on various forms with the use of neural networks;
  - [ ] simplify OMR form preparation by introducing an easy markup language. For example, to get the particular survey form ready you only need to provide questions and answers;
- - [ ] reduce your expenses by preprocessing and compressing your images;
  - [ ] enhance the client with plugins to provide additional functionality;
- - [ ] present standalone script for batch processing in Python.
+
 
 
 
@@ -126,4 +127,4 @@ In the upcoming releases, we are set to implement a number of new features:
 + **Forum:** [Aspose.OMR for Cloud Forum](https://forum.aspose.cloud/c/omr)
 + **Blog:** [Aspose.OMR for Cloud Blog](https://blog.aspose.cloud/category/aspose-products/aspose.omr-product-family/)
 + **Nuget:** [Aspose.OMR-Cloud](https://www.nuget.org/packages/Aspose.OMR-Cloud/)
-+ **OMR Client Releases:** [Github Releases](https://github.com/asposecloud/Aspose.OMR-Cloud/releases)
++ **OMR Client Releases:** [Github Releases](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/releases)

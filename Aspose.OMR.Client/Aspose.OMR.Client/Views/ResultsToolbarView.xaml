@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Aspose.OMR.Client.Views.ResultsToolbarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="400">
+    
+    <Grid>
+        <DockPanel>
+            <ToolBarTray DockPanel.Dock="Top" IsLocked="True" Background="White">
+                
+                <ToolBar Background="White" BandIndex="0">
+                    <Button ToolTip="Load Images" Command="{Binding LoadImagesCommand}" Style="{StaticResource ImageButton}" Margin="0,0,6,0">
+                        <Image Source="/Icons/Picture.png" />
+                    </Button>
+
+                    <Button ToolTip="Load Folder" Command="{Binding LoadFolderCommand}" Style="{StaticResource ImageButton}">
+                        <Image Source="/Icons/AddFolder.png" />
+                    </Button>
+                </ToolBar>
+
+                <ToolBar Background="White" BandIndex="1">
+                    <Button Content="Preprocessing Presets" Command="{Binding ShowPresetsCommand}">
+                    </Button>
+                </ToolBar>
+
+                <ToolBar Background="White" BandIndex="2">
+                    <Button Content="Recognize All Images" Command="{Binding RecognizeAllCommand}" Margin="0,0,5,0">
+                    </Button>
+
+                    <Button Content="Recognize Selected Image" Command="{Binding RecognizeSelectedImageCommand}" Margin="0,0,5,0">
+                    </Button>
+
+                    <Button Content="Cancel All" Command="{Binding CancelAllCommand}">
+                    </Button>
+                </ToolBar>
+
+                <ToolBar Background="White" BandIndex="3">
+                    <Button Content="Export Results" Command="{Binding ExportDataCommand}" Margin="0,0,5,0">
+                    </Button>
+
+                    <Button Content="Export All" Command="{Binding ExportAllCommand}">
+                    </Button>
+                </ToolBar>
+            </ToolBarTray>
+        </DockPanel>
+    </Grid>
+</UserControl>

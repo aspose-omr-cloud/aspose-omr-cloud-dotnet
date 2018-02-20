@@ -1,0 +1,198 @@
+﻿<Window x:Class="Aspose.OMR.Client.Views.PreprocessingPresetsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Aspose.OMR.Client.Views"
+        xmlns:converters="clr-namespace:Aspose.OMR.Client.Converters"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:controls="clr-namespace:Aspose.OMR.Client.Controls"
+        xmlns:templateModel="clr-namespace:Aspose.OMR.Client.Utility"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Image Preprocessing Presets"
+        Height="600" Width="600">
+
+    <Window.Resources>
+        <!--<converters:RadioButtonCheckedConverter x:Key="EnumConverter"/>
+        <converters:BoolInverseConverter x:Key="BoolInverse"/>
+        <system:Boolean x:Key="True">True</system:Boolean>
+        <system:Boolean x:Key="False">False</system:Boolean>-->
+
+        <ResourceDictionary>
+            <ObjectDataProvider x:Key="PresetEnum" MethodName="GetValues" ObjectType="{x:Type templateModel:PreprocessingPreset}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="templateModel:PreprocessingPreset" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="0.7*"></RowDefinition>
+            <RowDefinition Height="1.3*"></RowDefinition>
+            <RowDefinition Height="4*"></RowDefinition>
+            <RowDefinition Height="0.7*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,15,20,10" TextWrapping="Wrap" 
+                   TextAlignment="Center">
+            <TextBlock.Inlines>
+                <Run Text="Image preprocessing"></Run>
+                <Run Text="saves your traffic and money" Foreground="Red"></Run>
+                <Run Text="when recognizing OMR forms at the expense of redundant quality."></Run>
+            </TextBlock.Inlines>
+        </TextBlock>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,10,20,10" TextWrapping="Wrap" 
+                   TextAlignment="Center">
+            <TextBlock.Inlines>
+                <Run Text="We recommend disabling preprocessing only in case you have poor quality images."></Run>
+            </TextBlock.Inlines>
+        </TextBlock>
+
+        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" BorderThickness="1" BorderBrush="LightSkyBlue">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.5*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <CheckBox Content="Enable Preprocessing" Grid.Row="0" Grid.Column="0" Margin="5" 
+                          IsChecked="{Binding IsPreprocessingEnabled}" FontSize="14"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Margin="5">
+
+                    <TextBlock Text="Choose Preset :" Margin="5" FontSize="14"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    <Border BorderThickness="1" BorderBrush="LightSkyBlue" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ComboBox Margin="5" IsEnabled="{Binding IsPreprocessingEnabled}" FontSize="14" Width="150"
+                                  ItemsSource="{Binding Source={StaticResource PresetEnum}}"
+                                  SelectedItem="{Binding SelectedPreset, Mode=TwoWay}"
+                                  Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={converters:EnumDescriptionConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Border>
+                    
+                </StackPanel>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding PresetDescription}" TextWrapping="Wrap"
+                           VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" BorderThickness="1" BorderBrush="LightSkyBlue">
+            <Grid Margin="5" IsEnabled="{Binding IsPreprocessingEnabled}">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                    <GroupBox.Header>
+                        <TextBlock Text="Resize Image To Fit" Height="20"></TextBlock>
+                    </GroupBox.Header>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock Text="Width :" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                            <controls:NumericTextBox  HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                      Margin="5" Width="50" AcceptsFloat="False" Text="{Binding ImageDesiredWidth}"/>
+                            <TextBlock Text="Height :" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                            <controls:NumericTextBox  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                      Margin="5" Width="50" AcceptsFloat="False" Text="{Binding ImageDesiredHeight}"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                    <GroupBox.Header>
+                        <TextBlock Text="Set Jpeg Quality" Height="20"></TextBlock>
+                    </GroupBox.Header>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock Text="Quality Level :" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                            <controls:NumericTextBox HorizontalAlignment="Center" VerticalAlignment="Center" AcceptsFloat="False"
+                                Margin="5" Width="50" Text="{Binding CompressionLevel}"/>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBlock Margin="5" Text="0" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+
+                            <Slider Margin="5" Width="200" Minimum="0" Maximum="100" 
+                                    Orientation="Horizontal" Value="{Binding CompressionLevel}" VerticalAlignment="Center"
+                                    TickPlacement="BottomRight" TickFrequency="5" AutoToolTipPlacement="BottomRight"
+                                    Foreground="LightSkyBlue"/>
+
+                            <TextBlock Margin="5" Text="100" VerticalAlignment="Center"  HorizontalAlignment="Left"></TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                    <GroupBox.Header>
+                        <TextBlock Text="Additional Settings" Height="20"></TextBlock>
+                    </GroupBox.Header>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Text="Do Not Preprocess Images Less Than "></TextBlock>
+                        <controls:NumericTextBox AcceptsFloat="False"
+                                                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                 Margin="5" Width="50" Text="{Binding ExcludeImagesSize}"></controls:NumericTextBox>
+                        <TextBlock Text="Kb" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </GroupBox>
+
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Apply"
+                    HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Height="25" Width="60" Margin="5,5,50,5"
+                    Command="{Binding ApplyCommand}"
+                    BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"/>
+
+            <Button Content="Cancel"
+                    HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Height="25" Width="60" Margin="5,5,50,5"
+                    Command="{Binding CancelCommand}"
+                    BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"/>
+        </StackPanel>
+
+
+
+    </Grid>
+</Window>

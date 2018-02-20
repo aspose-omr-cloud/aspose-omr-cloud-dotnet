@@ -1,0 +1,482 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{58023F47-A68E-4F96-BC26-F0832642CCAD}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Aspose.OMR.Client</RootNamespace>
+    <AssemblyName>Aspose.OMR.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>OMR.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.OMR.Cloud.SDK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.OMR-Cloud.1.0.2\lib\Aspose.OMR.Cloud.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Storage-Cloud, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Storage-Cloud.1.1.1\lib\Aspose.Storage-Cloud.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Controls\EnumBindingSourceExtension.cs" />
+    <Compile Include="Controls\OmrGridElement.cs" />
+    <Compile Include="Converters\BoolToOpacityConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityInverseConverter.cs" />
+    <Compile Include="Converters\BoolToWrappingConverter.cs" />
+    <Compile Include="Converters\EnumDescriptionConverter.cs" />
+    <Compile Include="Converters\GridLengthConverter.cs" />
+    <Compile Include="Utility\AnswersMappingHelper.cs" />
+    <Compile Include="Utility\BusyIndicatorManager.cs" />
+    <Compile Include="Controls\BaseOmrElement.cs" />
+    <Compile Include="Controls\BubbleAdorner.cs" />
+    <Compile Include="Controls\ControlHelper.cs" />
+    <Compile Include="Controls\CustomCanvas.cs" />
+    <Compile Include="Controls\MoveThumb.cs" />
+    <Compile Include="Controls\NumericTextBox.cs" />
+    <Compile Include="Controls\OmrBubble.cs" />
+    <Compile Include="Controls\OmrChoiceBox.cs" />
+    <Compile Include="Controls\QuestionAdorner.cs" />
+    <Compile Include="Controls\ResizeThumb.cs" />
+    <Compile Include="Controls\RubberbandAdorner.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Converters\BoolInverseConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\BubbleBrushConverter.cs" />
+    <Compile Include="Converters\ImageConverter.cs" />
+    <Compile Include="CoreApi.cs" />
+    <Compile Include="Utility\CloudStorageManager.cs" />
+    <Compile Include="Utility\DialogManager.cs" />
+    <Compile Include="Utility\EnumExtensions.cs" />
+    <Compile Include="Utility\FileToUpload.cs" />
+    <Compile Include="Utility\GlobalConstants.cs" />
+    <Compile Include="Utility\HelpManager.cs" />
+    <Compile Include="Utility\ImageProcessor.cs" />
+    <Compile Include="Utility\OmrFunctions.cs" />
+    <Compile Include="Utility\PreprocessingConfiguration.cs" />
+    <Compile Include="Utility\PreprocessingConfigurationManager.cs" />
+    <Compile Include="Utility\PreprocessingPreset.cs" />
+    <Compile Include="Utility\RecentMenuManager.cs" />
+    <Compile Include="Utility\RequestHelper.cs" />
+    <Compile Include="Utility\SecurityUtility.cs" />
+    <Compile Include="Utility\StringWrapper.cs" />
+    <Compile Include="Utility\TemplateCreationStages.cs" />
+    <Compile Include="Utility\TemplateGenerationContent.cs" />
+    <Compile Include="Utility\UserSettingsUtility.cs" />
+    <Compile Include="ViewModels\BaseQuestionViewModel.cs" />
+    <Compile Include="ViewModels\CorrectionErrorsViewModel.cs" />
+    <Compile Include="ViewModels\CredentialsViewModel.cs" />
+    <Compile Include="ViewModels\CustomMappingViewModel.cs" />
+    <Compile Include="ViewModels\FinalizationResultsViewModel.cs" />
+    <Compile Include="ViewModels\GridViewModel.cs" />
+    <Compile Include="ViewModels\GroupRenameViewModel.cs" />
+    <Compile Include="ViewModels\ImagePreviewViewModel.cs" />
+    <Compile Include="Utility\NamingManager.cs" />
+    <Compile Include="RecognitionResult.cs" />
+    <Compile Include="Utility\RelayCommand.cs" />
+    <Compile Include="Utility\SelectionRectnagleModes.cs" />
+    <Compile Include="TemplateConverter.cs" />
+    <Compile Include="TemplateSerializer.cs" />
+    <Compile Include="UndoRedo\ActionTracker.cs" />
+    <Compile Include="UndoRedo\AddElementsAction.cs" />
+    <Compile Include="UndoRedo\EditElementsAction.cs" />
+    <Compile Include="UndoRedo\IUndoRedoAction.cs" />
+    <Compile Include="UndoRedo\RemoveElementsAction.cs" />
+    <Compile Include="Utility\AlignmentHelper.cs" />
+    <Compile Include="Utility\ResolutionUtility.cs" />
+    <Compile Include="ViewModels\BubbleViewModel.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="ViewModels\ChoiceBoxViewModel.cs" />
+    <Compile Include="ViewModels\ImageUploadViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\PreprocessingPresetsViewModel.cs" />
+    <Compile Include="ViewModels\ResultsViewModel.cs" />
+    <Compile Include="ViewModels\TabViewModel.cs" />
+    <Compile Include="ViewModels\TemplateGeneratorViewModel.cs" />
+    <Compile Include="ViewModels\TemplateViewModel.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AnswersView.xaml.cs">
+      <DependentUpon>AnswersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CommonPropertiesView.xaml.cs">
+      <DependentUpon>CommonPropertiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CorrectionErrorsView.xaml.cs">
+      <DependentUpon>CorrectionErrorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CredentialsView.xaml.cs">
+      <DependentUpon>CredentialsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomMappingView.xaml.cs">
+      <DependentUpon>CustomMappingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FinalizationResultsView.xaml.cs">
+      <DependentUpon>FinalizationResultsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GridPropertiesView.xaml.cs">
+      <DependentUpon>GridPropertiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GroupRenameView.xaml.cs">
+      <DependentUpon>GroupRenameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImagesPreview.xaml.cs">
+      <DependentUpon>ImagesPreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImageUploadView.xaml.cs">
+      <DependentUpon>ImageUploadView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainToolbarView.xaml.cs">
+      <DependentUpon>MainToolbarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChoiceBoxPropertiesView.xaml.cs">
+      <DependentUpon>ChoiceBoxPropertiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PreprocessingPresetsView.xaml.cs">
+      <DependentUpon>PreprocessingPresetsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResultsToolbarView.xaml.cs">
+      <DependentUpon>ResultsToolbarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResultsView.xaml.cs">
+      <DependentUpon>ResultsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TemplateGeneratorView.xaml.cs">
+      <DependentUpon>TemplateGeneratorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TemplateToolbarView.xaml.cs">
+      <DependentUpon>TemplateToolbarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TemplateView.xaml.cs">
+      <DependentUpon>TemplateView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Resources\ControlStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\OmrItemStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AnswersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CommonPropertiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CorrectionErrorsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CredentialsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomMappingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FinalizationResultsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GridPropertiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GroupRenameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImagesPreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImageUploadView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainToolbarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Views\ChoiceBoxPropertiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PreprocessingPresetsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ResultsToolbarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ResultsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TemplateGeneratorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TemplateToolbarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TemplateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Resource Include="Icons\DeleteCrossIcon.ico" />
+    <Resource Include="Icons\Generate.png" />
+    <Resource Include="Icons\Info32.png" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Examples\AsposeTestExamples\Template.omr">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Aspose.OMR.TemplateModel\Aspose.OMR.TemplateModel.csproj">
+      <Project>{42C7D535-A19A-4995-9155-5C4AEB2401DE}</Project>
+      <Name>Aspose.OMR.TemplateModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\AlignLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\AlignBottom.png" />
+    <Resource Include="Icons\AlignRight.png" />
+    <Resource Include="Icons\AlignTop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\DocumentLoad.png" />
+    <Resource Include="Icons\DocumentNew.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Redo.png" />
+    <Resource Include="Icons\Undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\AddFolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Shrink.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\ZoomIn.png" />
+    <Resource Include="Icons\ZoomOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\picture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\AddFolder32.png" />
+    <Resource Include="Icons\DeleteCross32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Picture32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\CloudUpload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\LoadingWhite32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\LoadingWhite16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\CancelWhite16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\FitWidth.png" />
+    <Resource Include="Icons\FullScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Polling.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\DocumentAdd24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Open24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Image24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Credentials.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\AsposeOMR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="OMR.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Examples\AsposeTestExample.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Examples\AsposeTestExamples\FilledForm1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\AsposeTestExamples\FilledForm2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\AsposeTestExamples\FilledForm3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gifs\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

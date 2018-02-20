@@ -1,0 +1,135 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Aspose.OMR.Client.Controls"
+                    xmlns:converters="clr-namespace:Aspose.OMR.Client.Converters">
+
+    <Color x:Key="MainItemsColor" >#FF87CEFA</Color>
+    <Color x:Key="SelectionColor" >#FF778899</Color>
+    <Color x:Key="InvalidBubbleColor" >#FFFF0000</Color>
+
+    <SolidColorBrush Color="{StaticResource MainItemsColor}" x:Key="MainItemsBrush"/>
+    <SolidColorBrush Color="{StaticResource SelectionColor}" x:Key="SelectionBrush"/>
+    <SolidColorBrush Color="{StaticResource InvalidBubbleColor}" x:Key="InvalidBubbleBrush"/>
+
+
+    <!--Template for text panel used for dragging questions-->
+    <ControlTemplate TargetType="{x:Type Thumb}" x:Key="MoveTextTemplate">
+        <TextBlock Text="{Binding Name}" 
+                   MinWidth="50" MaxWidth="200" Width="100"
+                   Background="{StaticResource MainItemsBrush}" Height="25" Opacity="0.8"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"/>
+    </ControlTemplate>
+
+
+    <!--Template for resize thumb used to resize questions-->
+    <ControlTemplate x:Key="FullDotsResizeTemplate" TargetType="{x:Type controls:ResizeThumb}">
+        <Grid Opacity="1" SnapsToDevicePixels="true">
+            <controls:ResizeThumb Width="7" Height="7" Cursor="SizeNS" Margin="0 -6 0 0"
+                                  VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            <controls:ResizeThumb Width="7" Height="7" Cursor="SizeWE" Margin="-6 0 0 0"
+                                  VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <controls:ResizeThumb Width="7" Height="7" Cursor="SizeWE" Margin="0 0 -6 0"
+                                  VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <controls:ResizeThumb Width="7" Height="7" Cursor="SizeNS" Margin="0 0 0 -6"
+                                  VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+            <controls:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="-6 -6 0 0"
+                                  VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <controls:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="0 -6 -6 0"
+                                  VerticalAlignment="Top" HorizontalAlignment="Right"/>
+            <controls:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="-6 0 0 -6"
+                                  VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+            <controls:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="0 0 -6 -6"
+                                  VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+        </Grid>
+    </ControlTemplate>
+
+    <!--Template for resize thumb used to resize bubbles-->
+    <ControlTemplate x:Key="CornerDotsResizeTemplate" TargetType="{x:Type controls:ResizeThumb}">
+        <Grid SnapsToDevicePixels="true">
+            <controls:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="0 0 0 0"
+                                  VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <controls:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="0 0 0 0"
+                                  VerticalAlignment="Top" HorizontalAlignment="Right"/>
+            <controls:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="0 0 0 0"
+                                  VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+            <controls:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="0 0 0 0"
+                                  VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+        </Grid>
+    </ControlTemplate>
+
+    <!--Template for outline thumb used for dragging questions-->
+    <ControlTemplate TargetType="{x:Type controls:MoveThumb}" x:Key="OutlineMoveThumb">
+        <Grid SnapsToDevicePixels="True">
+            <Border BorderThickness="2" BorderBrush="SlateGray"/>
+        </Grid>
+    </ControlTemplate>
+
+    <!--Template for move thumb used to drag bubbles-->
+    <ControlTemplate TargetType="{x:Type Thumb}" x:Key="RectMoveThumb">
+        <Grid SnapsToDevicePixels="True">
+            <Rectangle Fill="Transparent"/>
+        </Grid>
+    </ControlTemplate>
+
+
+    <!--Style of omr choicebox-->
+    <Style TargetType="{x:Type controls:OmrChoiceBox}" x:Key="ChoiceBoxStyle">
+        <Setter Property="MinHeight" Value="20"/>
+        <Setter Property="MinWidth" Value="20"/>
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:OmrChoiceBox}">
+                    <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                        <Rectangle Fill="Transparent"/>
+                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                          Content="{TemplateBinding ContentControl.Content}" 
+                                          x:Name="Content"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Style of omr grid-->
+    <Style TargetType="{x:Type controls:OmrGridElement}" x:Key="GridStyle">
+        <Setter Property="MinHeight" Value="20"/>
+        <Setter Property="MinWidth" Value="20"/>
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:OmrGridElement}">
+                    <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                        <Rectangle Fill="Transparent"/>
+                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                          Content="{TemplateBinding ContentControl.Content}" Margin="{TemplateBinding Padding}"
+                                          x:Name="Content"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Style of omr bubble-->
+    <Style TargetType="{x:Type controls:OmrBubble}" x:Key="BubbleStyle">
+        <Setter Property="MinHeight" Value="10"/>
+        <Setter Property="MinWidth" Value="10"/>
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:OmrBubble}">
+                    <Grid>
+                        <Border BorderBrush="{Binding IsValid, Converter={converters:BubbleBrushConverter}, Mode=OneWay}"
+                                Background="{Binding IsValid, Converter={converters:BubbleBrushConverter}, Mode=OneWay}"
+                                BorderThickness="0" Opacity="0.8">
+                            <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="{Binding FontSize, Mode=OneWay}" Foreground="Black"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <controls:MoveThumb x:Name="MoveThumb" Cursor="SizeAll" Template="{StaticResource RectMoveThumb}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

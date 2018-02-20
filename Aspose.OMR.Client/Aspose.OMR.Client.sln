@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose.OMR.Client", "Aspose.OMR.Client\Aspose.OMR.Client.csproj", "{58023F47-A68E-4F96-BC26-F0832642CCAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose.OMR.TemplateModel", "Aspose.OMR.TemplateModel\Aspose.OMR.TemplateModel.csproj", "{42C7D535-A19A-4995-9155-5C4AEB2401DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Debug-Net20|Any CPU = Debug-Net20|Any CPU
+		Debug-Net20|x86 = Debug-Net20|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58023F47-A68E-4F96-BC26-F0832642CCAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58023F47-A68E-4F96-BC26-F0832642CCAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58023F47-A68E-4F96-BC26-F0832642CCAD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{58023F47-A68E-4F96-BC26-F0832642CCAD}.Debug|x86.Build.0 = Debug|Any CPU
+		{58023F47-A68E-4F96-BC26-F0832642CCAD}.Debug-Net20|Any CPU.ActiveCfg = Debug|Any CPU
+		{58023F47-A68E-4F96-BC26-F0832642CCAD}.Debug-Net20|Any CPU.Build.0 = Debug|Any CPU
+		{58023F47-A68E-4F96-BC26-F0832642CCAD}.Debug-Net20|x86.ActiveCfg = Debug|Any CPU
+		{58023F47-A68E-4F96-BC26-F0832642CCAD}.Debug-Net20|x86.Build.0 = Debug|Any CPU
+		{58023F47-A68E-4F96-BC26-F0832642CCAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58023F47-A68E-4F96-BC26-F0832642CCAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58023F47-A68E-4F96-BC26-F0832642CCAD}.Release|x86.ActiveCfg = Release|Any CPU
+		{58023F47-A68E-4F96-BC26-F0832642CCAD}.Release|x86.Build.0 = Release|Any CPU
+		{42C7D535-A19A-4995-9155-5C4AEB2401DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42C7D535-A19A-4995-9155-5C4AEB2401DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42C7D535-A19A-4995-9155-5C4AEB2401DE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{42C7D535-A19A-4995-9155-5C4AEB2401DE}.Debug|x86.Build.0 = Debug|Any CPU
+		{42C7D535-A19A-4995-9155-5C4AEB2401DE}.Debug-Net20|Any CPU.ActiveCfg = Debug|Any CPU
+		{42C7D535-A19A-4995-9155-5C4AEB2401DE}.Debug-Net20|Any CPU.Build.0 = Debug|Any CPU
+		{42C7D535-A19A-4995-9155-5C4AEB2401DE}.Debug-Net20|x86.ActiveCfg = Debug|Any CPU
+		{42C7D535-A19A-4995-9155-5C4AEB2401DE}.Debug-Net20|x86.Build.0 = Debug|Any CPU
+		{42C7D535-A19A-4995-9155-5C4AEB2401DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42C7D535-A19A-4995-9155-5C4AEB2401DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42C7D535-A19A-4995-9155-5C4AEB2401DE}.Release|x86.ActiveCfg = Release|Any CPU
+		{42C7D535-A19A-4995-9155-5C4AEB2401DE}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

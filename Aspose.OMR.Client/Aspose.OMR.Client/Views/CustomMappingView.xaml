@@ -1,0 +1,71 @@
+﻿<Window x:Class="Aspose.OMR.Client.Views.CustomMappingView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:Aspose.OMR.Client.Controls"
+        mc:Ignorable="d"
+        Title="Add Custom Mapping" Height="450" Width="350" 
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        FocusManager.FocusedElement="{Binding ElementName=NameTextBox}"
+        Icon="/Icons/Polling.png">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="6*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition ></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Mapping name" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        
+        <TextBox Grid.Row="0" Grid.Column="1"  Text="{Binding CustomMappingName, UpdateSourceTrigger=PropertyChanged}" Width="75"
+                 x:Name="NameTextBox"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Items count" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <controls:NumericTextBox Grid.Row="1" Grid.Column="1" Text="{Binding CustomMappingItemsCount, UpdateSourceTrigger=LostFocus}" Width="75"
+                                 AcceptsFloat="False" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        </controls:NumericTextBox>
+
+        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding MappingValues}" HorizontalAlignment="Center" Margin="5"
+                  AutoGenerateColumns="False" CanUserSortColumns="False" HorizontalContentAlignment="Center"
+                  CanUserDeleteRows="False" CanUserAddRows="False" MinColumnWidth="250"
+                  SelectionMode="Single" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Mapping Values" Binding="{Binding StringValue}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="TextWrapping" Value="NoWrap"></Setter>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Content="Save" Grid.Row="3" Grid.Column="0" 
+                HorizontalAlignment="Center" Height="25" Width="60" Margin="5"
+                Command="{Binding OkCommand}"
+                BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"/>
+
+        <Button Content="Cancel" Grid.Row="3" Grid.Column="1"  
+                HorizontalAlignment="Center" Height="25" Width="60" Margin="5"
+                Command="{Binding CancelCommand}"
+                BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"/>
+    </Grid>
+</Window>

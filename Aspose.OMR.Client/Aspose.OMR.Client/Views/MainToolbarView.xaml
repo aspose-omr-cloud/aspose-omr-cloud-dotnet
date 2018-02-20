@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Aspose.OMR.Client.Views.MainToolbarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Aspose.OMR.Client.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}">
+    
+    <UserControl.Resources>
+        <Style x:Key="ImageButton" TargetType="Button">
+            <Setter Property="ToolTipService.ShowOnDisabled" Value="True"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value=".3" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <ToolBarTray DockPanel.Dock="Top" IsLocked="True" Background="White">
+            <ToolBar Background="White">
+                <Button Command="{Binding NewTemplateCommand}" ToolTip="New Template" Margin="0,0,6,0">
+                    <Image Source="/Icons/DocumentNew.png"/>
+                </Button>
+                <Button Command="{Binding LoadTemplateCommand}" ToolTip="Load Template" Margin="0,0,6,0">
+                    <Image Source="/Icons/Open.png"/>
+                </Button>
+                <Button ToolTip="Save Template" Command="{Binding SaveTemplateCommand}" Style="{StaticResource ImageButton}">
+                    <Image Source="/Icons/Save.png" />
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+    </Grid>
+</UserControl>

@@ -1,0 +1,61 @@
+﻿<Window x:Class="Aspose.OMR.Client.Views.CorrectionErrorsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Aspose.OMR.Client.Views"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Correction Errors" Height="350" Width="450"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="0.5*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Margin="30,20,30,5" TextWrapping="Wrap"
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                   TextAlignment="Center">
+            <TextBlock.Inlines>
+                <Run Text="Errors occured during Template correction. Some of the bubbles seem to be in invalid position." />
+                <Run FontStyle="Normal" Foreground="Black" Text="It could be caused by inaccurate mark-up and"/>
+                <Run FontStyle="Normal" Foreground="Red" Text="might greatly affect recognition quality." />
+            </TextBlock.Inlines>
+        </TextBlock>
+
+        <TextBlock Grid.Row="1" Margin="30,5,30,5" TextWrapping="Wrap"
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                   TextAlignment="Center"
+                   Text="We reccomend to go back to template mark-up creation and attempt to fix problems with invalid bubbles.
+You could check position and properites of such bubbles, which are colored in red. After that, run Validation once again."/>
+
+        <TextBlock Grid.Row="2" Margin="30,5,30,5" TextWrapping="Wrap"
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                   TextAlignment="Center"
+                   Text="You can also ignore these warnings. We reccomend doing that only if you are sure markup is correct or you can do nothing to fix these issues.
+However, leaving any invalid bubbles would likely to cause recognition issues."/>
+
+        <Grid Grid.Row="3" Grid.Column="0" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    Height="25" Width="200"
+                    Content="Attempt To Fix Errors"  HorizontalAlignment="Center" Margin="5"
+                    BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"
+                    Command="{Binding FixErrorsCommand}"></Button>
+
+            <Button Grid.Column="1"
+                    Height="25" Width="200"
+                    Content="Ignore Errors And Continue"  HorizontalAlignment="Center" Margin="5"
+                    BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"
+                    Command="{Binding IgnoreAndContinueCommand}"></Button>
+        </Grid>
+
+    </Grid>
+</Window>

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *      https://github.com/aspose-omr/Aspose.OMR-for-Cloud/blob/master/LICENSE
+ *      https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/blob/master/LICENSE
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,11 +20,10 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Com.Aspose.OMR.Api;
-using Com.Aspose.OMR.Model;
+using Aspose.OMR.Cloud.SDK.Api;
+using Aspose.OMR.Cloud.SDK.Model;
 using Com.Aspose.Storage.Api;
 using Newtonsoft.Json;
-using FileInfo = Com.Aspose.OMR.Model.FileInfo;
 
 namespace Aspose.OMR.ConsoleClient
 {
@@ -44,6 +43,9 @@ namespace Aspose.OMR.ConsoleClient
         /// </summary>
         static string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"TestExamples\");
 
+        /// <summary>
+        /// Runs all omr function using sample data 
+        /// </summary>
         static void Main(string[] args)
         {
             // 0. Create template (using Aspose.OMR.Client) or generate template using Generate action
@@ -93,7 +95,7 @@ namespace Aspose.OMR.ConsoleClient
             OmrResponseContent responseResult = generationResponse.Payload.Result;
             for (int i = 0; i < responseResult.ResponseFiles.Length; i++)
             {
-                FileInfo responseFile = responseResult.ResponseFiles[i];
+                var responseFile = responseResult.ResponseFiles[i];
                 if (responseFile.Name.Contains(".omr"))
                 {
                     // save .omr file, which is generated template
@@ -111,7 +113,14 @@ namespace Aspose.OMR.ConsoleClient
             }
         }
 
-        private static Com.Aspose.OMR.Model.OMRResponse RunOmrTask(string inputFileName, string actionName, string functionParam)
+        /// <summary>
+        /// Method for running all kinds of OMR actions
+        /// </summary>
+        /// <param name="inputFileName">The name of the input file</param>
+        /// <param name="actionName">The name of the action</param>
+        /// <param name="functionParam">The function parameters</param>
+        /// <returns>Response with resulting data</returns>
+        private static OMRResponse RunOmrTask(string inputFileName, string actionName, string functionParam)
         {
             // Instantiate Aspose Storage Cloud API SDK
             OmrApi target = new OmrApi(APIKEY, APPSID, BASEPATH);
@@ -131,7 +140,7 @@ namespace Aspose.OMR.ConsoleClient
             storageApi.PutCreate(inputFileName, "", "", System.IO.File.ReadAllBytes(path + inputFileName));
 
             // Invoke Aspose.OMR Cloud SDK API
-            Com.Aspose.OMR.Model.OMRResponse response = target.PostRunOmrTask(inputFileName, actionName, param, storage, folder);
+            OMRResponse response = target.PostRunOmrTask(inputFileName, actionName, param, storage, folder);
             return response;
         }
 

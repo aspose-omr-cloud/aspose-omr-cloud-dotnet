@@ -1,0 +1,124 @@
+﻿<Window x:Class="Aspose.OMR.Client.Views.TemplateGeneratorView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Aspose.OMR.Client.Views"
+        xmlns:converters="clr-namespace:Aspose.OMR.Client.Converters"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResize"
+        mc:Ignorable="d"
+        Title="Template Generation"
+        Height="800" Width="1000">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="6*"></RowDefinition>
+            <RowDefinition Height="0.6*"></RowDefinition>
+            <RowDefinition Height="0.7*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" FontSize="12" MaxWidth="500"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" TextAlignment="Center"
+                   Text="Template Generation allows creating template file and OMR image from textual description. You can create description from scratch, use copy and paste or load it from .txt file.">
+        </TextBlock>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Generated Template Name" 
+                   VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5"/>
+
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TemplateName}" Margin="5" BorderBrush="{StaticResource MainItemsBrush}"
+                 Width="250"
+                 HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                   Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center">
+            You can use images, such as small logos, in your template. <LineBreak/>
+            To do that, upload them on cloud storage and add in template description. In case you've already uploaded them, simply provide<LineBreak/> 
+            name of the folder where images are stored. Leave this field empty if images are located in storage root directory.
+        </TextBlock>
+
+        <Button Grid.Row="3" Grid.Column="0"
+            Content="Select and Upload Images" Margin="5"  
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Height="25" Width="150"
+                BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"
+                Command="{Binding UploadImagesCommand}"/>
+
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="5"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Cloud storage folder" Margin="5"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            <TextBox BorderBrush="{StaticResource MainItemsBrush}" Margin="5" Width="200"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                     Text="{Binding ExtraStoragePath}"></TextBox>
+        </StackPanel>
+
+        <DockPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Background="White">
+            <ToolBar Background="White">
+
+                <TextBlock Text="Font Family" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <ComboBox Width="150" ItemsSource="{Binding FontFamilies, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedFontFamily}"
+                          Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" HorizontalAlignment="Stretch" Margin="5"/>
+                <Separator></Separator>
+
+                <TextBlock Text="Font Size" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <ComboBox Width="50" ItemsSource="{Binding FontSizes, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedFontSize}"
+                          Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" HorizontalAlignment="Stretch" Margin="5"/>
+                <Separator></Separator>
+
+                <ToggleButton x:Name="WrappingButton" Content="Text Wrapping" ToolTip="Enable or Disable Text Wrapping"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                              Margin="5"></ToggleButton>
+
+                <Separator></Separator>
+
+                <TextBlock Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"> 
+                    <Hyperlink 
+                        NavigateUri="https://docs.aspose.cloud/display/omrcloud/Template+generation"
+                        RequestNavigate="OnRequestNavigate"
+                    >Template Generation Help</Hyperlink>
+                </TextBlock>
+
+            </ToolBar>
+        </DockPanel>
+
+        <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,0" BorderBrush="LightSkyBlue" Background="White"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 Text="{Binding TemplateDescription, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" AcceptsTab="True"
+                 FontSize="{Binding SelectedFontSize}" FontFamily="{Binding SelectedFontFamily}"
+                 TextWrapping="{Binding ElementName=WrappingButton, Path=IsChecked, Converter={converters:BoolToWrappingConverter}}">
+        </TextBox>
+
+        <Button Grid.Row="6" Grid.Column="0" Content="Load From File..."
+                BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"
+                HorizontalAlignment="Left" VerticalAlignment="Center" Height="25" Width="100" Margin="386,12,0,0"
+                Command="{Binding LoadFromFileCommand}"/>
+
+        <Button Grid.Row="6" Grid.Column="1" Content="Save Markup..."
+                BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"
+                HorizontalAlignment="Right" VerticalAlignment="Center" Height="25" Margin="0,12,386,0"
+                Command="{Binding SaveMarkupFileCommand}" Width="100"/>
+
+        <Button Content="Generate" Grid.Row="7" Grid.Column="0" Margin="5"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Height="25" Width="100"
+                BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"
+                Command="{Binding GenerateCommand}"/>
+
+        <Button Content="Close" Grid.Row="7" Grid.Column="1" Margin="5"  
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Height="25" Width="100"
+                BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"
+                Command="{Binding CloseCommand}"/>
+
+    </Grid>
+</Window>

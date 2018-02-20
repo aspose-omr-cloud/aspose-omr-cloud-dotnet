@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="Aspose.OMR.Client.Views.TemplateToolbarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="800">
+
+    <Grid>
+        <DockPanel>
+            <ToolBarTray DockPanel.Dock="Top" IsLocked="True" Background="White">
+
+                <ToolBar BandIndex="0" Background="White">
+                    <Button Command="{Binding LoadTemplateImageCommand}" ToolTip="Import Image" Style="{StaticResource ImageButton}" Margin="3,0,3,0">
+                        <Image Source="/Icons/Image.png" />
+                    </Button>
+                </ToolBar>
+
+                <ToolBar BandIndex="1" Background="White">
+                    <Button Command="{Binding UndoCommand}" ToolTip="Undo" Style="{StaticResource ImageButton}" Margin="0,0,6,0">
+                        <Image Source="/Icons/Undo.png" />
+                    </Button>
+                    <Button Command="{Binding RedoCommand}" ToolTip="Redo" Style="{StaticResource ImageButton}">
+                        <Image Source="/Icons/Redo.png" />
+                    </Button>
+                </ToolBar>
+
+                <ToolBar BandIndex="2" Background="White">
+                    <Button ToolTip="Copy" Command="{Binding CopyElementsCommand}" Style="{StaticResource ImageButton}" Margin="0,0,6,0">
+                        <Image Source="/Icons/Copy.png" />
+                    </Button>
+
+                    <Button ToolTip="Paste" Command="{Binding PasteElementsCommand}" Style="{StaticResource ImageButton}" Margin="0,0,6,0">
+                        <Image Source="/Icons/Paste.png" />
+                    </Button>
+                    <Button ToolTip="Remove Selected Items" Command="{Binding RemoveElementCommand}" Style="{StaticResource ImageButton}">
+                        <Image Source="/Icons/Delete.png" />
+                    </Button>
+                </ToolBar>
+
+                <ToolBar BandIndex="3" Background="White">
+                    <Button Command="{Binding AlignLeftCommand}" ToolTip="Align Left" Style="{StaticResource ImageButton}" Margin="0,0,5,0">
+                        <Image Source="/Icons/AlignLeft.png" />
+                    </Button>
+                    <Button Command="{Binding AlignRightCommand}" ToolTip="Align Right" Style="{StaticResource ImageButton}" Margin="0,0,5,0">
+                        <Image Source="/Icons/AlignRight.png" />
+                    </Button>
+                    <Button Command="{Binding AlignTopCommand}" ToolTip="Align Top" Style="{StaticResource ImageButton}" Margin="0,0,5,0">
+                        <Image Source="/Icons/AlignTop.png" />
+                    </Button>
+                    <Button Command="{Binding AlignBottomCommand}" ToolTip="Align Bottom" Style="{StaticResource ImageButton}">
+                        <Image Source="/Icons/AlignBottom.png" />
+                    </Button>
+                </ToolBar>
+
+                <ToolBar BandIndex="4" Background="White">
+                    <ToggleButton Content="Add Choice Box" IsChecked="{Binding IsAddingChoiceBox}" Margin="0,0,5,0"></ToggleButton>
+                    <ToggleButton Content="Add Grid" IsChecked="{Binding IsAddingGrid}"></ToggleButton>
+                </ToolBar>
+
+                <ToolBar BandIndex="5" Background="White">
+                    <Button Content="Validate Template" Command="{Binding ValidateTemplateCommand}" 
+                            ToolTip="Validates Template By Perfoming Template Correction and Finalization" 
+                            ToolTipService.ShowOnDisabled="True"></Button>
+                </ToolBar>
+            </ToolBarTray>
+        </DockPanel>
+    </Grid>
+</UserControl>
