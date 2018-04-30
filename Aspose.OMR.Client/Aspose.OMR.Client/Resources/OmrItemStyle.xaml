@@ -15,14 +15,13 @@
     <!--Template for text panel used for dragging questions-->
     <ControlTemplate TargetType="{x:Type Thumb}" x:Key="MoveTextTemplate">
         <TextBlock Text="{Binding Name}" 
-                   MinWidth="50" MaxWidth="200" Width="100"
-                   Background="{StaticResource MainItemsBrush}" Height="25" Opacity="0.8"
+                   MinWidth="20" Width="200" Margin="0, 0, 0, 0"
+                   Background="{StaticResource MainItemsBrush}" Height="20" Opacity="0.8"
                    HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </ControlTemplate>
 
-
     <!--Template for resize thumb used to resize questions-->
-    <ControlTemplate x:Key="FullDotsResizeTemplate" TargetType="{x:Type controls:ResizeThumb}">
+    <ControlTemplate x:Key="FullDotsResizeTemplate" TargetType="{x:Type Thumb}">
         <Grid Opacity="1" SnapsToDevicePixels="true">
             <controls:ResizeThumb Width="7" Height="7" Cursor="SizeNS" Margin="0 -6 0 0"
                                   VerticalAlignment="Top" HorizontalAlignment="Center"/>
@@ -44,7 +43,7 @@
     </ControlTemplate>
 
     <!--Template for resize thumb used to resize bubbles-->
-    <ControlTemplate x:Key="CornerDotsResizeTemplate" TargetType="{x:Type controls:ResizeThumb}">
+    <ControlTemplate x:Key="CornerDotsResizeTemplate" TargetType="{x:Type Thumb}">
         <Grid SnapsToDevicePixels="true">
             <controls:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="0 0 0 0"
                                   VerticalAlignment="Top" HorizontalAlignment="Left"/>
@@ -66,11 +65,10 @@
 
     <!--Template for move thumb used to drag bubbles-->
     <ControlTemplate TargetType="{x:Type Thumb}" x:Key="RectMoveThumb">
-        <Grid SnapsToDevicePixels="True">
+        <Grid SnapsToDevicePixels="True" Background="Transparent">
             <Rectangle Fill="Transparent"/>
         </Grid>
     </ControlTemplate>
-
 
     <!--Style of omr choicebox-->
     <Style TargetType="{x:Type controls:OmrChoiceBox}" x:Key="ChoiceBoxStyle">

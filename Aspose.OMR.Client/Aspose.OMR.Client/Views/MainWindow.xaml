@@ -160,7 +160,12 @@
                               ToolTipService.ShowOnDisabled="True" ToolTip="Apply Formatting Of The Selected Element To All Elements"/>
 
                     <MenuItem Header="_Rename Group" Command="{Binding RenameGroupCommand}" 
-                              ToolTipService.ShowOnDisabled="True" ToolTip="Quickly Rename Group Of Elements"/>
+                              ToolTipService.ShowOnDisabled="True" ToolTip="Quickly Rename Group Of Elements">
+                        <MenuItem.Icon>
+                            <Image Source="/Icons/Text.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
 
                     <MenuItem Header="Shrink" Command="{Binding ShrinkElementCommand}" 
                               ToolTipService.ShowOnDisabled="True" ToolTip="Shrink Element's Area To Bounding Box Of Its Bubbles">

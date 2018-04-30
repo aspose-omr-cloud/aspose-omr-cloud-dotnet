@@ -1,11 +1,11 @@
 ﻿/*
- * Copyright (c) 2017 Aspose Pty Ltd. All Rights Reserved.
+ * Copyright (c) 2018 Aspose Pty Ltd. All Rights Reserved.
  *
  * Licensed under the MIT (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://github.com/asposecloud/Aspose.OMR-Cloud/blob/master/LICENSE
+ *       https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/blob/master/LICENSE
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -72,7 +72,8 @@ namespace Aspose.OMR.Client.ViewModels
         /// <param name="height">Bubble height</param>
         /// <param name="top">Bubble top position</param>
         /// <param name="left">Bubble left position</param>
-        public BubbleViewModel(double width, double height, double top, double left)
+        /// <param name="parentQuestion">Parent question containing bubble</param>
+        public BubbleViewModel(double width, double height, double top, double left, ChoiceBoxViewModel parentQuestion)
         {
             this.width = width;
             this.height = height;
@@ -80,9 +81,15 @@ namespace Aspose.OMR.Client.ViewModels
             this.left = left;
 
             this.isValid = true;
-
             this.fontSize = (int)(this.defaultFontSize / TemplateViewModel.ZoomKoefficient);
+
+            this.ParentQuestion = parentQuestion;
         }
+
+        /// <summary>
+        /// Gets or sets the parent question containing this bubble
+        /// </summary>
+        public ChoiceBoxViewModel ParentQuestion { get; set; }
 
         /// <summary>
         /// Gets or sets bubble name

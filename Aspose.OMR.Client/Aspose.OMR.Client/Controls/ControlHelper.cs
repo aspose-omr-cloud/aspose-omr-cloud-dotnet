@@ -1,11 +1,11 @@
 ﻿/*
- * Copyright (c) 2017 Aspose Pty Ltd. All Rights Reserved.
+ * Copyright (c) 2018 Aspose Pty Ltd. All Rights Reserved.
  *
  * Licensed under the MIT (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://github.com/asposecloud/Aspose.OMR-Cloud/blob/master/LICENSE
+ *       https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/blob/master/LICENSE
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,12 +38,6 @@ namespace Aspose.OMR.Client.Controls
 
             while (current != null)
             {
-                result = current;
-                if (result is CustomCanvas)
-                {
-                    break;
-                }
-
                 if (current is Visual)
                 {
                     current = VisualTreeHelper.GetParent(current);
@@ -52,9 +46,46 @@ namespace Aspose.OMR.Client.Controls
                 {
                     current = LogicalTreeHelper.GetParent(current);
                 }
+
+                result = current;
+                if (result is CustomCanvas)
+                {
+                    break;
+                }
             }
 
             return (CustomCanvas)result;
+        }
+
+        /// <summary>
+        /// Find parent choice box control
+        /// </summary>
+        /// <param name="initial">Initial control</param>
+        /// <returns>Parent choice box</returns>
+        public static OmrChoiceBox FindParentChoiceBox(DependencyObject initial)
+        {
+            DependencyObject current = initial;
+            DependencyObject result = initial;
+
+            while (current != null)
+            {
+                if (current is Visual)
+                {
+                    current = VisualTreeHelper.GetParent(current);
+                }
+                else
+                {
+                    current = LogicalTreeHelper.GetParent(current);
+                }
+
+                result = current;
+                if (result is OmrChoiceBox)
+                {
+                    break;
+                }
+            }
+
+            return (OmrChoiceBox)result;
         }
 
         /// <summary>

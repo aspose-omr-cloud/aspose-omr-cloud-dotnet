@@ -1,11 +1,11 @@
 ﻿/*
- * Copyright (c) 2017 Aspose Pty Ltd. All Rights Reserved.
+ * Copyright (c) 2018 Aspose Pty Ltd. All Rights Reserved.
  *
  * Licensed under the MIT (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://github.com/asposecloud/Aspose.OMR-Cloud/blob/master/LICENSE
+ *       https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/blob/master/LICENSE
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,12 @@
  */
 namespace Aspose.OMR.Client.ViewModels
 {
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows;
     using TemplateModel;
+    using UndoRedo;
     using Utility;
 
     /// <summary>
@@ -26,6 +28,11 @@ namespace Aspose.OMR.Client.ViewModels
     /// </summary>
     public sealed class GridViewModel : BaseQuestionViewModel
     {
+        /// <summary>
+        /// Maximum number of allowed bubbles inside child choiceboxes
+        /// </summary>
+        private const int MaxOptionsCount = 50;
+
         /// <summary>
         /// Minimum bubble size in pixels
         /// </summary>
@@ -44,7 +51,7 @@ namespace Aspose.OMR.Client.ViewModels
         private static int latestSelectedMapping;
 
         /// <summary>
-        /// Maximum number of allowed bubbles inside question
+        /// Maximum number of allowed choiceboxes inside grid question
         /// </summary>
         private readonly int maxAllowedSectionsCount = 50;
 
@@ -78,11 +85,24 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         /// <param name="name">Name of the grid question</param>
         /// <param name="area">Area of the question</param>
-        public GridViewModel(string name, Rect area)
+        /// <param name="parentTemplate">The view model of parent template</param>
+        public GridViewModel(string name, Rect area, TemplateViewModel parentTemplate)
         {
             this.InitializeValues(name, area.Top, area.Left, area.Width, area.Height);
+            this.ParentTemplate = parentTemplate;
 
-            this.Orientation = this.Width >= this.Height ? Orientations.Horizontal : Orientations.Vertical;
+            this.orientation = this.Width >= this.Height ? Orientations.Horizontal : Orientations.Vertical;
+
+            this.ChoiceBoxes.Clear();
+            if (this.Orientation == Orientations.Horizontal)
+            {
+                this.FitChoiceBoxesHorizontal(latestQuestionsCount);
+            }
+            else
+            {
+                this.FitChoiceBoxesVertical(latestQuestionsCount);
+            }
+
             this.SelectedMapping = this.AnswersMapping[latestSelectedMapping];
         }
 
@@ -95,10 +115,14 @@ namespace Aspose.OMR.Client.ViewModels
         /// <param name="left">Left position on parent canvas</param>
         /// <param name="width">Question's width</param>
         /// <param name="height">Question's height</param>
-        public GridViewModel(string name, double top, double left, double width, double height)
+        /// <param name="parentTemplate">The view model of parent template</param>
+        /// <param name="orientation"></param>
+        public GridViewModel(string name, double top, double left, double width, double height, TemplateViewModel parentTemplate, Orientations orientation)
         {
             this.InitializeValues(name, top, left, width, height);
+            this.ParentTemplate = parentTemplate;
             this.SelectedMapping = this.AnswersMapping[latestSelectedMapping];
+            this.orientation = orientation;
         }
 
         /// <summary>
@@ -145,7 +169,12 @@ namespace Aspose.OMR.Client.ViewModels
             get { return this.orientation; }
             set
             {
+                var orientationBefore = this.orientation;
+                var choiceBoxesBefore = new List<ChoiceBoxViewModel>();
+                choiceBoxesBefore.AddRange(this.ChoiceBoxes);
+
                 this.orientation = value;
+
                 this.ChoiceBoxes.Clear();
                 if (this.Orientation == Orientations.Horizontal)
                 {
@@ -156,7 +185,11 @@ namespace Aspose.OMR.Client.ViewModels
                     this.FitChoiceBoxesVertical(latestQuestionsCount);
                 }
 
+                var choiceBoxesAfter = new List<ChoiceBoxViewModel>();
+                choiceBoxesAfter.AddRange(this.ChoiceBoxes);
+
                 this.OnPropertyChanged();
+                ActionTracker.TrackGridOrientationChange(this, orientationBefore, value, choiceBoxesBefore, choiceBoxesAfter);
             }
         }
 
@@ -168,6 +201,11 @@ namespace Aspose.OMR.Client.ViewModels
             get { return this.ChoiceBoxes.Count; }
             set
             {
+                if (value <= 0 || value > this.maxAllowedSectionsCount)
+                {
+                    return;
+                }
+
                 this.UpdateSectionsCount(value);
                 this.OnPropertyChanged();
             }
@@ -181,15 +219,31 @@ namespace Aspose.OMR.Client.ViewModels
             get { return this.optionsCount; }
             set
             {
+                if (value <= 0 || value > MaxOptionsCount)
+                {
+                    return;
+                }
+
                 this.optionsCount = value;
+
+                var bubblesBefore = new List<List<BubbleViewModel>>();
+                var bubblesAfter = new List<List<BubbleViewModel>>();
 
                 // update child choice boxes
                 for (int i = 0; i < this.ChoiceBoxes.Count; i++)
                 {
-                    this.ChoiceBoxes[i].BubblesCount = this.OptionsCount;
+                    bubblesBefore.Add(new List<BubbleViewModel>());
+                    bubblesBefore[i].AddRange(this.ChoiceBoxes[i].Bubbles);
+
+                    this.ChoiceBoxes[i].UpdateBubbleCount(this.OptionsCount, false);
+
+                    bubblesAfter.Add(new List<BubbleViewModel>());
+                    bubblesAfter[i].AddRange(this.ChoiceBoxes[i].Bubbles);
                 }
 
                 this.OnPropertyChanged();
+
+                ActionTracker.TrackChangeOptionsCount(this, bubblesBefore, bubblesAfter);
             }
         }
 
@@ -225,18 +279,54 @@ namespace Aspose.OMR.Client.ViewModels
         }
 
         /// <summary>
+        /// Add new bubbles to child choice boxes
+        /// </summary>
+        /// <param name="bubbles">List of bubbles for each child choice box</param>
+        public void UpdateChoiceBoxesBubbles(List<List<BubbleViewModel>> bubbles)
+        {
+            for (int i = 0; i < this.ChoiceBoxes.Count; i++)
+            {
+                this.ChoiceBoxes[i].Bubbles.Clear();
+                this.ChoiceBoxes[i].AddBubbles(bubbles[i]);
+            }
+
+            this.optionsCount = bubbles[0].Count;
+            this.OnPropertyChanged("OptionsCount");
+        }
+
+        /// <summary>
+        /// Add child choice boxes
+        /// </summary>
+        /// <param name="choiceBoxes">Items to add</param>
+        /// <param name="orientation">Target grid orientation</param>
+        public void AddChoiceBoxes(List<ChoiceBoxViewModel> choiceBoxes, Orientations orientation)
+        {
+            foreach (ChoiceBoxViewModel choiceBox in choiceBoxes)
+            {
+                this.ChoiceBoxes.Add(choiceBox);
+            }
+
+            if (this.orientation != orientation)
+            {
+                this.orientation = orientation;
+                this.OnPropertyChanged("Orientation");
+            }
+
+            this.OnPropertyChanged("SectionsCount");
+        }
+
+        /// <summary>
         /// Creates copy of current question
         /// </summary>
         /// <returns>Question copy</returns>
         public override BaseQuestionViewModel CreateCopy()
         {
-            GridViewModel elementCopy = new GridViewModel(this.Name, this.Top, this.Left, this.Width, this.Height);
-
+            GridViewModel elementCopy = new GridViewModel(this.Name, this.Top, this.Left, this.Width, this.Height, this.ParentTemplate, this.Orientation);
             elementCopy.SelectedMapping = this.SelectedMapping;
 
-            foreach (var choiceBox in this.ChoiceBoxes)
+            foreach (ChoiceBoxViewModel choiceBox in this.ChoiceBoxes)
             {
-                var choiceBoxCopy = choiceBox.CreateCopy(); 
+                BaseQuestionViewModel choiceBoxCopy = choiceBox.CreateCopy(); 
                 elementCopy.ChoiceBoxes.Add((ChoiceBoxViewModel) choiceBoxCopy);
             }
 
@@ -261,7 +351,7 @@ namespace Aspose.OMR.Client.ViewModels
             this.Top += minTop;
             this.Left += minLeft;
 
-            // update bubbles position
+            // update child questions position
             foreach (var bubbleViewModel in this.ChoiceBoxes)
             {
                 bubbleViewModel.Top -= minTop;
@@ -325,10 +415,12 @@ namespace Aspose.OMR.Client.ViewModels
             {
                 double leftPosition = BorderOffset + i * choiceBoxWidth + i * ItemsOffset;
                 Rect choiceBoxArea = new Rect(leftPosition, BorderOffset, choiceBoxWidth, choiceBoxHeight);
-                var choiceBox = new ChoiceBoxViewModel(string.Empty, choiceBoxArea);
+                var choiceBox = new ChoiceBoxViewModel(string.Empty, choiceBoxArea, null, this);
 
                 this.ChoiceBoxes.Add(choiceBox);
             }
+
+            this.optionsCount = this.ChoiceBoxes[0].BubblesCount;
         }
 
         /// <summary>
@@ -361,9 +453,11 @@ namespace Aspose.OMR.Client.ViewModels
                 double topPosition = BorderOffset + i * ItemsOffset + i * choiceBoxHeight;
                 Rect choiceBoxArea = new Rect(BorderOffset, topPosition, choiceBoxWidth, choiceBoxHeight);
 
-                var choiceBox = new ChoiceBoxViewModel(string.Empty, choiceBoxArea);
+                var choiceBox = new ChoiceBoxViewModel(string.Empty, choiceBoxArea, null, this);
                 this.ChoiceBoxes.Add(choiceBox);
             }
+
+            this.optionsCount = this.ChoiceBoxes[0].BubblesCount;
         }
 
         /// <summary>
@@ -393,13 +487,11 @@ namespace Aspose.OMR.Client.ViewModels
         /// <param name="newCount">New amount of sections</param>
         private void UpdateSectionsCount(int newCount)
         {
-            if (newCount > this.maxAllowedSectionsCount)
-            {
-                return;
-            }
-
             // update static count field so that freshly added questions has latest amount of bubbles
             latestQuestionsCount = newCount;
+
+            var choiceBoxesBefore = new List<ChoiceBoxViewModel>();
+            choiceBoxesBefore.AddRange(this.ChoiceBoxes);
 
             this.ChoiceBoxes.Clear();
             if (this.Orientation == Orientations.Horizontal)
@@ -410,6 +502,11 @@ namespace Aspose.OMR.Client.ViewModels
             {
                 this.FitChoiceBoxesVertical(newCount);
             }
+
+            var choiceBoxesAfter = new List<ChoiceBoxViewModel>();
+            choiceBoxesAfter.AddRange(this.ChoiceBoxes);
+
+            ActionTracker.TrackChangeSectionsCount(this, choiceBoxesBefore, choiceBoxesAfter);
         }
 
         /// <summary>

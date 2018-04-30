@@ -1,11 +1,11 @@
 ﻿/*
- * Copyright (c) 2017 Aspose Pty Ltd. All Rights Reserved.
+ * Copyright (c) 2018 Aspose Pty Ltd. All Rights Reserved.
  *
  * Licensed under the MIT (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://github.com/asposecloud/Aspose.OMR-Cloud/blob/master/LICENSE
+ *       https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/blob/master/LICENSE
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ namespace Aspose.OMR.Client.Controls
         /// <summary>
         /// Resize thumb for bubble
         /// </summary>
-        private ResizeThumb cornerDotsResizeThumb;
+        private Thumb cornerDotsResizeThumb;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BubbleAdorner"/> class.
@@ -116,7 +116,8 @@ namespace Aspose.OMR.Client.Controls
         /// </summary>
         private void BuildCornerResizeThumb()
         {
-            this.cornerDotsResizeThumb = new ResizeThumb();
+            this.cornerDotsResizeThumb = new Thumb();
+
             this.cornerDotsResizeThumb.Template = Application.Current.FindResource("CornerDotsResizeTemplate") as ControlTemplate;
             this.visualChildren.Add(this.cornerDotsResizeThumb);
         }

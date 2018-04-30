@@ -1,11 +1,11 @@
 ﻿/*
- * Copyright (c) 2017 Aspose Pty Ltd. All Rights Reserved.
+ * Copyright (c) 2018 Aspose Pty Ltd. All Rights Reserved.
  *
  * Licensed under the MIT (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://github.com/asposecloud/Aspose.OMR-Cloud/blob/master/LICENSE
+ *       https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/blob/master/LICENSE
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -83,12 +83,12 @@ namespace Aspose.OMR.Client
             {
                 if (modelElement is ChoiceBoxElement)
                 {
-                    var choiceBoxViewModel = CreateChoiceBoxViewModel((ChoiceBoxElement)modelElement);
+                    ChoiceBoxViewModel choiceBoxViewModel = CreateChoiceBoxViewModel((ChoiceBoxElement)modelElement, templateViewModel);
                     elements.Add(choiceBoxViewModel);
                 }
                 else if (modelElement is GridElement)
                 {
-                    var gridViewModel = CreateGridViewModel((GridElement)modelElement);
+                    GridViewModel gridViewModel = CreateGridViewModel((GridElement)modelElement, templateViewModel);
                     elements.Add(gridViewModel);
                 }
             }
@@ -210,15 +210,18 @@ namespace Aspose.OMR.Client
         /// Creates choice box view model from choice box model
         /// </summary>
         /// <param name="choiceBox">Choice box model data</param>
+        /// <param name="templateViewModel">Parent template</param>
         /// <returns>Created choice box view model</returns>
-        private static ChoiceBoxViewModel CreateChoiceBoxViewModel(ChoiceBoxElement choiceBox)
+        private static ChoiceBoxViewModel CreateChoiceBoxViewModel(ChoiceBoxElement choiceBox, TemplateViewModel templateViewModel)
         {
             ChoiceBoxViewModel choiceBoxViewModel = new ChoiceBoxViewModel(
                 choiceBox.Name,
                 choiceBox.Top,
                 choiceBox.Left,
                 choiceBox.Width,
-                choiceBox.Height);
+                choiceBox.Height,
+                templateViewModel,
+                null);
 
             foreach (OmrBubble modelBubble in choiceBox.Bubbles)
             {
@@ -226,7 +229,8 @@ namespace Aspose.OMR.Client
                     choiceBox.BubbleWidth,
                     choiceBox.BubbleHeight,
                     modelBubble.Top - choiceBox.Top,
-                    modelBubble.Left - choiceBox.Left);
+                    modelBubble.Left - choiceBox.Left,
+                    choiceBoxViewModel);
 
                 bubbleViewModel.Name = modelBubble.Value;
                 bubbleViewModel.IsValid = modelBubble.IsValid;
@@ -241,17 +245,19 @@ namespace Aspose.OMR.Client
         /// Creates grid view model from grid model
         /// </summary>
         /// <param name="gridElement">Grid model data</param>
+        /// <param name="templateViewModel">Parent template</param>
         /// <returns>Created grid view model</returns>
-        private static GridViewModel CreateGridViewModel(GridElement gridElement)
+        private static GridViewModel CreateGridViewModel(GridElement gridElement, TemplateViewModel templateViewModel)
         {
             GridViewModel gridViewModel = new GridViewModel(
                 gridElement.Name,
                 gridElement.Top,
                 gridElement.Left,
                 gridElement.Width,
-                gridElement.Height);
+                gridElement.Height,
+                templateViewModel,
+                gridElement.Orientation);
 
-            gridViewModel.Orientation = gridElement.Orientation;
             gridViewModel.ChoiceBoxes.Clear();
 
             foreach (var omrElement in gridElement.ChoiceBoxes)
@@ -263,7 +269,9 @@ namespace Aspose.OMR.Client
                     choiceBox.Top - gridElement.Top,
                     choiceBox.Left - gridElement.Left,
                     choiceBox.Width,
-                    choiceBox.Height);
+                    choiceBox.Height,
+                    null,
+                    gridViewModel);
 
                 foreach (OmrBubble modelBubble in choiceBox.Bubbles)
                 {
@@ -271,7 +279,8 @@ namespace Aspose.OMR.Client
                         choiceBox.BubbleWidth,
                         choiceBox.BubbleHeight,
                         modelBubble.Top - choiceBox.Top,
-                        modelBubble.Left - choiceBox.Left);
+                        modelBubble.Left - choiceBox.Left,
+                        choiceBoxViewModel);
 
                     bubbleViewModel.Name = modelBubble.Value;
                     bubbleViewModel.IsValid = modelBubble.IsValid;

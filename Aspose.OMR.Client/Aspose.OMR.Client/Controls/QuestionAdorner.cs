@@ -1,11 +1,11 @@
 ﻿/*
- * Copyright (c) 2017 Aspose Pty Ltd. All Rights Reserved.
+ * Copyright (c) 2018 Aspose Pty Ltd. All Rights Reserved.
  *
  * Licensed under the MIT (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://github.com/asposecloud/Aspose.OMR-Cloud/blob/master/LICENSE
+ *       https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/blob/master/LICENSE
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 namespace Aspose.OMR.Client.Controls
 {
+    using System;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -53,7 +54,7 @@ namespace Aspose.OMR.Client.Controls
         /// <summary>
         /// Resize thumbs used to resize question
         /// </summary>
-        private ResizeThumb fullDotsResizeThumb;
+        private Thumb fullDotsResizeThumb;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuestionAdorner"/> class.
@@ -110,9 +111,11 @@ namespace Aspose.OMR.Client.Controls
         protected override Size ArrangeOverride(Size finalSize)
         {
             Size scaledSize = new Size(finalSize.Width * this.scale, finalSize.Height * this.scale);
-            double offset = 20 / this.scale;
+            double offset = 25 / this.scale;
 
-            this.textMoveThumb.Arrange(new Rect(0, -offset, 100, 20));
+            double adornerDesiredWidth = Math.Max(20, scaledSize.Width * 0.5);
+
+            this.textMoveThumb.Arrange(new Rect(0, -offset, adornerDesiredWidth, 20));
             this.outlineMoveThumb.Arrange(new Rect(scaledSize));
             this.fullDotsResizeThumb.Arrange(new Rect(scaledSize));
 
@@ -144,7 +147,7 @@ namespace Aspose.OMR.Client.Controls
         /// </summary>
         private void BuildResizeThumbs()
         {
-            this.fullDotsResizeThumb = new ResizeThumb();
+            this.fullDotsResizeThumb = new Thumb();
             this.fullDotsResizeThumb.Template = Application.Current.FindResource("FullDotsResizeTemplate") as ControlTemplate;
             this.visualChildren.Add(this.fullDotsResizeThumb);
         }

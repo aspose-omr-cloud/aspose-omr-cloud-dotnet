@@ -1,11 +1,11 @@
 ﻿/*
- * Copyright (c) 2017 Aspose Pty Ltd. All Rights Reserved.
+ * Copyright (c) 2018 Aspose Pty Ltd. All Rights Reserved.
  *
  * Licensed under the MIT (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://github.com/asposecloud/Aspose.OMR-Cloud/blob/master/LICENSE
+ *       https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/blob/master/LICENSE
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -65,7 +65,12 @@ namespace Aspose.OMR.Client.ViewModels
         private double left;
 
         /// <summary>
-        /// Gets or sets the collection that stores all answer mappings 'keys'
+        /// Gets or sets the view model of the template containing this question
+        /// </summary>
+        public TemplateViewModel ParentTemplate { get; set; }
+
+        /// <summary>
+        /// Gets the collection that stores all answer mappings 'keys'
         /// This is items source in mappings drop-down menu
         /// </summary>
         public ObservableCollection<string> AnswersMapping
@@ -79,7 +84,7 @@ namespace Aspose.OMR.Client.ViewModels
         public abstract bool IsSelected { get; set; }
 
         /// <summary>
-        /// Gets value indicating whether question is valid (i.e. contains valid child elements)
+        /// Gets a value indicating whether question is valid (i.e. contains valid child elements)
         /// </summary>
         public abstract bool IsValid { get; }
 

@@ -61,19 +61,19 @@
                 Command="{Binding AddCustomMappingCommand}" Style="{StaticResource ImageButton}"></Button>
         
         <TextBlock Grid.Row="4" Grid.Column="0">Width</TextBlock>
-        <controls:NumericTextBox Grid.Row="4" Grid.Column="1" Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}"
+        <controls:NumericTextBox Grid.Row="4" Grid.Column="1" Text="{Binding Width, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}"
                                  AcceptsFloat="True" IsReadOnly="True" Focusable="False"/>
 
         <TextBlock Grid.Row="5" Grid.Column="0">Height</TextBlock>
-        <controls:NumericTextBox Grid.Row="5" Grid.Column="1" Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}"
+        <controls:NumericTextBox Grid.Row="5" Grid.Column="1" Text="{Binding Height, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}"
                                  AcceptsFloat="False" IsReadOnly="True" Focusable="False"/>
 
         <TextBlock Grid.Row="6" Grid.Column="0">Left</TextBlock>
-        <controls:NumericTextBox Grid.Row="6" Grid.Column="1" Text="{Binding Left, UpdateSourceTrigger=PropertyChanged}"
+        <controls:NumericTextBox Grid.Row="6" Grid.Column="1" Text="{Binding Left, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}"
                                  AcceptsFloat="False" IsReadOnly="True" Focusable="False"/>
 
         <TextBlock Grid.Row="7" Grid.Column="0">Top</TextBlock>
-        <controls:NumericTextBox Grid.Row="7" Grid.Column="1" Text="{Binding Top, UpdateSourceTrigger=PropertyChanged}" 
+        <controls:NumericTextBox Grid.Row="7" Grid.Column="1" Text="{Binding Top, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}"
                                  AcceptsFloat="False" Focusable="False"/>
     </Grid>
 

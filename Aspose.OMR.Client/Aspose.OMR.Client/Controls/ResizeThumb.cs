@@ -1,11 +1,11 @@
 ﻿/*
- * Copyright (c) 2017 Aspose Pty Ltd. All Rights Reserved.
+ * Copyright (c) 2018 Aspose Pty Ltd. All Rights Reserved.
  *
  * Licensed under the MIT (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://github.com/asposecloud/Aspose.OMR-Cloud/blob/master/LICENSE
+ *       https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/blob/master/LICENSE
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,8 @@ namespace Aspose.OMR.Client.Controls
     using System.Windows.Controls.Primitives;
     using System.Windows.Documents;
     using System.Windows.Media;
+    using UndoRedo;
+    using ViewModels;
 
     /// <summary>
     /// Thumb used for resizing controls
@@ -34,6 +36,16 @@ namespace Aspose.OMR.Client.Controls
         /// </summary>
         private static readonly int BorderThreshold = 0;
 
+        private double startTop;
+        private double startLeft;
+        private double startWidth;
+        private double startHeight;
+
+        private double bubbleStartWidth;
+        private double bubbleStartHeight;
+        private double bubbleStartTop;
+        private double bubbleStartLeft;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ResizeThumb"/> class.
         /// </summary>
@@ -41,6 +53,84 @@ namespace Aspose.OMR.Client.Controls
         {
             // subscribe to drag event
             this.DragDelta += this.ResizeDragDelta;
+
+            // handle drag start and end events to calculate delta and track action for undo/redo support
+            this.DragStarted += this.ResizeThumbDragStarted;
+            this.DragCompleted += this.ResizeThumbDragCompleted;
+        }
+
+        /// <summary>
+        /// Thumb drag started event handler
+        /// </summary>
+        private void ResizeThumbDragStarted(object sender, DragStartedEventArgs e)
+        {
+            if (this.DataContext is BaseQuestionViewModel)
+            {
+                // resize question
+                BaseQuestionViewModel questionViewModel = (BaseQuestionViewModel)this.DataContext;
+
+                // remember starting top and left position for measuring delta when drag is completed
+                this.startWidth = questionViewModel.Width;
+                this.startHeight = questionViewModel.Height;
+                this.startTop = questionViewModel.Top;
+                this.startLeft = questionViewModel.Left;
+            }
+            else if (this.DataContext is BubbleViewModel)
+            {
+                // resize bubble
+                BubbleViewModel bubbleViewModel = (BubbleViewModel)this.DataContext;
+                BubbleViewModel bubble = bubbleViewModel.ParentQuestion.Bubbles[0];
+
+                this.bubbleStartWidth = bubble.Width;
+                this.bubbleStartHeight = bubble.Height;
+                this.bubbleStartTop = bubble.Top;
+                this.bubbleStartLeft = bubble.Left;
+            }
+        }
+
+        /// <summary>
+        /// Thumb drag completed event handler
+        /// </summary>
+        private void ResizeThumbDragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            if (this.DataContext is BaseQuestionViewModel)
+            {
+                // resize question
+                BaseQuestionViewModel questionViewModel = (BaseQuestionViewModel)this.DataContext;
+
+                double deltaTop = this.startTop - questionViewModel.Top;
+                double deltaLeft = this.startLeft - questionViewModel.Left;
+                double widthKoef = this.startWidth / questionViewModel.Width;
+                double heightKoef = this.startHeight / questionViewModel.Height;
+
+                if (questionViewModel.ParentTemplate != null)
+                {
+                    List<BaseQuestionViewModel> selectedItems = questionViewModel.ParentTemplate.SelectedElements.ToList();
+                    ActionTracker.TrackChangeQuestionsPosition(selectedItems, deltaTop, deltaLeft, widthKoef, heightKoef);
+                }
+                else if (questionViewModel is ChoiceBoxViewModel)
+                {
+                    var choiceBoxViewModel = (ChoiceBoxViewModel) questionViewModel;
+                    List<BaseQuestionViewModel> selectedItems = choiceBoxViewModel.ParentGrid.ChoiceBoxes
+                        .Cast<BaseQuestionViewModel>()
+                        .ToList();
+                    ActionTracker.TrackChangeQuestionsPosition(selectedItems, deltaTop, deltaLeft, widthKoef, heightKoef);
+                }
+            }
+            else if (this.DataContext is BubbleViewModel)
+            {
+                // resize bubble
+                BubbleViewModel bubbleViewModel = (BubbleViewModel)this.DataContext;
+                List<BubbleViewModel> bubbles = bubbleViewModel.ParentQuestion.Bubbles.ToList();
+
+                double deltaTop = this.bubbleStartTop - bubbles[0].Top;
+                double deltaLeft = this.bubbleStartLeft - bubbles[0].Left;
+
+                double widthKoef = this.bubbleStartWidth / bubbles[0].Width;
+                double heightKoef = this.bubbleStartHeight / bubbles[0].Height;
+
+                ActionTracker.TrackChangeBubble(bubbles, deltaTop, deltaLeft, widthKoef, heightKoef);
+            }
         }
 
         /// <summary>
@@ -51,9 +141,9 @@ namespace Aspose.OMR.Client.Controls
         private void ResizeDragDelta(object sender, DragDeltaEventArgs e)
         {
             // get to resized element
-            Grid thumbsGrid = (Grid) VisualTreeHelper.GetParent(this);
-            ResizeThumb parentThumb = (ResizeThumb) VisualTreeHelper.GetParent(thumbsGrid);
-            Adorner adorner = (Adorner) VisualTreeHelper.GetParent(parentThumb);
+            Grid thumbsGrid = (Grid)VisualTreeHelper.GetParent(this);
+            Thumb parentThumb = (Thumb)VisualTreeHelper.GetParent(thumbsGrid);
+            Adorner adorner = (Adorner)VisualTreeHelper.GetParent(parentThumb);
 
             // presenter that holds dragged item
             ContentPresenter presenter = (ContentPresenter) VisualTreeHelper.GetParent(adorner.AdornedElement);

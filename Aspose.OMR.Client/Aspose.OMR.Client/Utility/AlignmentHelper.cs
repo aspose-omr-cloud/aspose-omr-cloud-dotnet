@@ -1,11 +1,11 @@
 ﻿/*
- * Copyright (c) 2017 Aspose Pty Ltd. All Rights Reserved.
+ * Copyright (c) 2018 Aspose Pty Ltd. All Rights Reserved.
  *
  * Licensed under the MIT (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://github.com/asposecloud/Aspose.OMR-Cloud/blob/master/LICENSE
+ *       https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/blob/master/LICENSE
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,14 @@
  */
 namespace Aspose.OMR.Client.Utility
 {
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
+    using UndoRedo;
     using ViewModels;
 
     /// <summary>
-    /// Performs alignment operations
+    /// Performs alignment operations over questions
     /// </summary>
     public static class AlignmentHelper
     {
@@ -30,7 +33,6 @@ namespace Aspose.OMR.Client.Utility
         public static void AlignRight(ObservableCollection<BaseQuestionViewModel> items)
         {
             double maxX = items[0].Left + items[0].Width;
-
             foreach (BaseQuestionViewModel element in items)
             {
                 if (element.Left + element.Width > maxX)
@@ -39,10 +41,14 @@ namespace Aspose.OMR.Client.Utility
                 }
             }
 
-            foreach (BaseQuestionViewModel element in items)
+            List<double> changes = new List<double>(items.Count);
+            for (int i = 0; i < items.Count; i++)
             {
-                element.Left = maxX - element.Width;
+                changes.Add(items[i].Left - (maxX - items[i].Width));
+                items[i].Left = maxX - items[i].Width;
             }
+
+            ActionTracker.TrackAlign(items.ToList(), changes, null);
         }
 
         /// <summary>
@@ -52,7 +58,6 @@ namespace Aspose.OMR.Client.Utility
         public static void AlignLeft(ObservableCollection<BaseQuestionViewModel> items)
         {
             double minX = items[0].Left;
-
             foreach (BaseQuestionViewModel element in items)
             {
                 if (minX > element.Left)
@@ -61,10 +66,14 @@ namespace Aspose.OMR.Client.Utility
                 }
             }
 
-            foreach (BaseQuestionViewModel element in items)
+            List<double> changes = new List<double>(items.Count);
+            for (int i = 0; i < items.Count; i++)
             {
-                element.Left = minX;
+                changes.Add(items[i].Left - minX);
+                items[i].Left = minX;
             }
+
+            ActionTracker.TrackAlign(items.ToList(), changes, null);
         }
 
         /// <summary>
@@ -74,7 +83,6 @@ namespace Aspose.OMR.Client.Utility
         public static void AlignTop(ObservableCollection<BaseQuestionViewModel> items)
         {
             double minY = items[0].Top;
-
             foreach (BaseQuestionViewModel element in items)
             {
                 if (minY > element.Top)
@@ -83,10 +91,14 @@ namespace Aspose.OMR.Client.Utility
                 }
             }
 
-            foreach (BaseQuestionViewModel element in items)
+            List<double> changes = new List<double>(items.Count);
+            for (int i = 0; i < items.Count; i++)
             {
-                element.Top = minY;
+                changes.Add(items[i].Top - minY);
+                items[i].Top = minY;
             }
+
+            ActionTracker.TrackAlign(items.ToList(), null, changes);
         }
 
         /// <summary>
@@ -96,7 +108,6 @@ namespace Aspose.OMR.Client.Utility
         public static void AlignBottom(ObservableCollection<BaseQuestionViewModel> items)
         {
             double maxY = items[0].Top + items[0].Height;
-
             foreach (BaseQuestionViewModel element in items)
             {
                 if (element.Top + element.Height > maxY)
@@ -105,10 +116,14 @@ namespace Aspose.OMR.Client.Utility
                 }
             }
 
-            foreach (BaseQuestionViewModel element in items)
+            List<double> changes = new List<double>(items.Count);
+            for (int i = 0; i < items.Count; i++)
             {
-                element.Top = maxY - element.Height;
+                changes.Add(items[i].Top - (maxY - items[i].Height));
+                items[i].Top = maxY - items[i].Height;
             }
+
+            ActionTracker.TrackAlign(items.ToList(), null, changes);
         }
     }
 }

@@ -81,6 +81,15 @@
     <Compile Include="Converters\BoolToWrappingConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Converters\GridLengthConverter.cs" />
+    <Compile Include="UndoRedo\ApplyFormattingAction.cs" />
+    <Compile Include="UndoRedo\ChangeBubblePositionAction.cs" />
+    <Compile Include="UndoRedo\ChangeBubblesCountAction.cs" />
+    <Compile Include="UndoRedo\ChangeGridOptionsCountAction.cs" />
+    <Compile Include="UndoRedo\ChangeGridOrientationAction.cs" />
+    <Compile Include="UndoRedo\ChangeGridSectionsCountAction.cs" />
+    <Compile Include="UndoRedo\ChangeQuestionPositionAction.cs" />
+    <Compile Include="UndoRedo\TrackAlignAction.cs" />
+    <Compile Include="UndoRedo\TrackShrinkAction.cs" />
     <Compile Include="Utility\AnswersMappingHelper.cs" />
     <Compile Include="Utility\BusyIndicatorManager.cs" />
     <Compile Include="Controls\BaseOmrElement.cs" />
@@ -91,7 +100,9 @@
     <Compile Include="Controls\NumericTextBox.cs" />
     <Compile Include="Controls\OmrBubble.cs" />
     <Compile Include="Controls\OmrChoiceBox.cs" />
-    <Compile Include="Controls\QuestionAdorner.cs" />
+    <Compile Include="Controls\QuestionAdorner.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Controls\ResizeThumb.cs" />
     <Compile Include="Controls\RubberbandAdorner.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
@@ -323,6 +334,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Icons\Text.png" />
     <Resource Include="Icons\DeleteCrossIcon.ico" />
     <Resource Include="Icons\Generate.png" />
     <Resource Include="Icons\Info32.png" />

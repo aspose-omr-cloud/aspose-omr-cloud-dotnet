@@ -36,7 +36,40 @@
                 <Grid.LayoutTransform>
                     <ScaleTransform CenterX="0" CenterY="0" ScaleX="{Binding PageScale}" ScaleY="{Binding PageScale}"/>
                 </Grid.LayoutTransform>
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="_Copy" Command="{Binding CopyElementsCommand}" ToolTipService.ShowOnDisabled="True" InputGestureText="Ctrl+C" ToolTip="Copy Selected Elements">
+                            <MenuItem.Icon>
+                                <Image Source="/Icons/Copy.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
 
+                        <MenuItem Header="_Paste" Command="{Binding PasteElementsCommand}" ToolTipService.ShowOnDisabled="True" InputGestureText="Ctrl+V" ToolTip="Paste Copied Elements">
+                            <MenuItem.Icon>
+                                <Image Source="/Icons/Paste.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="_Delete" Command="{Binding RemoveElementCommand}" ToolTipService.ShowOnDisabled="True" InputGestureText="Del" ToolTip="Remove Selected Elements">
+                            <MenuItem.Icon>
+                                <Image Source="/Icons/Delete.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="_Rename Group" Command="{Binding RenameGroupCommand}" 
+                                  ToolTipService.ShowOnDisabled="True" ToolTip="Quickly Rename Group Of Elements">
+                            <MenuItem.Icon>
+                                <Image Source="/Icons/Text.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="_Shrink" Command="{Binding ShrinkElementCommand}" 
+                                  ToolTipService.ShowOnDisabled="True" ToolTip="Shrink Element's Area To Bounding Box Of Its Bubbles">
+                            <MenuItem.Icon>
+                                <Image Source="/Icons/Shrink.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+                    
                 <Image SnapsToDevicePixels="True"
                        Source="{Binding TemplateImage, Mode=OneWay}"
                        Width="{Binding Path=PageWidth, Mode=OneWay}"
@@ -68,9 +101,9 @@
                             
                             <!--ChoiceBox data template defines how ChoiceBoxViewModel looks-->
                             <DataTemplate DataType="{x:Type viewModels:ChoiceBoxViewModel}">
-                                <controls:OmrChoiceBox Style="{StaticResource ChoiceBoxStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}">
+                                <controls:OmrChoiceBox Style="{StaticResource ChoiceBoxStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False">
                                     <Border BorderThickness="1.5" BorderBrush="{StaticResource MainItemsBrush}">
-                                        <ItemsControl ItemsSource="{Binding Bubbles, Mode=OneWay}">
+                                        <ItemsControl ItemsSource="{Binding Bubbles, Mode=OneWay}" IsTabStop="False">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <controls:CustomCanvas ClipToBounds="True"/>
@@ -88,7 +121,7 @@
                                             </ItemsControl.ItemContainerStyle>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <controls:OmrBubble Style="{StaticResource BubbleStyle}" IsSelected="{Binding IsSelected}"/>
+                                                    <controls:OmrBubble Style="{StaticResource BubbleStyle}" IsSelected="{Binding IsSelected}" IsTabStop="False"/>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
@@ -98,9 +131,9 @@
 
                             <!--Grid data template defines how GridViewModel looks-->
                             <DataTemplate DataType="{x:Type viewModels:GridViewModel}">
-                                <controls:OmrGridElement Style="{StaticResource GridStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}">
+                                <controls:OmrGridElement Style="{StaticResource GridStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False">
                                     <Border BorderThickness="1.5" BorderBrush="{StaticResource MainItemsBrush}">
-                                        <ItemsControl ItemsSource="{Binding ChoiceBoxes, Mode=OneWay}">
+                                        <ItemsControl ItemsSource="{Binding ChoiceBoxes, Mode=OneWay}" IsTabStop="False">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <controls:CustomCanvas ClipToBounds="True"/>

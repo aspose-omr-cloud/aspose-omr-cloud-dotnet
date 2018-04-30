@@ -1,11 +1,11 @@
 ﻿/*
- * Copyright (c) 2017 Aspose Pty Ltd. All Rights Reserved.
+ * Copyright (c) 2018 Aspose Pty Ltd. All Rights Reserved.
  *
  * Licensed under the MIT (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://github.com/asposecloud/Aspose.OMR-Cloud/blob/master/LICENSE
+ *       https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/blob/master/LICENSE
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -697,12 +697,12 @@ namespace Aspose.OMR.Client.ViewModels
 
             if (this.IsAddingChoiceBox)
             {
-                newQuestion = new ChoiceBoxViewModel(nextName, area);
+                newQuestion = new ChoiceBoxViewModel(nextName, area, this, null);
                 this.IsAddingChoiceBox = false;
             }
             else
             {
-                newQuestion = new GridViewModel(nextName, area);
+                newQuestion = new GridViewModel(nextName, area, this);
                 this.IsAddingGrid = false;
             }
 
@@ -949,10 +949,17 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         private void OnShrinkQuestionCommand()
         {
+            List<BaseQuestionViewModel> copiesBefore = new List<BaseQuestionViewModel>();
+            List<BaseQuestionViewModel> copiesAfter = new List<BaseQuestionViewModel>();
+
             foreach (BaseQuestionViewModel element in this.SelectedElements)
             {
+                copiesBefore.Add(element.CreateCopy());
                 element.Shrink();
+                copiesAfter.Add(element.CreateCopy());
             }
+
+            ActionTracker.TrackShrink(this.SelectedElements.ToList(), copiesBefore, copiesAfter);
         }
 
         /// <summary>
@@ -984,22 +991,33 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         private void OnApplyFormatting()
         {
+            List<BaseQuestionViewModel> copiesBefore = new List<BaseQuestionViewModel>();
+
             BaseQuestionViewModel ethalon = this.SelectedElements[0];
+            var itemsToChange = new List<BaseQuestionViewModel>();
 
             if (ethalon is ChoiceBoxViewModel)
             {
-                foreach (var element in this.PageQuestions.Where(x => x is ChoiceBoxViewModel && x != ethalon))
+                itemsToChange = this.PageQuestions.Where(x => x is ChoiceBoxViewModel && x != ethalon).ToList();
+
+                for (int i = 0; i < itemsToChange.Count; i++)
                 {
-                    ((ChoiceBoxViewModel) element).ApplyStyle((ChoiceBoxViewModel) ethalon);
+                    copiesBefore.Add(itemsToChange[i].CreateCopy());
+                    ((ChoiceBoxViewModel)itemsToChange[i]).ApplyStyle((ChoiceBoxViewModel)ethalon);
                 }
             }
             else if (ethalon is GridViewModel)
             {
-                foreach (var element in this.PageQuestions.Where(x => x is GridViewModel && x != ethalon))
+                itemsToChange = this.PageQuestions.Where(x => x is GridViewModel && x != ethalon).ToList();
+
+                for (int i = 0; i < itemsToChange.Count; i++)
                 {
-                    ((GridViewModel)element).ApplyStyle((GridViewModel)ethalon);
+                    copiesBefore.Add(itemsToChange[i].CreateCopy());
+                    ((GridViewModel)itemsToChange[i]).ApplyStyle((GridViewModel)ethalon);
                 }
             }
+
+            //ActionTracker.TrackApplyFormatting(itemsToChange, copiesBefore, ethalon);
         }
 
         /// <summary>
@@ -1086,6 +1104,9 @@ namespace Aspose.OMR.Client.ViewModels
                 this.WasUploaded = true;
 
                 this.CorrectionComplete = true;
+
+                // clean commands after correction complete
+                ActionTracker.ClearCommands();
                 this.Warnings.Add("Template Correction complete!");
             }
             catch (Exception e)

@@ -1,11 +1,11 @@
 ﻿/*
- * Copyright (c) 2017 Aspose Pty Ltd. All Rights Reserved.
+ * Copyright (c) 2018 Aspose Pty Ltd. All Rights Reserved.
  *
  * Licensed under the MIT (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://github.com/asposecloud/Aspose.OMR-Cloud/blob/master/LICENSE
+ *       https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/blob/master/LICENSE
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -129,8 +129,6 @@ namespace Aspose.OMR.Client.ViewModels
         public RelayCommand ZoomOriginalCommand { get; set; }
 
         public RelayCommand ExitCommand { get; set; }
-
-        public RelayCommand CheckBeforeCloseCommand { get; set; }
 
         public RelayCommand ShowCredentialsSettingsCommand { get; set; }
 
@@ -328,7 +326,6 @@ namespace Aspose.OMR.Client.ViewModels
             this.ShowCredentialsSettingsCommand = new RelayCommand(x => new CredentialsViewModel());
             this.ShowAboutCommand = new RelayCommand(x => new AboutView().ShowDialog());
 
-            this.CheckBeforeCloseCommand = new RelayCommand(x => this.CleanUpOnClosing());
             this.ExitCommand = new RelayCommand(x => this.Exit());
         }
 
@@ -622,15 +619,24 @@ namespace Aspose.OMR.Client.ViewModels
         /// <summary>
         /// Run all needed logic on app shutdown
         /// </summary>
-        private void CleanUpOnClosing()
+        /// <returns>True if all tabs closed and ready for shutdown, false is process was cancelled</returns>
+        public bool CleanUpOnClosing()
         {
             RecentMenuManager.UpdateRecentFiles(this.RecentFiles.ToList());
 
             // Manually close all tabs on app shut down to provoce asking for save
             while (this.SelectedTab != null)
             {
-                this.OnCloseTab();
+                bool res = this.OnCloseTab();
+
+                // in case closing was cancelled, break
+                if (!res)
+                {
+                    return false;
+                }
             }
+
+            return true;
         }
 
         /// <summary>
@@ -827,6 +833,11 @@ namespace Aspose.OMR.Client.ViewModels
                 }
             }
 
+            if (this.SelectedTab is TemplateViewModel)
+            {
+                ActionTracker.ClearCommands();
+            }
+
             this.TabViewModels.Remove(this.SelectedTab);
             if (this.TabViewModels.Count > 0)
             {
@@ -837,7 +848,6 @@ namespace Aspose.OMR.Client.ViewModels
                 this.SelectedTab = null;
             }
 
-            ActionTracker.ClearCommands();
             return true;
         }
 

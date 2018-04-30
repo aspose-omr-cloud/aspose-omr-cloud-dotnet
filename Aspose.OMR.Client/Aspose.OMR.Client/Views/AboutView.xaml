@@ -48,7 +48,7 @@
 
         <TextBlock Grid.Row="4" Grid.Column="1" Margin="5"> 
             <Hyperlink 
-                NavigateUri="https://github.com/asposecloud/Aspose.OMR-Cloud"
+                NavigateUri="https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet"
                 RequestNavigate="OnRequestNavigate"
             >OMR GitHub Page</Hyperlink>
         </TextBlock>
