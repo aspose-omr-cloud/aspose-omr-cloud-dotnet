@@ -22,8 +22,7 @@ The repository contains sample applications that demonstrate how to perform comm
 Directory | Description
 --------- | -----------
 [Aspose.OMR.Client](Aspose.OMR.Client)  | An open source .NET application with GUI that helps you work with OMR templates and perform OMR operations.
-[Aspose.OMR.ConsoleClient](Aspose.OMR.ConsoleClient)  | A .NET 2.0 console application that demonstrates main Aspose.OMR for Cloud functionality.
-[Aspose.OMR-Cloud.SDK](SDK)  |Aspose.OMR Cloud SDK provides functionality for using Aspose.OMR for Cloud API to recognize optical marks from sheet images in the cloud.
+[Aspose.OMR-Cloud.SDK](SDK)  |Aspose.OMR Cloud SDK provides functionality for using Aspose.OMR for Cloud API to recognize optical marks from sheet images in the cloud. It also contains demonstration console project.
 [TestData](TestData) | Sample images and templates that demonstrate how OMR works on real data.
 
 
@@ -51,7 +50,7 @@ It is quite easy to use OMR in your projects. All you need to do is:
 3. Start using [OMR functions](https://docs.aspose.cloud/display/omrcloud/API+Specifications) and get recognition results.
 
 
-Check [Console Client](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/tree/master/Aspose.OMR.ConsoleClient) solution for a simple demonstration of how OMR functions can be called from your code.
+Check [Aspose.OMR.Demo](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/tree/master/SDK/Aspose.OMR.Demo) solution for a simple demonstration of how OMR functions can be called from your code.
 
 ## How does it work?
 
@@ -109,10 +108,10 @@ Simply make mobile snapshots or scan filled forms, upload them into OMR.Client o
 In the upcoming releases, we are set to implement a number of new features:
 
  - [X] reduce your expenses by preprocessing and compressing your images;
+ - [X] simplify OMR form preparation by introducing an easy markup language. For example, to get the particular survey form ready you only need to provide questions and answers;
  - [ ] present standalone script for batch processing in Python.
  - [ ] support diverse interviewee’s marks (ticks, crosses, corrections, etc) on various forms with the use of neural networks;
- - [ ] simplify OMR form preparation by introducing an easy markup language. For example, to get the particular survey form ready you only need to provide questions and answers;
- - [ ] enhance the client with plugins to provide additional functionality;
+ 
 
 
 
