@@ -1,1 +1,0 @@
-Console client demonstrating OMR API functions.

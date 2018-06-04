@@ -1,0 +1,3 @@
+[submodule "aspose-omr-cloud-demo-data"]
+	path = aspose-omr-cloud-demo-data
+	url = https://github.com/aspose-omr-cloud/aspose-omr-cloud-demo-data.git

@@ -20,10 +20,12 @@ namespace Aspose.OMR.Client
     using System.IO;
     using System.Linq;
     using System.Text;
-    using Com.Aspose.Storage.Api;
-    using Com.Aspose.Storage.Model;
-    using Cloud.SDK.Api;
-    using Cloud.SDK.Model;
+    using Storage.Cloud.Sdk.Api;
+    using Storage.Cloud.Sdk.Model;
+    using Storage.Cloud.Sdk;
+    using Storage.Cloud.Sdk.Model.Requests;
+    using Com.Aspose.Omr.Api;
+    using Com.Aspose.Omr.Model;
     using TemplateModel;
     using Utility;
     using ViewModels;
@@ -159,7 +161,7 @@ namespace Aspose.OMR.Client
 
             FinalizationData data = new FinalizationData();
             data.Answers = Encoding.UTF8.GetString(responseResult.ResponseFiles[0].Data);
-            data.Warnings = responseResult.Info.Details.TaskMessages;
+            data.Warnings = responseResult.Info.Details.TaskMessages.ToArray();
             return data;
         }
 
@@ -222,10 +224,19 @@ namespace Aspose.OMR.Client
 
                 try
                 {
-                    StorageApi storageApi = new StorageApi(AppKey, AppSid, Basepath);
-                    storageApi.PutCreate(fileName, "", "", fileData);
+                    string baseHost = new Uri(Basepath).GetComponents(UriComponents.SchemeAndServer, UriFormat.SafeUnescaped).ToString();
+                    Configuration storageConfiguration = new Configuration();
+                    storageConfiguration.AppKey = AppKey;
+                    storageConfiguration.AppSid = AppSid;
+                    storageConfiguration.ApiBaseUrl = baseHost;
+                    StorageApi storageApi = new StorageApi(storageConfiguration);
+
+                    using (Stream stream = new MemoryStream(fileData))
+                    {
+                        storageApi.PutCreate(new PutCreateRequest(fileName, stream));
+                    }
                 }
-                catch (Com.Aspose.Storage.ApiException e)
+                catch (ApiException e)
                 {
                     if (e.ErrorCode == 401)
                     {
@@ -273,16 +284,21 @@ namespace Aspose.OMR.Client
         /// <param name="files">List of file names to remove</param>
         public static void StorageCleanUp(List<string> files)
         {
-            StorageApi storageApi = new StorageApi(AppKey, AppSid, Basepath);
+            string baseHost = new Uri(Basepath).GetComponents(UriComponents.SchemeAndServer, UriFormat.SafeUnescaped).ToString();
+            Configuration storageConfiguration = new Configuration();
+            storageConfiguration.AppKey = AppKey;
+            storageConfiguration.AppSid = AppSid;
+            storageConfiguration.ApiBaseUrl = baseHost;
+            StorageApi storageApi = new StorageApi(storageConfiguration);
 
             foreach (string file in files)
             {
                 BusyIndicatorManager.UpdateText("Storage clean up...\n Deleting file: " + file);
 
-                FileExistResponse existsResponse = storageApi.GetIsExist(file, "", "");
-                if (existsResponse.FileExist.IsExist)
+                FileExistResponse existsResponse = storageApi.GetIsExist(new GetIsExistRequest(file));
+                if (existsResponse.FileExist.IsExist == true)
                 {
-                    RemoveFileResponse deleteResponse = storageApi.DeleteFile(file, "", "");
+                    RemoveFileResponse deleteResponse = storageApi.DeleteFile(new DeleteFileRequest(file));
                 }
             }
         }
@@ -304,11 +320,21 @@ namespace Aspose.OMR.Client
                 {
                     BusyIndicatorManager.UpdateText("Uploading image " + item.Key + "...");
 
-                    StorageApi storageApi = new StorageApi(AppKey, AppSid, Basepath);
-                    storageApi.PutCreate(item.Key, "", "", item.Value);
+
+                    string baseHost = new Uri(Basepath).GetComponents(UriComponents.SchemeAndServer, UriFormat.SafeUnescaped).ToString();
+                    Configuration storageConfiguration = new Configuration();
+                    storageConfiguration.AppKey = AppKey;
+                    storageConfiguration.AppSid = AppSid;
+                    storageConfiguration.ApiBaseUrl = baseHost;
+                    StorageApi storageApi = new StorageApi(storageConfiguration);
+
+                    using (Stream stream = new MemoryStream(item.Value))
+                    {
+                        storageApi.PutCreate(new PutCreateRequest(item.Key, stream));
+                    }
                 }
             }
-            catch (Com.Aspose.Storage.ApiException e)
+            catch (ApiException e)
             {
                 if (e.ErrorCode == 401)
                 {

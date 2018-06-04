@@ -38,32 +38,14 @@ using Newtonsoft.Json;
 namespace Com.Aspose.Omr.Model {
 
   /// <summary>
-  /// OMRResponseDetails
+  /// The basic AsposeResponse response class kept from the old Aspose for Cloud Platform. We keep this base class and use it because most probably users are already using it to get API responses. The plan in future is to get rid of this name, but who knows when ?!
   /// </summary>
-  public class RecognitionStatistics {
+  public class AsposeResponse {
     /// <summary>
-    /// Gets or sets Name
+    /// Indicates operation's status
     /// </summary>
-    /// <value>Gets or sets Name</value>
-    public string Name { get; set; }
-
-    /// <summary>
-    /// Warnings and other messages regarding task, etc.
-    /// </summary>
-    /// <value>Warnings and other messages regarding task, etc.</value>
-    public List<string> TaskMessages { get; set; }
-
-    /// <summary>
-    /// Indicates if each particular task passed or failed,
-    /// </summary>
-    /// <value>Indicates if each particular task passed or failed,</value>
-    public string TaskResult { get; set; }
-
-    /// <summary>
-    /// Gets or sets RunSeconds
-    /// </summary>
-    /// <value>Gets or sets RunSeconds</value>
-    public double? RunSeconds { get; set; }
+    /// <value>Indicates operation's status</value>
+    public string Status { get; set; }
 
 
     /// <summary>
@@ -72,11 +54,8 @@ namespace Com.Aspose.Omr.Model {
     /// <returns>String presentation of the object</returns>
     public override string ToString()  {
       var sb = new StringBuilder();
-      sb.Append("class RecognitionStatistics {\n");
-      sb.Append("  Name: ").Append(Name).Append("\n");
-      sb.Append("  TaskMessages: ").Append(TaskMessages).Append("\n");
-      sb.Append("  TaskResult: ").Append(TaskResult).Append("\n");
-      sb.Append("  RunSeconds: ").Append(RunSeconds).Append("\n");
+      sb.Append("class AsposeResponse {\n");
+      sb.Append("  Status: ").Append(Status).Append("\n");
       sb.Append("}\n");
       return sb.ToString();
     }

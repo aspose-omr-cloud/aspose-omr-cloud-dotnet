@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net20\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net20\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -39,10 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\ApiException.cs" />
-    <Compile Include="Api\apiInvoker.cs" />
     <Compile Include="Api\OmrApi.cs" />
+    <Compile Include="Client\ApiClient.cs" />
+    <Compile Include="Client\ApiException.cs" />
+    <Compile Include="Client\RestClient.cs" />
+    <Compile Include="Client\Configuration.cs" />
+    <Compile Include="Model\AsposeResponse.cs" />
     <Compile Include="Model\FileInfo.cs" />
+    <Compile Include="Model\HttpStatusCode.cs" />
     <Compile Include="Model\OMRFunctionParam.cs" />
     <Compile Include="Model\OMRResponse.cs" />
     <Compile Include="Model\OmrResponseContent.cs" />
@@ -50,7 +54,6 @@
     <Compile Include="Model\OmrResponseInfo.cs" />
     <Compile Include="Model\Payload.cs" />
     <Compile Include="Model\RecognitionStatistics.cs" />
-    <Compile Include="Model\ResponseMessage.cs" />
     <Compile Include="Model\ServerStat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
