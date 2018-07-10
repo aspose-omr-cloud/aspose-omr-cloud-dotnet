@@ -1,12 +1,13 @@
+
 <img src="TestData/Demonstration/OmrBanner.png">
 
 
 
 # Aspose.OMR for Cloud
 
-[Aspose.OMR for Cloud](https://products.aspose.cloud/omr/cloud) is a REST API that helps you to perform optical mark recognition in the cloud. You can get [binaries](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/releases) to **start** working **immediately** and recognize various OMR forms. 
-Developers can embed optical recognition in any type of application to extract data from images of tests, exams, questionnaires, surveys, etc. In the repository you can find examples on how to start using Aspose.OMR API in your project. 
+[Aspose.OMR for Cloud](https://products.aspose.cloud/omr/cloud) is a REST API that helps you to perform optical mark recognition in the cloud. We provide a series of [SDKs](https://github.com/aspose-omr-cloud). Along with that, you can get [binaries](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/releases) to start working immediately and recognize various OMR forms.
 
+Developers can embed [optical recognition](https://en.wikipedia.org/wiki/Optical_mark_recognition) in any type of application to extract data from images of tests, exams, questionnaires, surveys, etc. In the repository you can find examples on how to start using [Aspose.OMR API](https://docs.aspose.cloud/display/omrcloud/OMR+API+Specification) in your project.
 
 
 ## Contents
@@ -47,7 +48,7 @@ It is quite easy to use OMR in your projects. All you need to do is:
 1. Get [Aspose Cloud](https://dashboard.aspose.cloud/) credentials - App Key and App Sid.
 2. Install Aspose.OMR Cloud SDK via [nuget](https://www.nuget.org/packages/Aspose.OMR-Cloud/).
 3. Use OMR.Client to create templates or use one from [our examples](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/tree/master/TestData).
-3. Start using [OMR functions](https://docs.aspose.cloud/display/omrcloud/API+Specifications) and get recognition results.
+4. Start using [OMR functions](https://docs.aspose.cloud/display/omrcloud/OMR+API+Specification) and get recognition results.
 
 
 Check [Aspose.OMR.Demo](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/tree/master/SDK/Aspose.OMR.Demo) solution for a simple demonstration of how OMR functions can be called from your code.
@@ -63,8 +64,10 @@ Simply prepare your questions with our simple markup language. Below you can see
 ?image=LogoImage1.jpg
 	align=left
 
-
 ?text=Name__________________________________              Date____________
+
+?grid=ID
+	sections_count=8
 
 #What is Aspose.OMR main function?
 	() OCR () Capture human-marked data
@@ -75,18 +78,43 @@ Simply prepare your questions with our simple markup language. Below you can see
 	() Cross-platform code () Cloud service
 #Aspose.OMR works with any kind of OMR forms: tests, exams, questionnaires, surveys, etc.
 	() Yes, indeed! () No
-...
-
+#Excellent recognition results can be achieved only for filled bubbles at least for:
+	() 40% () 60% () 75% () 98%
+#Does Aspose.OMR support bubbles mapping to any key names?
+	() No () Partially (only "A, B, C..." or "1, 2, 3...") () Yes, any key names
+#Do you have to mark up every question on the page?
+	(Yes) Yes, that will help a lot! (No) No
+#I found aspose omr to be a useful tool. (9 - strongly agree, 1 - strongly disagree)
+	(9) (8) (7) (6) (5) (4) (3) (2) (1)
 ?text=						Answer sheet section
 
 ?answer_sheet=MainQuestions
-	elements_count=50
+	elements_count=15
 	columns_count=5
 
 ?text=Sign________________________________
 
 ?image=LogoImage2.png
 	align=right
+?barcode=Student_ID
+	value=5901234123457
+	barcode_type=ean13
+	x=900
+	y=3050
+	height=400
+?barcode=AsposeWebsite
+	value=aspose.com
+	barcode_type=qr
+	qr_version=1
+	x=2000
+	y=120
+	height=360
+?barcode=ArucoTest
+	value=53
+	barcode_type=aruco
+	x=140
+	y=3200
+	height=198
 ```
 </sub>
 
@@ -108,8 +136,9 @@ Simply make mobile snapshots or scan filled forms, upload them into OMR.Client o
 In the upcoming releases, we are set to implement a number of new features:
 
  - [X] reduce your expenses by preprocessing and compressing your images;
- - [X] simplify OMR form preparation by introducing an easy markup language. For example, to get the particular survey form ready you only need to provide questions and answers;
- - [ ] present standalone script for batch processing in Python.
+ - [X] simplify OMR form preparation by introducing an easy markup language. For example, to get the particular survey form ready you only need to provide questions and answers; 
+ - [X] support PDF
+ - [X] support barcodes generation and recognition
  - [ ] support diverse interviewee’s marks (ticks, crosses, corrections, etc) on various forms with the use of neural networks;
  
 
@@ -122,8 +151,9 @@ In the upcoming releases, we are set to implement a number of new features:
 + **Website:** [www.aspose.com](https://www.aspose.com/)
 + **Product Home:** [Aspose.OMR for Cloud](https://products.aspose.cloud/omr/cloud)
 + **Documentation:** [Aspose.OMR for Cloud Documentation](https://docs.aspose.cloud/display/omrcloud/Home)
-+ **Cloud Dasboard:** [Aspose Cloud](https://dashboard.aspose.cloud/)
++ **Cloud Dashboard:** [Aspose Cloud](https://dashboard.aspose.cloud/)
 + **Forum:** [Aspose.OMR for Cloud Forum](https://forum.aspose.cloud/c/omr)
 + **Blog:** [Aspose.OMR for Cloud Blog](https://blog.aspose.cloud/category/aspose-products/aspose.omr-product-family/)
 + **Nuget:** [Aspose.OMR-Cloud](https://www.nuget.org/packages/Aspose.OMR-Cloud/)
 + **OMR Client Releases:** [Github Releases](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/releases)
++ **OMR Client Documentation:** [Aspose.OMR.Client Application](https://docs.aspose.cloud/display/omrcloud/Aspose.OMR.Client+Application)
