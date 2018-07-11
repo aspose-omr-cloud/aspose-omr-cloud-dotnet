@@ -80,10 +80,17 @@ namespace Aspose.OMR.Client.Controls
                     break;
                 }
 
+                case SelectionRectnagleModes.Barcode:
+                {
+                    this.rubberandBrush = (Brush)Application.Current.FindResource("BarcodeBrush");
+                    this.toSelect = false;
+                    break;
+                }
+
                 case SelectionRectnagleModes.Grid:
                 {
                     this.rubberandBrush = (Brush)Application.Current.FindResource("MainItemsBrush");
-                        this.toSelect = false;
+                    this.toSelect = false;
                     break;
                 }
             }

@@ -21,6 +21,7 @@ namespace Aspose.OMR.Client.ViewModels
     using System.Text;
     using System.Threading.Tasks;
     using System.Linq;
+    using System.Windows;
     using System.Windows.Media;
     using Utility;
     using Views;
@@ -100,6 +101,7 @@ namespace Aspose.OMR.Client.ViewModels
             set
             {
                 this.templateDescription = value;
+                this.IsDirty = true;
                 this.OnPropertyChanged();
                 this.SaveMarkupFileCommand.RaiseCanExecuteChanged();
             }
@@ -177,6 +179,11 @@ namespace Aspose.OMR.Client.ViewModels
         }
 
         /// <summary>
+        /// Gets or sets the value indicating whether generation markup has unsaved changes                                                        
+        /// </summary>
+        public bool IsDirty { get; set; }
+
+        /// <summary>
         /// Gets the produced template generation results
         /// </summary>
         public TemplateGenerationContent GenerationContent { get; private set; }
@@ -218,6 +225,23 @@ namespace Aspose.OMR.Client.ViewModels
             if (!this.ValidateValues())
             {
                 return;
+            }
+
+            if (this.IsDirty)
+            {
+                MessageBoxResult dialogResult =
+                    DialogManager.ShowConfirmDirtyClosingDialog(
+                        "Template generation markup has unsaved changes. Do you want to save them?");
+
+                if (dialogResult == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+
+                if (dialogResult == MessageBoxResult.Yes)
+                {
+                    this.SaveDescriptionToFile();
+                }
             }
 
             await this.GenerateTemplate();
@@ -306,6 +330,7 @@ namespace Aspose.OMR.Client.ViewModels
             }
 
             this.TemplateDescription = File.ReadAllText(imagePath);
+            this.IsDirty = false;
             if (string.IsNullOrEmpty(this.TemplateName))
             {
                 this.TemplateName = Path.GetFileNameWithoutExtension(imagePath);
@@ -326,6 +351,7 @@ namespace Aspose.OMR.Client.ViewModels
             try
             {
                 File.WriteAllText(path, this.TemplateDescription);
+                this.IsDirty = false;
             }
             catch (Exception e)
             {

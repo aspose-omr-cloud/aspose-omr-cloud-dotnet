@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BarcodeElement.cs" />
+    <Compile Include="BarcodeTypes.cs" />
     <Compile Include="ChoiceBoxElement.cs" />
     <Compile Include="FinalizationData.cs" />
     <Compile Include="GridElement.cs" />

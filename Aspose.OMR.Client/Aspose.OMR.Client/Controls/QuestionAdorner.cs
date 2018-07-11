@@ -57,6 +57,11 @@ namespace Aspose.OMR.Client.Controls
         private Thumb fullDotsResizeThumb;
 
         /// <summary>
+        /// Type of adorned question
+        /// </summary>
+        private Type elementType;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="QuestionAdorner"/> class.
         /// </summary>
         /// <param name="adornedElement">The adorned element</param>
@@ -70,6 +75,8 @@ namespace Aspose.OMR.Client.Controls
                     Source = adornedElement
                 }
             );
+
+            this.elementType = adornedElement.GetType();
 
             this.visualChildren = new VisualCollection(this);
             this.scale = TemplateViewModel.ZoomKoefficient;
@@ -159,7 +166,18 @@ namespace Aspose.OMR.Client.Controls
         {
             this.textMoveThumb = new MoveThumb();
             this.textMoveThumb.Cursor = Cursors.SizeAll;
-            this.textMoveThumb.Template = Application.Current.FindResource("MoveTextTemplate") as ControlTemplate;
+
+            if (this.elementType == typeof(OmrBarcodeElement))
+            {
+                this.textMoveThumb.Template =
+                    Application.Current.FindResource("MoveTextBarcodeTemplate") as ControlTemplate;
+            }
+            else
+            {
+                this.textMoveThumb.Template =
+                    Application.Current.FindResource("MoveTextTemplate") as ControlTemplate;
+            }
+
             this.visualChildren.Add(this.textMoveThumb);
         }
 

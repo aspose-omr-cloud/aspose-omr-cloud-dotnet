@@ -387,6 +387,19 @@ namespace Aspose.OMR.Client.ViewModels
         }
 
         /// <summary>
+        /// Initialize choiceboxes of a grid, used in template converter
+        /// </summary>
+        /// <param name="choiceBoxes">Choiceboxes to add</param>
+        public void InitiWithChoiceBoxes(List<ChoiceBoxViewModel> choiceBoxes)
+        {
+            this.optionsCount = choiceBoxes[0].BubblesCount;
+            for (int i = 0; i < choiceBoxes.Count; i++)
+            {
+                this.ChoiceBoxes.Add(choiceBoxes[i]);
+            }
+        }
+
+        /// <summary>
         /// Position choice boxes inside horizontally oriented grid
         /// </summary>
         /// <param name="count">amount of child choice boxes</param>

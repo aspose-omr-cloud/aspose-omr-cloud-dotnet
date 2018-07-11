@@ -1,15 +1,16 @@
-﻿<UserControl x:Class="Aspose.OMR.Client.Views.GridPropertiesView"
+﻿<UserControl x:Class="Aspose.OMR.Client.Views.BarcodePropertiesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Aspose.OMR.Client.Views"
              xmlns:controls="clr-namespace:Aspose.OMR.Client.Controls"
              xmlns:templateModel="clr-namespace:Aspose.OMR.TemplateModel;assembly=Aspose.OMR.TemplateModel"
+             xmlns:converters="clr-namespace:Aspose.OMR.Client.Converters"
              mc:Ignorable="d">
     
     <Grid Background="White">
         <Grid.Resources>
-
             <Style TargetType="TextBlock">
                 <Setter Property="Margin" Value="2,1,0,0" />
                 <Setter Property="Padding" Value="2" />
@@ -21,18 +22,17 @@
                 <Setter Property="Margin" Value="1" />
                 <Setter Property="Padding" Value="2" />
                 <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Background" Value="White"></Setter>
             </Style>
             <Style TargetType="controls:NumericTextBox">
                 <Setter Property="Margin" Value="1" />
             </Style>
         </Grid.Resources>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"></ColumnDefinition>
             <ColumnDefinition MinWidth="60"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -49,43 +49,31 @@
                  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
         </TextBox>
 
-        <TextBlock Grid.Row="1" Grid.Column="0">Sections Count</TextBlock>
-        <controls:NumericTextBox Grid.Row="1" Grid.Column="1" AcceptsFloat="False"
-                                 Text="{Binding SectionsCount,  UpdateSourceTrigger=PropertyChanged}">
-        </controls:NumericTextBox>
+        <TextBlock Grid.Row="2" Grid.Column="0">Barcode Type</TextBlock>
+        <ComboBox Grid.Row="2" Grid.Column="1" 
+                  ItemsSource="{controls:EnumBindingSource {x:Type templateModel:BarcodeTypes}}"
+                  SelectedItem="{Binding SelectedBarcodeType}"
+                  Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" 
+                  HorizontalAlignment="Stretch" Height="25"/>
 
-        <TextBlock Grid.Row="2" Grid.Column="0">Options Count</TextBlock>
-        <controls:NumericTextBox Grid.Row="2" Grid.Column="1" AcceptsFloat="False"
-                                 Text="{Binding OptionsCount,  UpdateSourceTrigger=PropertyChanged}">
-        </controls:NumericTextBox>
-
-        <TextBlock Grid.Row="3" Grid.Column="0">Orientation</TextBlock>
-        <ComboBox Grid.Row="3" Grid.Column="1" Margin="3" 
-                  ItemsSource="{Binding Source={controls:EnumBindingSource {x:Type templateModel:Orientations}}}" SelectedItem="{Binding Orientation}"
-                  Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" HorizontalAlignment="Stretch"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Visibility="{Binding QrVersionVisible, Converter={converters:BoolToVisibilityConverter}}">QR Version</TextBlock>
+        <controls:NumericTextBox Grid.Row="3" Grid.Column="1" Text="{Binding QrVersion, UpdateSourceTrigger=PropertyChanged}" MaxLength="2"
+                                 AcceptsFloat="False" Visibility="{Binding QrVersionVisible, Converter={converters:BoolToVisibilityConverter}}"/>
         
-        <TextBlock Grid.Row="4" Grid.Column="0">Answers Mapping</TextBlock>
-        <ComboBox Grid.Row="4" Grid.Column="1" Margin="3" 
-                  ItemsSource="{Binding AnswersMapping}" SelectedItem="{Binding SelectedMapping}"
-                  Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" HorizontalAlignment="Stretch"/>
-        
-        <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Add Custom Mapping..." Margin="3" 
-                Command="{Binding AddCustomMappingCommand}" Style="{StaticResource ImageButton}"/>
-
-        <TextBlock Grid.Row="6" Grid.Column="0">Width</TextBlock>
-        <controls:NumericTextBox Grid.Row="6" Grid.Column="1" Text="{Binding Width, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}"
+        <TextBlock Grid.Row="4" Grid.Column="0">Width</TextBlock>
+        <controls:NumericTextBox Grid.Row="4" Grid.Column="1" Text="{Binding Width, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}"
                                  AcceptsFloat="True" IsReadOnly="True" Focusable="False"/>
 
-        <TextBlock Grid.Row="7" Grid.Column="0">Height</TextBlock>
-        <controls:NumericTextBox Grid.Row="7" Grid.Column="1" Text="{Binding Height, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}"
+        <TextBlock Grid.Row="5" Grid.Column="0">Height</TextBlock>
+        <controls:NumericTextBox Grid.Row="5" Grid.Column="1" Text="{Binding Height, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}"
                                  AcceptsFloat="False" IsReadOnly="True" Focusable="False"/>
 
-        <TextBlock Grid.Row="8" Grid.Column="0">Left</TextBlock>
-        <controls:NumericTextBox Grid.Row="8" Grid.Column="1" Text="{Binding Left, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}"
+        <TextBlock Grid.Row="6" Grid.Column="0">Left</TextBlock>
+        <controls:NumericTextBox Grid.Row="6" Grid.Column="1" Text="{Binding Left, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}"
                                  AcceptsFloat="False" IsReadOnly="True" Focusable="False"/>
 
-        <TextBlock Grid.Row="9" Grid.Column="0">Top</TextBlock>
-        <controls:NumericTextBox Grid.Row="9" Grid.Column="1" Text="{Binding Top, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}"
+        <TextBlock Grid.Row="7" Grid.Column="0">Top</TextBlock>
+        <controls:NumericTextBox Grid.Row="7" Grid.Column="1" Text="{Binding Top, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}"
                                  AcceptsFloat="False" Focusable="False"/>
     </Grid>
 </UserControl>

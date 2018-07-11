@@ -13,31 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Aspose.OMR.Client.Utility
+namespace Aspose.OMR.Client.Views
 {
+    using System.Windows.Controls;
+
     /// <summary>
-    /// Modes for selection rectangle
+    /// Interaction logic for BarcodePropertiesView.xaml
     /// </summary>
-    public enum SelectionRectnagleModes
+    public partial class BarcodePropertiesView : UserControl
     {
-        /// <summary>
-        /// Simple elements selection
-        /// </summary>
-        Selection,
-
-        /// <summary>
-        /// Create new element, choice box
-        /// </summary>
-        ChoiceBox,
-
-        /// <summary>
-        /// Create new element, grid
-        /// </summary>
-        Grid,
-
-        /// <summary>
-        /// Create new element, barcode
-        /// </summary>
-        Barcode,
+        public BarcodePropertiesView()
+        {
+            InitializeComponent();
+        }
     }
 }

@@ -41,13 +41,13 @@ namespace Aspose.OMR.TemplateModel
         /// <summary>
         /// Gets or sets template markup version
         /// </summary>
-        [DataMember(Order = 2, Name = "Version")]
+        [DataMember(Order = 1, Name = "Version")]
         public readonly string Version = "1.0";
 
         /// <summary>
         /// Gets or sets template name
         /// </summary>
-        [DataMember(Order = 1, Name = "Name")]
+        [DataMember(Order = 2, Name = "Name")]
         public string Name { get; set; }
 
         [DataMember(Order = 4, Name = "TemplateId")]
