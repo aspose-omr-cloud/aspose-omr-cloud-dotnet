@@ -104,14 +104,14 @@ namespace Aspose.OMR.Client.ViewModels
             // check app sid length
             if (this.AppSidText.Length != 36)
             {
-                DialogManager.ShowErrorDialog("Incorrect APP SID length! APP SID should be 36 symbols length.");
+                DialogManager.ShowErrorDialog("Incorrect APP SID length! APP SID must be 36 symbols long.");
                 return;
             }
 
             // check app key length
             if (this.AppKeyText.Length != 32)
             {
-                DialogManager.ShowErrorDialog("Incorrect APP KEY length! APP KEY should be 32 symbols length.");
+                DialogManager.ShowErrorDialog("Incorrect APP KEY length! APP KEY must be 32 symbols long.");
                 return;
             }
 

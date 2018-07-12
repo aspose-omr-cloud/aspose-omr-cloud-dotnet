@@ -24,6 +24,7 @@ namespace Aspose.OMR.TemplateModel
     [DataContract]
     [KnownType(typeof(ChoiceBoxElement))]
     [KnownType(typeof(GridElement))]
+    [KnownType(typeof(BarcodeElement))]
     public abstract class OmrElement
     {
         /// <summary>
@@ -55,17 +56,5 @@ namespace Aspose.OMR.TemplateModel
         /// </summary>
         [DataMember(Order = 5, Name = "Left")]
         public double Left { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether bubbles aligned horizontally
-        /// </summary>
-        [DataMember(Name = "AlignedHorizontally")]
-        public bool IsAlignedHorizontal { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether bubbles aligned vertically
-        /// </summary>
-        [DataMember(Name = "AlignedVertically")]
-        public bool IsAlignedVertical { get; set; }
     }
 }

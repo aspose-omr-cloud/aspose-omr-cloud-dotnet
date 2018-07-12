@@ -13,31 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Aspose.OMR.Client.Utility
+namespace Aspose.OMR.TemplateModel
 {
     /// <summary>
-    /// Modes for selection rectangle
+    /// Supported Barcode types
     /// </summary>
-    public enum SelectionRectnagleModes
+    public enum BarcodeTypes
     {
-        /// <summary>
-        /// Simple elements selection
-        /// </summary>
-        Selection,
-
-        /// <summary>
-        /// Create new element, choice box
-        /// </summary>
-        ChoiceBox,
-
-        /// <summary>
-        /// Create new element, grid
-        /// </summary>
-        Grid,
-
-        /// <summary>
-        /// Create new element, barcode
-        /// </summary>
-        Barcode,
+        code39,
+        ean,
+        ean13,
+        ean8,
+        qr,
+        aruco,
+        jam,
+        upc,
+        upca
     }
 }

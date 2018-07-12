@@ -33,16 +33,16 @@ namespace Aspose.OMR.TemplateModel
         }
 
         /// <summary>
-        /// Gets or sets page width
-        /// </summary>
-        [DataMember(Order = 1, Name = "Width")]
-        public double Width { get; set; }
-
-        /// <summary>
         /// Gets or sets page height
         /// </summary>
-        [DataMember(Order = 2, Name = "Height")]
+        [DataMember(Order = 1, Name = "Height")]
         public double Height { get; set; }
+
+        /// <summary>
+        /// Gets or sets page width
+        /// </summary>
+        [DataMember(Order = 2, Name = "Width")]
+        public double Width { get; set; }
 
         /// <summary>
         /// Gets or sets list of elements on page
@@ -89,7 +89,6 @@ namespace Aspose.OMR.TemplateModel
             };
 
             this.Elements.Add(newElement);
-
             return newElement;
         }
 
@@ -105,7 +104,21 @@ namespace Aspose.OMR.TemplateModel
             };
 
             this.Elements.Add(newElement);
+            return newElement;
+        }
 
+        public BarcodeElement AddBarcodeElement(string name, int width, int height, int top, int left)
+        {
+            BarcodeElement newElement = new BarcodeElement
+            {
+                Name = name,
+                Width = width,
+                Height = height,
+                Top = top,
+                Left = left
+            };
+
+            this.Elements.Add(newElement);
             return newElement;
         }
     }

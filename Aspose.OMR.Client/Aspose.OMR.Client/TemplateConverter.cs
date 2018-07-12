@@ -19,6 +19,7 @@ namespace Aspose.OMR.Client
     using System.Windows.Media.Imaging;
     using TemplateModel;
     using ViewModels;
+    using System.Windows;
 
     /// <summary>
     /// Converts view model template to data model and back
@@ -53,6 +54,10 @@ namespace Aspose.OMR.Client
                 else if (element is GridViewModel)
                 {
                     AddGridElement(page, (GridViewModel) element);
+                }
+                else if (element is BarcodeViewModel)
+                {
+                    AddBarcodeElement(page, (BarcodeViewModel) element);
                 }
             }
 
@@ -90,6 +95,11 @@ namespace Aspose.OMR.Client
                 {
                     GridViewModel gridViewModel = CreateGridViewModel((GridElement)modelElement, templateViewModel);
                     elements.Add(gridViewModel);
+                }
+                else if (modelElement is BarcodeElement)
+                {
+                    BarcodeViewModel barcodeViewModel = CreateBarcodeViewModel((BarcodeElement) modelElement, templateViewModel);
+                    elements.Add(barcodeViewModel);
                 }
             }
 
@@ -207,6 +217,23 @@ namespace Aspose.OMR.Client
         }
 
         /// <summary>
+        /// Creates Barcode element from BarcodeViewModel and adds to the OmrPage
+        /// </summary>
+        /// <param name="page">Page to add element to</param>
+        /// <param name="barcodeViewModel">ViewModel to take data from</param>
+        private static void AddBarcodeElement(OmrPage page, BarcodeViewModel barcodeViewModel)
+        {
+            BarcodeElement barcode = page.AddBarcodeElement(
+                barcodeViewModel.Name,
+                (int) barcodeViewModel.Width,
+                (int) barcodeViewModel.Height,
+                (int) barcodeViewModel.Top,
+                (int) barcodeViewModel.Left);
+            barcode.BarcodeType = barcodeViewModel.SelectedBarcodeType;
+            barcode.QrVersion = barcodeViewModel.QrVersion;
+        }
+
+        /// <summary>
         /// Creates choice box view model from choice box model
         /// </summary>
         /// <param name="choiceBox">Choice box model data</param>
@@ -242,6 +269,24 @@ namespace Aspose.OMR.Client
         }
 
         /// <summary>
+        /// Creates barcode view model from barcode model element
+        /// </summary>
+        /// <param name="barcode">Barcode model</param>
+        /// <param name="templateViewModel">Parent template</param>
+        /// <returns>Created barcode view model</returns>
+        private static BarcodeViewModel CreateBarcodeViewModel(BarcodeElement barcode, TemplateViewModel templateViewModel)
+        {
+            BarcodeViewModel barcodeViewModel = new BarcodeViewModel(
+                barcode.Name,
+                new Rect(barcode.Left, barcode.Top, barcode.Width, barcode.Height),
+                templateViewModel);
+
+            barcodeViewModel.SelectedBarcodeType = barcode.BarcodeType;
+            barcodeViewModel.QrVersion = barcode.QrVersion;
+            return barcodeViewModel;
+        }
+
+        /// <summary>
         /// Creates grid view model from grid model
         /// </summary>
         /// <param name="gridElement">Grid model data</param>
@@ -259,6 +304,7 @@ namespace Aspose.OMR.Client
                 gridElement.Orientation);
 
             gridViewModel.ChoiceBoxes.Clear();
+            List<ChoiceBoxViewModel> choiceBoxes = new List<ChoiceBoxViewModel>();
 
             foreach (var omrElement in gridElement.ChoiceBoxes)
             {
@@ -288,8 +334,10 @@ namespace Aspose.OMR.Client
                     choiceBoxViewModel.Bubbles.Add(bubbleViewModel);
                 }
 
-                gridViewModel.ChoiceBoxes.Add(choiceBoxViewModel);
+                choiceBoxes.Add(choiceBoxViewModel);
             }
+
+            gridViewModel.InitiWithChoiceBoxes(choiceBoxes);
 
             return gridViewModel;
         }

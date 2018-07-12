@@ -33,6 +33,18 @@ namespace Aspose.OMR.TemplateModel
         [DataMember(Name = "Elements")]
         public List<OmrElement> ChoiceBoxes { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether bubbles aligned horizontally
+        /// </summary>
+        [DataMember(Name = "AlignedHorizontally")]
+        public bool IsAlignedHorizontal { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether bubbles aligned vertically
+        /// </summary>
+        [DataMember(Name = "AlignedVertically")]
+        public bool IsAlignedVertical { get; set; }
+
         public GridElement()
         {
             this.ChoiceBoxes = new List<OmrElement>();

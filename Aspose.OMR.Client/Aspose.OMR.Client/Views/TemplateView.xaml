@@ -102,7 +102,7 @@
                             <!--ChoiceBox data template defines how ChoiceBoxViewModel looks-->
                             <DataTemplate DataType="{x:Type viewModels:ChoiceBoxViewModel}">
                                 <controls:OmrChoiceBox Style="{StaticResource ChoiceBoxStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False">
-                                    <Border BorderThickness="1.5" BorderBrush="{StaticResource MainItemsBrush}">
+                                    <Border BorderThickness="0.5" BorderBrush="{StaticResource MainItemsBrush}">
                                         <ItemsControl ItemsSource="{Binding Bubbles, Mode=OneWay}" IsTabStop="False">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -127,6 +127,11 @@
                                         </ItemsControl>
                                     </Border>
                                 </controls:OmrChoiceBox>
+                            </DataTemplate>
+
+                            <!--Data template defines how BarcodeViewModel looks-->
+                            <DataTemplate DataType="{x:Type viewModels:BarcodeViewModel}">
+                                <controls:OmrBarcodeElement Style="{StaticResource BarcodeStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False"></controls:OmrBarcodeElement>
                             </DataTemplate>
 
                             <!--Grid data template defines how GridViewModel looks-->
@@ -198,6 +203,9 @@
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type viewModels:GridViewModel}">
                         <views:GridPropertiesView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:BarcodeViewModel}">
+                        <views:BarcodePropertiesView/>
                     </DataTemplate>
                 </ContentControl.Resources>
             </ContentControl>

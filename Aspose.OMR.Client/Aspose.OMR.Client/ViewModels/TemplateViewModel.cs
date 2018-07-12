@@ -72,6 +72,11 @@ namespace Aspose.OMR.Client.ViewModels
         private bool isAddingGrid;
 
         /// <summary>
+        /// Indicates that user is currently in adding barcode mode
+        /// </summary>
+        private bool isAddingBarcode;
+
+        /// <summary>
         /// Indicates that template correction has been done
         /// </summary>
         private bool correctionComplete;
@@ -394,12 +399,12 @@ namespace Aspose.OMR.Client.ViewModels
             get { return this.isAddingChoiceBox; }
             set
             {
-                this.isAddingChoiceBox = value;
                 if (value)
                 {
-                    this.IsAddingGrid = false;
+                    this.ResetAddingElementModes();
                 }
 
+                this.isAddingChoiceBox = value;
                 this.OnPropertyChanged();
             }
         }
@@ -412,14 +417,39 @@ namespace Aspose.OMR.Client.ViewModels
             get { return this.isAddingGrid; }
             set
             {
-                this.isAddingGrid = value;
                 if (value)
                 {
-                    this.IsAddingChoiceBox = false;
+                    this.ResetAddingElementModes();
                 }
 
+                this.isAddingGrid = value;
                 this.OnPropertyChanged();
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether adding grid mode is enabled
+        /// </summary>
+        public bool IsAddingBarcode
+        {
+            get { return this.isAddingBarcode; }
+            set
+            {
+                if (value)
+                {
+                    this.ResetAddingElementModes();
+                }
+
+                this.isAddingBarcode = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        private void ResetAddingElementModes()
+        {
+            this.IsAddingChoiceBox = false;
+            this.IsAddingGrid = false;
+            this.IsAddingBarcode = false;
         }
 
         /// <summary>
@@ -693,17 +723,22 @@ namespace Aspose.OMR.Client.ViewModels
         {
             string nextName = NamingManager.GetNextAvailableElementName(this.PageQuestions);
 
-            BaseQuestionViewModel newQuestion;
+            BaseQuestionViewModel newQuestion = null;
 
             if (this.IsAddingChoiceBox)
             {
                 newQuestion = new ChoiceBoxViewModel(nextName, area, this, null);
                 this.IsAddingChoiceBox = false;
             }
-            else
+            else if(this.IsAddingGrid)
             {
                 newQuestion = new GridViewModel(nextName, area, this);
                 this.IsAddingGrid = false;
+            }
+            else if (this.IsAddingBarcode)
+            {
+                newQuestion = new BarcodeViewModel(nextName, area, this);
+                this.IsAddingBarcode = false;
             }
 
             this.OnAddQuestion(newQuestion, true);
@@ -892,7 +927,7 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         private void InitCommands()
         {
-            base.RemoveElementCommand = new RelayCommand(x => this.OnRemoveElement(), x => this.SelectedElements.Any());
+            this.RemoveElementCommand = new RelayCommand(x => this.OnRemoveElement(), x => this.SelectedElements.Any());
 
             this.LoadTemplateImageCommand = new RelayCommand(x => this.OnLoadTemplateImage());
             this.DropPageImageCommand = new RelayCommand(x => this.LoadTemplateImageFromFile((string) x));
@@ -924,7 +959,7 @@ namespace Aspose.OMR.Client.ViewModels
             this.AlignLeftCommand = new RelayCommand(x => AlignmentHelper.AlignLeft(this.SelectedElements), x => this.SelectedElements.Count > 1);
 
             this.ApplyFormattingCommand = new RelayCommand(x => this.OnApplyFormatting(), x => this.SelectedElements.Count == 1);
-            this.ShrinkElementCommand = new RelayCommand(x => this.OnShrinkQuestionCommand(), x => this.SelectedElements.Count > 0);
+            this.ShrinkElementCommand = new RelayCommand(x => this.OnShrinkQuestionCommand(), x => this.CanShrink());
 
             this.MoveElementsHorizontal = new RelayCommand(x => this.OnMoveElementsHorizontal((double)x), x => this.SelectedElements.Count > 0);
             this.MoveElementsVertical = new RelayCommand(x => this.OnMoveElementsVertical((double)x), x => this.SelectedElements.Count > 0);
@@ -942,6 +977,20 @@ namespace Aspose.OMR.Client.ViewModels
                 this.savedPropertiesWidth = this.PropertiesPanelWidth;
                 this.PropertiesPanelWidth = PropertiesPanelClosedWidth;
             });
+        }
+
+        /// <summary>
+        /// Determines whether shrink command can be executed
+        /// </summary>
+        /// <returns>Bool value indicating whether shrink command can be executed</returns>
+        private bool CanShrink()
+        {
+            if(this.SelectedElements.Count > 0 && !this.SelectedElements.All(x=> x is BarcodeViewModel))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -1014,6 +1063,15 @@ namespace Aspose.OMR.Client.ViewModels
                 {
                     copiesBefore.Add(itemsToChange[i].CreateCopy());
                     ((GridViewModel)itemsToChange[i]).ApplyStyle((GridViewModel)ethalon);
+                }
+            }
+            else if (ethalon is BarcodeViewModel)
+            {
+                itemsToChange = this.PageQuestions.Where(x => x is BarcodeViewModel && x != ethalon).ToList();
+                for (int i = 0; i < itemsToChange.Count; i++)
+                {
+                    copiesBefore.Add(itemsToChange[i].CreateCopy());
+                    ((BarcodeViewModel)itemsToChange[i]).ApplyStyle((BarcodeViewModel)ethalon);
                 }
             }
 

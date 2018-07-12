@@ -141,8 +141,17 @@ namespace Aspose.OMR.Client.Controls
                 content = VisualTreeHelper.GetParent(grid);
             }
 
-            // presenter that holds omr item
-            ContentPresenter presenter = (ContentPresenter) VisualTreeHelper.GetParent(content);
+            ContentPresenter presenter;
+
+            if (content is ContentPresenter)
+            {
+                presenter = (ContentPresenter) content;
+            }
+            else
+            {
+                // presenter that holds omr item
+                presenter = (ContentPresenter)VisualTreeHelper.GetParent(content);
+            }
 
             // parent canvas
             CustomCanvas canvas = (CustomCanvas) VisualTreeHelper.GetParent(presenter);

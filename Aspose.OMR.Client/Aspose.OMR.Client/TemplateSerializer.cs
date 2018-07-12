@@ -256,7 +256,7 @@ namespace Aspose.OMR.Client
         /// <param name="json">JSON to process</param>
         private static void PreprocessJson(StringBuilder json)
         {
-            json.Replace("Type", "__type");
+            json.Replace("\"Type\"", "\"__type\"");
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace Aspose.OMR.Client
         /// <param name="json">JSON to process</param>
         private static void PostprocessJson(StringBuilder json)
         {
-            json.Replace("__type", "Type");
+            json.Replace("\"__type\"", "\"Type\"");
         }
     }
 }

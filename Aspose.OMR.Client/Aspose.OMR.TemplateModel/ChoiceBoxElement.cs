@@ -57,6 +57,18 @@ namespace Aspose.OMR.TemplateModel
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether bubbles aligned horizontally
+        /// </summary>
+        [DataMember(Name = "AlignedHorizontally")]
+        public bool IsAlignedHorizontal { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether bubbles aligned vertically
+        /// </summary>
+        [DataMember(Name = "AlignedVertically")]
+        public bool IsAlignedVertical { get; set; }
+
+        /// <summary>
         /// Gets or sets bubbles collection
         /// </summary>
         [DataMember(Name = "Bubbles")]
