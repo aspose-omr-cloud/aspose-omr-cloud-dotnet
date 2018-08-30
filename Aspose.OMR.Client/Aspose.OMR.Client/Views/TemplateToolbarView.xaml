@@ -57,6 +57,7 @@
                     <ToggleButton Content="Add Choice Box" IsChecked="{Binding IsAddingChoiceBox}" Margin="0,0,5,0"></ToggleButton>
                     <ToggleButton Content="Add Grid" IsChecked="{Binding IsAddingGrid}"></ToggleButton>
                     <ToggleButton Content="Add Barcode" IsChecked="{Binding IsAddingBarcode}"></ToggleButton>
+                    <ToggleButton Content="Add Clip Area" IsChecked="{Binding IsAddingClipArea}"></ToggleButton>
                 </ToolBar>
 
                 <ToolBar BandIndex="5" Background="White">

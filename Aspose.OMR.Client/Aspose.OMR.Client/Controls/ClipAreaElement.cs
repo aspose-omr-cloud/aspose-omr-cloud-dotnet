@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Aspose.OMR.Client.Controls
 {
     using System.Windows.Documents;
     using System.Windows.Input;
 
     /// <summary>
-    /// Class containing logic for Barcode visual control
+    /// Class containing logic for Clip Area visual control
     /// </summary>
-    public class OmrBarcodeElement : BaseOmrElement
+    public class ClipAreaElement : BaseOmrElement
     {
         /// <summary>
         /// Add or remove adorners based on selection

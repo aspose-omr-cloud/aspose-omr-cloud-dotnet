@@ -117,6 +117,10 @@ namespace Aspose.OMR.Client.Controls
                     {
                         this.mode = SelectionRectnagleModes.Barcode;
                     }
+                    else if (dataContext.IsAddingClipArea)
+                    {
+                        this.mode = SelectionRectnagleModes.Barcode;
+                    }
 
                     RubberbandAdorner adorner = new RubberbandAdorner(this, this.dragStartPoint, this.mode);
                     adorner.MouseUp += this.AdornerMouseUp;

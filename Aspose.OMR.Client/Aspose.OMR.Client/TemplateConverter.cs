@@ -59,6 +59,10 @@ namespace Aspose.OMR.Client
                 {
                     AddBarcodeElement(page, (BarcodeViewModel) element);
                 }
+                else if (element is ClipAreaViewModel)
+                {
+                    AddClipAreaElement(page, (ClipAreaViewModel) element);
+                }
             }
 
             return template;
@@ -101,6 +105,11 @@ namespace Aspose.OMR.Client
                     BarcodeViewModel barcodeViewModel = CreateBarcodeViewModel((BarcodeElement) modelElement, templateViewModel);
                     elements.Add(barcodeViewModel);
                 }
+                else if (modelElement is ClipAreaElement)
+                {
+                    ClipAreaViewModel barcodeViewModel = CreateClipAreaViewModel((ClipAreaElement)modelElement, templateViewModel);
+                    elements.Add(barcodeViewModel);
+                }
             }
 
             templateViewModel.AddQuestions(elements);
@@ -108,6 +117,8 @@ namespace Aspose.OMR.Client
             templateViewModel.IsDirty = false;
             return templateViewModel;
         }
+
+
 
         /// <summary>
         /// Check provided image size and format and compress image
@@ -234,6 +245,22 @@ namespace Aspose.OMR.Client
         }
 
         /// <summary>
+        /// Creates Clip Area element from ClipAreaViewModel and adds to the OmrPage
+        /// </summary>
+        /// <param name="page">Page to add element to</param>
+        /// <param name="clipAreaViewModel">ViewModel to take data from</param>
+        private static void AddClipAreaElement(OmrPage page, ClipAreaViewModel clipAreaViewModel)
+        {
+            ClipAreaElement clipArea = page.AddClipAreaElement(
+                clipAreaViewModel.Name,
+                (int)clipAreaViewModel.Width,
+                (int)clipAreaViewModel.Height,
+                (int)clipAreaViewModel.Top,
+                (int)clipAreaViewModel.Left);
+            clipArea.JpegQuality = clipAreaViewModel.JpegQuality;
+        }
+
+        /// <summary>
         /// Creates choice box view model from choice box model
         /// </summary>
         /// <param name="choiceBox">Choice box model data</param>
@@ -284,6 +311,24 @@ namespace Aspose.OMR.Client
             barcodeViewModel.SelectedBarcodeType = barcode.BarcodeType;
             barcodeViewModel.QrVersion = barcode.QrVersion;
             return barcodeViewModel;
+        }
+
+        /// <summary>
+        /// Creates cliparea view model from clip area model element
+        /// </summary>
+        /// <param name="clipAreaElement">ClipArea model</param>
+        /// <param name="templateViewModel">Parent template</param>
+        /// <returns>Created cliparea view model</returns>
+        private static ClipAreaViewModel CreateClipAreaViewModel(ClipAreaElement clipAreaElement, TemplateViewModel templateViewModel)
+        {
+            ClipAreaViewModel clipAreaViewModel = new ClipAreaViewModel(
+                clipAreaElement.Name,
+                new Rect(clipAreaElement.Left, clipAreaElement.Top, clipAreaElement.Width, clipAreaElement.Height),
+                templateViewModel);
+
+            clipAreaViewModel.JpegQuality = clipAreaElement.JpegQuality;
+
+            return clipAreaViewModel;
         }
 
         /// <summary>

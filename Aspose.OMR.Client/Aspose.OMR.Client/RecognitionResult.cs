@@ -16,7 +16,7 @@
 namespace Aspose.OMR.Client
 {
     /// <summary>
-    /// Represent recognition result info for single question
+    /// Represents recognition result info for single question
     /// </summary>
     public class RecognitionResult
     {

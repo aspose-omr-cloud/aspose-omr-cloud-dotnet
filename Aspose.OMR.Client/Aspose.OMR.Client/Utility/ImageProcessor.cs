@@ -29,19 +29,100 @@ namespace Aspose.OMR.Client.Utility
     public static class ImageProcessor
     {
         /// <summary>
-        /// Save template image as jpg by specified location
+        /// Save template image as png by specified location
         /// </summary>
         /// <param name="templateImage">Image to save</param>
         /// <param name="path">Save location</param>
         public static void SaveTemplateImage(BitmapImage templateImage, string path)
         {
-            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(templateImage));
 
             using (var filestream = new FileStream(path, FileMode.OpenOrCreate))
             {
                 encoder.Save(filestream);
             }
+        }
+
+        /// <summary>
+        /// Copies user image from temp location to user provided destination
+        /// </summary>
+        /// <param name="pathToTempLocation">Path to temp folder where image is located</param>
+        /// <param name="destination">New destination path</param>
+        /// <returns>True if copy was successful, false otherwise</returns>
+        public static bool CopyUserTemplateImage(string pathToTempLocation, string destination)
+        {
+            try
+            {
+                if (!File.Exists(pathToTempLocation))
+                {
+                    return false;
+                }
+
+                byte[] fileData = File.ReadAllBytes(pathToTempLocation);
+                File.WriteAllBytes(destination, fileData);
+            }
+            catch (Exception e)
+            {
+                DialogManager.ShowErrorDialog(e.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to copy file data to temp location under Aspose.OMR.Client folder
+        /// </summary>
+        /// <param name="filePath">Path to current file location</param>
+        /// <param name="imageName">Image name with extension</param>
+        /// <returns>Path to file temp location if copy successful, empty string otherwise</returns>
+        public static string CopyFileToTemp(string filePath, string imageName)
+        {
+            string tempPath = Path.GetTempPath();
+            string appFolder = "Aspose.OMR.Client";
+            string destPath = Path.Combine(tempPath, appFolder);
+
+            try
+            {
+                if (!Directory.Exists(destPath))
+                {
+                    Directory.CreateDirectory(destPath);
+                }
+
+                byte[] fileData = File.ReadAllBytes(filePath);
+
+                destPath = Path.Combine(destPath, imageName);
+                File.WriteAllBytes(destPath, fileData);
+            }
+            catch (Exception e)
+            {
+                DialogManager.ShowErrorDialog(e.Message);
+                return "";
+            }
+
+            return destPath;
+        }
+
+        /// <summary>
+        /// Load image without lock
+        /// </summary>
+        /// <param name="path">Path to the image</param>
+        /// <returns>Loaded bitmap image</returns>
+        public static BitmapImage LoadImageNoLock(string path)
+        {
+            var bitmap = new BitmapImage();
+            var stream = File.OpenRead(path);
+
+            bitmap.BeginInit();
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.StreamSource = stream;
+            bitmap.EndInit();
+
+            stream.Close();
+            stream.Dispose();
+
+            return bitmap;
         }
 
         /// <summary>

@@ -129,6 +129,7 @@ namespace Aspose.OMR.Client.ViewModels
                 this.selectedPreviewImage = value;
                 this.OnPropertyChanged();
                 this.OnPropertyChanged(nameof(this.RecognitionResults));
+                this.OnPropertyChanged(nameof(this.ClippedAreas));
 
                 if (value != null)
                 {
@@ -169,6 +170,14 @@ namespace Aspose.OMR.Client.ViewModels
         public ObservableCollection<RecognitionResult> RecognitionResults
         {
             get { return this.SelectedPreviewImage?.RecognitionResults; }
+        }
+
+        /// <summary>
+        /// Gets the recognition results for selected image
+        /// </summary>
+        public ObservableCollection<ClippedArea> ClippedAreas
+        {
+            get { return this.SelectedPreviewImage?.ClippedAreas; }
         }
 
         /// <summary>
@@ -535,11 +544,12 @@ namespace Aspose.OMR.Client.ViewModels
 
             try
             {
-                string result = CoreApi.RecognizeImage(itemToProcess.Title,
-                    imageData,
-                    this.templateId,
-                    itemToProcess.WasUploaded,
-                    additionalPars);
+                ImageRecognitionResult result =
+                    CoreApi.RecognizeImage(itemToProcess.Title,
+                        imageData,
+                        this.templateId,
+                        itemToProcess.WasUploaded,
+                        additionalPars);
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -612,11 +622,19 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         /// <param name="results">Recognition results recieved from omr core</param>
         /// <param name="item">The preview image that was recognized</param>
-        private void ProcessResult(string results, ImagePreviewViewModel item)
+        private void ProcessResult(ImageRecognitionResult results, ImagePreviewViewModel item)
         {
-            ObservableCollection<RecognitionResult> recognitionResults = this.ParseAnswers(results);
+            ObservableCollection<RecognitionResult> recognitionResults = this.ParseAnswers(results.RecognizedAnswers);
             item.RecognitionResults = recognitionResults;
+            item.ClippedAreas = new ObservableCollection<ClippedArea>();
+
+            foreach (var clippedArea in results.ClippedAreas)
+            {
+                item.ClippedAreas.Add(new ClippedArea(clippedArea.Key, clippedArea.Value));
+            }
+
             this.OnPropertyChanged(nameof(this.RecognitionResults));
+            this.OnPropertyChanged(nameof(this.ClippedAreas));
         }
 
         /// <summary>
@@ -636,6 +654,7 @@ namespace Aspose.OMR.Client.ViewModels
                 if (imagePreviewViewModel.IsProcessed && imagePreviewViewModel.RecognitionResults != null)
                 {
                     this.ExportFileRoutine(savePath, imagePreviewViewModel.RecognitionResults);
+                    this.ExportClipAreas(savePath, imagePreviewViewModel.ClippedAreas);
                 }
             }
         }
@@ -645,13 +664,49 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         private void OnExportData()
         {
-            string path = DialogManager.ShowSaveDataDialog();
+            string imageName = Path.GetFileNameWithoutExtension(this.SelectedPreviewImage.Title);
+
+            string path = DialogManager.ShowSaveDataDialog(imageName);
             if (string.IsNullOrEmpty(path))
             {
                 return;
             }
 
             this.ExportFileRoutine(path, this.RecognitionResults);
+            this.ExportClipAreas(path, this.ClippedAreas);
+        }
+
+        private void ExportClipAreas(string path, ObservableCollection<ClippedArea> clippedAreas)
+        {
+            if (!clippedAreas.Any())
+            {
+                return;
+            }
+
+            try
+            {
+                var directory = Path.GetDirectoryName(path);
+                var title = Path.GetFileNameWithoutExtension(path);
+                var directoryInfo = Directory.CreateDirectory(Path.Combine(directory, title) + "ClippedAreas");
+                foreach (ClippedArea area in clippedAreas)
+                {
+                    string fileName = Path.Combine(directoryInfo.FullName, area.AreaName);
+                    if (File.Exists(fileName))
+                    {
+                        bool dialogRes = DialogManager.ShowConfirmDialog("File \"" + fileName + "\" already exists. Do you want to overwrite it?");
+                        if (!dialogRes)
+                        {
+                            continue;
+                        }
+                    }
+
+                    File.WriteAllBytes(Path.Combine(directoryInfo.FullName, area.AreaName), area.ImageData);
+                }
+            }
+            catch(Exception e)
+            {
+                DialogManager.ShowErrorDialog("Failed to save clipped areas! " + e.Message);
+            }
         }
 
         /// <summary>

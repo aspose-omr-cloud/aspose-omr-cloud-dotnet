@@ -331,6 +331,9 @@ namespace Aspose.OMR.Client.ViewModels
 
         #region Shortcuts commands
 
+        /// <summary>
+        /// Calls template saving methods
+        /// </summary>
         private void OnSaveTemplate()
         {
             string loadedPath = (this.SelectedTab as TemplateViewModel).LoadedPath;
@@ -347,6 +350,10 @@ namespace Aspose.OMR.Client.ViewModels
             }
         }
 
+        /// <summary>
+        /// Indicates whether template can be saved
+        /// </summary>
+        /// <returns></returns>
         private bool CanSaveTemplate()
         {
             if (this.SelectedTab is TemplateViewModel)
@@ -363,7 +370,14 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         private void OnSaveAsTemplate()
         {
-            string savePath = DialogManager.ShowSaveTemplateDialog();
+            string suggestedName = string.Empty;
+            if (this.SelectedTab is TemplateViewModel)
+            {
+                TemplateViewModel template = this.SelectedTab as TemplateViewModel;
+                suggestedName = template.TemplateName;
+            }
+
+            string savePath = DialogManager.ShowSaveTemplateDialog(suggestedName);
             if (savePath == null)
             {
                 return;
@@ -373,6 +387,10 @@ namespace Aspose.OMR.Client.ViewModels
             this.SaveTemplateByPath(savePath);
         }
 
+        /// <summary>
+        /// Indicates whether command save as can be executed
+        /// </summary>
+        /// <returns></returns>
         private bool CanSaveAsTemplate()
         {
             if (this.SelectedTab is TemplateViewModel)
@@ -399,10 +417,23 @@ namespace Aspose.OMR.Client.ViewModels
                 string jsonRes = TemplateSerializer.TemplateToJson(template);
                 File.WriteAllText(path, jsonRes);
 
-                path = path.Replace(".omr", ".jpg");
+                path = path.Replace(".omr", template.ImageFileFormat);
 
-                // save template image
-                ImageProcessor.SaveTemplateImage(template.TemplateImage, path);
+                // save template image 
+                // if by some reason copy wasn't successful, manually save template image as png
+                if (!string.IsNullOrEmpty(template.TempImagePath))
+                {
+                    if (!ImageProcessor.CopyUserTemplateImage(template.TempImagePath, path))
+                    {
+                        path = path.Replace(template.ImageFileFormat, ".png");
+                        ImageProcessor.SaveTemplateImage(template.TemplateImage, path);
+                    }
+                }
+                else
+                {
+                    path = path.Replace(template.ImageFileFormat, ".png");
+                    ImageProcessor.SaveTemplateImage(template.TemplateImage, path);
+                }
 
                 template.IsDirty = false;
                 template.LoadedPath = path;

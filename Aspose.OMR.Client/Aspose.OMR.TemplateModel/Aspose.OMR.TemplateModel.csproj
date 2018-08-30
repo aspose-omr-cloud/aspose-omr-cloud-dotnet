@@ -44,6 +44,7 @@
     <Compile Include="BarcodeElement.cs" />
     <Compile Include="BarcodeTypes.cs" />
     <Compile Include="ChoiceBoxElement.cs" />
+    <Compile Include="ClipAreaElement.cs" />
     <Compile Include="FinalizationData.cs" />
     <Compile Include="GridElement.cs" />
     <Compile Include="OmrBubble.cs" />

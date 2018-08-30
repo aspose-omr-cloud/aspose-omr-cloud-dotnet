@@ -252,7 +252,7 @@
                     <TabControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding TabName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding TabName}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
                                 
                                 <TextBlock Text="*" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="1,0,0,0" FontSize="14" 
                                            Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}, Path=DataContext.IsDirty, Converter={converters:BoolToVisibilityConverter}}"/>

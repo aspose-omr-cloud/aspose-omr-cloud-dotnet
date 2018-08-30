@@ -121,5 +121,20 @@ namespace Aspose.OMR.TemplateModel
             this.Elements.Add(newElement);
             return newElement;
         }
+
+        public ClipAreaElement AddClipAreaElement(string name, int width, int height, int top, int left)
+        {
+            ClipAreaElement newElement = new ClipAreaElement
+            {
+                Name = name,
+                Width = width,
+                Height = height,
+                Top = top,
+                Left = left
+            };
+
+            this.Elements.Add(newElement);
+            return newElement;
+        }
     }
 }

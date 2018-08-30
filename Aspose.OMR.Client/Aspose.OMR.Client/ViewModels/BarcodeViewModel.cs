@@ -29,43 +29,26 @@ namespace Aspose.OMR.Client.ViewModels
         private bool isSelected;
 
         /// <summary>
-        /// 
+        /// Type of the barcode
         /// </summary>
         private BarcodeTypes selectedBarcodeType;
 
         /// <summary>
-        /// 
+        /// QR version for QR codes
         /// </summary>
         private int? qrVersion;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BarcodeViewModel"/> class
         /// </summary>
-        /// <param name="name">Name of the grid question</param>
-        /// <param name="area">Area of the question</param>
+        /// <param name="name">Name of the barcode</param>
+        /// <param name="area">Area of the element</param>
         /// <param name="templateViewModel">The view model of parent template</param>
         public BarcodeViewModel(string name, Rect area, TemplateViewModel templateViewModel)
         {
             this.InitializeValues(name, area.Top, area.Left, area.Width, area.Height);
             this.ParentTemplate = templateViewModel;
             this.SelectedBarcodeType = BarcodeTypes.qr;
-        }
-
-        /// <summary>
-        /// Initializes question values
-        /// </summary>
-        /// <param name="name">Question name</param>
-        /// <param name="top">Top position on parent canvas</param>
-        /// <param name="left">Left position on parent canvas</param>
-        /// <param name="width">Question's width</param>
-        /// <param name="height">Question's height</param>
-        private void InitializeValues(string name, double top, double left, double width, double height)
-        {
-            this.Name = name;
-            this.Top = top;
-            this.Left = left;
-            this.Width = width;
-            this.Height = height;
         }
 
         /// <summary>
@@ -77,7 +60,6 @@ namespace Aspose.OMR.Client.ViewModels
             set
             {
                 this.isSelected = value;
-
                 this.OnPropertyChanged();
             }
         }
@@ -89,11 +71,6 @@ namespace Aspose.OMR.Client.ViewModels
         {
             get { return true; }
         }
-
-        /// <summary>
-        /// Gets or sets element orientation (unused in barcode)
-        /// </summary>
-        public override Orientations Orientation { get; set; }
 
         /// <summary>
         /// Gets or sets the type of barcode
@@ -138,6 +115,23 @@ namespace Aspose.OMR.Client.ViewModels
         public bool QrVersionVisible
         {
             get { return this.SelectedBarcodeType == BarcodeTypes.qr; }
+        }
+
+        /// <summary>
+        /// Initializes question values
+        /// </summary>
+        /// <param name="name">Question name</param>
+        /// <param name="top">Top position on parent canvas</param>
+        /// <param name="left">Left position on parent canvas</param>
+        /// <param name="width">Question's width</param>
+        /// <param name="height">Question's height</param>
+        private void InitializeValues(string name, double top, double left, double width, double height)
+        {
+            this.Name = name;
+            this.Top = top;
+            this.Left = left;
+            this.Width = width;
+            this.Height = height;
         }
 
         /// <summary>

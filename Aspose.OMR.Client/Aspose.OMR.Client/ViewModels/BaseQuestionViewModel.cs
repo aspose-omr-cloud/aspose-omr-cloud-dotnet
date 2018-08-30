@@ -88,10 +88,10 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         public abstract bool IsValid { get; }
 
-        /// <summary>
-        /// Gets or sets the question orientation
-        /// </summary>
-        public abstract Orientations Orientation { get; set; }
+        ///// <summary>
+        ///// Gets or sets the question orientation
+        ///// </summary>
+        //public abstract Orientations Orientation { get; set; }
 
         /// <summary>
         /// Gets or sets custom mapping command
