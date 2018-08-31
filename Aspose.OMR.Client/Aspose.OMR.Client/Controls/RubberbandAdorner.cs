@@ -93,6 +93,13 @@ namespace Aspose.OMR.Client.Controls
                     this.toSelect = false;
                     break;
                 }
+
+                case SelectionRectnagleModes.ClipArea:
+                {
+                    this.rubberandBrush = (Brush)Application.Current.FindResource("MainItemsBrush");
+                    this.toSelect = false;
+                    break;
+                }
             }
 
             this.rubberbandPen = new Pen(this.rubberandBrush, 1);

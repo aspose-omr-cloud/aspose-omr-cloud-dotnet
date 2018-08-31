@@ -38,6 +38,11 @@ namespace Aspose.OMR.Client.Utility
         private static readonly string ImageFilesFilterPrompt = "Image files |*.jpg; *.jpeg; *.png; *.gif; *.tif; *.tiff;";
 
         /// <summary>
+        /// The filter string for the dialog that saves clipped areas
+        /// </summary>
+        private static readonly string ClipAreaImageFilterPromt = "Image files |*.jpg";
+
+        /// <summary>
         /// The filter string for the dialog that opens generation text file.
         /// </summary>
         private static readonly string TextFilesFilterPrompt = "Text files |*.txt;";
@@ -190,20 +195,30 @@ namespace Aspose.OMR.Client.Utility
         /// Shows Save Template file dialog.
         /// </summary>
         /// <returns>Path to selected file, or <c>null</c> if no file was selected.</returns>
-        public static string ShowSaveTemplateDialog()
+        public static string ShowSaveTemplateDialog(string suggestedName)
         {
             SaveFileDialog dialog = new SaveFileDialog();
-            return ShowDialog(dialog, TemplateFilesFilterPrompt);
+            return ShowDialog(dialog, TemplateFilesFilterPrompt, suggestedName);
         }
 
+        /// <summary>
+        /// Shows save clip area file dialog.
+        /// </summary>
+        /// <returns>Path to selected file, or <c>null</c> if no file was selected.</returns>
+        public static string ShowSaveClipAreaDialog(string suggestedName)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            return ShowDialog(dialog, ClipAreaImageFilterPromt, suggestedName);
+        }
+        
         /// <summary>
         /// Shows Save Recognition Results file dialog.
         /// </summary>
         /// <returns>Path to selected file, or <c>null</c> if no file was selected.</returns>
-        public static string ShowSaveDataDialog()
+        public static string ShowSaveDataDialog(string suggestedName)
         {
             SaveFileDialog dialog = new SaveFileDialog();
-            return ShowDialog(dialog, DataExportFilesFilterPrompt);
+            return ShowDialog(dialog, DataExportFilesFilterPrompt, suggestedName);
         }
 
         /// <summary>
@@ -278,13 +293,18 @@ namespace Aspose.OMR.Client.Utility
         /// </summary>
         /// <param name="dialog">The dialog to show.</param>
         /// <param name="filter">File type filter string.</param>
+        /// <param name="suggestedName">Suggested file name</param>
         /// <returns>Path to selected file, or <c>null</c> if no file was selected.</returns>
-        private static string ShowDialog(FileDialog dialog, string filter)
+        private static string ShowDialog(FileDialog dialog, string filter, string suggestedName = null)
         {
             string fileName = null;
 
             dialog.Filter = filter;
             dialog.RestoreDirectory = true;
+            if (suggestedName != null)
+            {
+                dialog.FileName = suggestedName;
+            }
 
             bool? result = dialog.ShowDialog();
             if (result == true)

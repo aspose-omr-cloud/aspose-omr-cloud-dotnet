@@ -16,6 +16,7 @@
 namespace Aspose.OMR.Client.ViewModels
 {
     using System.Collections.ObjectModel;
+    using Utility;
 
     /// <summary>
     /// View model for image preview within results view
@@ -46,6 +47,11 @@ namespace Aspose.OMR.Client.ViewModels
         /// Indicates whether recognition for this image can be cancelled
         /// </summary>
         private bool canCancel;
+
+        /// <summary>
+        /// Clipped areas for this image
+        /// </summary>
+        private ObservableCollection<ClippedArea> clippedAreas;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImagePreviewViewModel"/> class
@@ -124,6 +130,24 @@ namespace Aspose.OMR.Client.ViewModels
             set
             {
                 this.recognitionResults = value;
+                if (value != null)
+                {
+                    this.IsProcessed = true;
+                }
+
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets clipped areas
+        /// </summary>
+        public ObservableCollection<ClippedArea> ClippedAreas
+        {
+            get { return this.clippedAreas; }
+            set
+            {
+                this.clippedAreas = value;
                 if (value != null)
                 {
                     this.IsProcessed = true;

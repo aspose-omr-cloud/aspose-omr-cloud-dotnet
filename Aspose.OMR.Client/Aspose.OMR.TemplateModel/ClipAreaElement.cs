@@ -13,36 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Aspose.OMR.Client.Utility
+namespace Aspose.OMR.TemplateModel
 {
+    using System.Runtime.Serialization;
+
     /// <summary>
-    /// Modes for selection rectangle
+    /// Represents clip area element
     /// </summary>
-    public enum SelectionRectnagleModes
+    [DataContract(Name = "ClipArea", Namespace = "")]
+    public class ClipAreaElement : OmrElement
     {
-        /// <summary>
-        /// Simple elements selection
-        /// </summary>
-        Selection,
-
-        /// <summary>
-        /// Create new element, choice box
-        /// </summary>
-        ChoiceBox,
-
-        /// <summary>
-        /// Create new element, grid
-        /// </summary>
-        Grid,
-
-        /// <summary>
-        /// Create new element, barcode
-        /// </summary>
-        Barcode,
-
-        /// <summary>
-        /// Create new element, clip area
-        /// </summary>
-        ClipArea
+        [DataMember(Name = "JpegQuality")]
+        public int JpegQuality { get; set; }
     }
 }

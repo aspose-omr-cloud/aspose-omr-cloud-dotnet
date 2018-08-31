@@ -8,27 +8,28 @@
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="1.2*"></ColumnDefinition>
             <ColumnDefinition Width="4.5*"></ColumnDefinition>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*" MaxWidth="400" MinWidth="200"></ColumnDefinition>
+            <ColumnDefinition Width="1.5*" MaxWidth="400" MinWidth="200"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
         </Grid.RowDefinitions>
 
         <!--list view-->
-        <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2" Background="White">
+        <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="0" Background="White">
             <local:ImagesPreview></local:ImagesPreview>
         </Border>
 
         <!--image central area-->
-        <ScrollViewer Grid.Column="1" Grid.Row="0" x:Name="MainScroll"
+        <ScrollViewer Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" x:Name="MainScroll"
                       HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Focusable="False"
                       PreviewMouseWheel="OnPreviewMouseWheel">
 
-            <Grid Background="GhostWhite">
+            <Grid Background="{StaticResource BackgroundBrush}">
                 <Grid.LayoutTransform>
                     <ScaleTransform CenterX="0" CenterY="0" ScaleX="{Binding PageScale}" ScaleY="{Binding PageScale}"></ScaleTransform>
                 </Grid.LayoutTransform>
@@ -40,16 +41,16 @@
         </ScrollViewer>
 
         <!--splitter-->
-        <GridSplitter Grid.Row="0" Grid.Column="2" Focusable="False"
+        <GridSplitter Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Focusable="False" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2"
                       HorizontalAlignment="Center" VerticalAlignment="Stretch"
-                      Background="Transparent" Width="5"/>
+                      Background="Transparent" Width="3"/>
         
         <!--answers view-->
-        <Border Grid.Row="0" Grid.Column="3" Margin="3,1,0,0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2">
+        <Border Grid.Row="0" Grid.Column="3" Margin="0,0,0,0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="0">
             <local:AnswersView/>
         </Border>
-
-        <Border Grid.Row="1" Grid.Column="3" Margin="3,1,0,0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2" Background="White">
+        
+        <Border Grid.Row="1" Grid.Column="3" Margin="0,0,0,0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="0,2,2,0" Background="White">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -67,9 +68,9 @@
         </Border>
 
         <!--lower toolbar-->
-        <Border Margin="0,0,0,0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2"
-                Grid.Row="1" Grid.Column="1">
-            <DockPanel>
+        <Border Margin="0,0,0,0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="0,2,2,2"
+                Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3">
+            <DockPanel Background="White">
                 <ToolBarTray DockPanel.Dock="Bottom" IsLocked="True" Background="White" VerticalAlignment="Center" HorizontalAlignment="Right">
                     <ToolBar Background="White">
                         <Button Content="Out" Command="{Binding ZoomOutCommand}" Margin="5,0,5,0"/>

@@ -25,6 +25,7 @@ namespace Aspose.OMR.TemplateModel
     [KnownType(typeof(ChoiceBoxElement))]
     [KnownType(typeof(GridElement))]
     [KnownType(typeof(BarcodeElement))]
+    [KnownType(typeof(ClipAreaElement))]
     public abstract class OmrElement
     {
         /// <summary>

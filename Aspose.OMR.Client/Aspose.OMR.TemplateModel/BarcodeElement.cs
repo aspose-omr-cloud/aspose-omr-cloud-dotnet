@@ -18,9 +18,15 @@ namespace Aspose.OMR.TemplateModel
     using System;
     using System.Runtime.Serialization;
 
+    /// <summary>
+    /// Represents Barcode element
+    /// </summary>
     [DataContract(Name = "Barcode", Namespace = "")]
     public class BarcodeElement : OmrElement
     {
+        /// <summary>
+        /// Gets or sets the type of the barcode
+        /// </summary>
         public BarcodeTypes BarcodeType { get; set; }
 
         /// <summary>
@@ -43,8 +49,14 @@ namespace Aspose.OMR.TemplateModel
             }
         }
 
+        /// <summary>
+        /// Gets or sets the QR version for QR elements
+        /// </summary>
         public int? QrVersion { get; set; }
 
+        /// <summary>
+        /// Proxy property for displaying QR version value in JSON
+        /// </summary>
         [DataMember(Name = "QrVersion", EmitDefaultValue = false)]
         private int? QrVersionConditional {
             get

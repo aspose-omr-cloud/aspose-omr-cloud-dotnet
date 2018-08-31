@@ -32,7 +32,7 @@
                       CanContentScroll="True" PreviewMouseWheel="OnPreviewMouseWheel"
                       AllowDrop="True" Drop="OnImageDrop">
 
-            <Grid Background="LightGray">
+            <Grid Background="{StaticResource BackgroundBrush}">
                 <Grid.LayoutTransform>
                     <ScaleTransform CenterX="0" CenterY="0" ScaleX="{Binding PageScale}" ScaleY="{Binding PageScale}"/>
                 </Grid.LayoutTransform>
@@ -131,7 +131,12 @@
 
                             <!--Data template defines how BarcodeViewModel looks-->
                             <DataTemplate DataType="{x:Type viewModels:BarcodeViewModel}">
-                                <controls:OmrBarcodeElement Style="{StaticResource BarcodeStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False"></controls:OmrBarcodeElement>
+                                <controls:OmrBarcodeElement Style="{StaticResource BarcodeStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False"/>
+                            </DataTemplate>
+
+                            <!--Data template defines how ClipAreaViewModel looks-->
+                            <DataTemplate DataType="{x:Type viewModels:ClipAreaViewModel}">
+                                <controls:ClipAreaElement Style="{StaticResource ClipAreaStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False"/>
                             </DataTemplate>
 
                             <!--Grid data template defines how GridViewModel looks-->
@@ -181,12 +186,12 @@
 
         <GridSplitter Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"  BorderThickness="2" BorderBrush="{StaticResource MainItemsBrush}"
                       HorizontalAlignment="Center" VerticalAlignment="Stretch" Visibility="{Binding ShowPropertiesPanel,Converter={converters:BoolToVisibilityConverter}}"
-                      Background="Transparent" Width="5"/>
+                      Background="Transparent" Width="3"/>
 
         <!--Element Properties-->
         <DockPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Background="White"
                    Visibility="{Binding ShowPropertiesPanel, Converter={converters:BoolToVisibilityConverter}}">
-            <Border DockPanel.Dock="Top" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2" Margin="2">
+            <Border DockPanel.Dock="Top" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="0">
                 <Grid Background="White">
                     <TextBlock Margin="2" Text="Question Properties" HorizontalAlignment="Center" FontSize="14"/>
                     <Button Content="X"
@@ -207,6 +212,9 @@
                     <DataTemplate DataType="{x:Type viewModels:BarcodeViewModel}">
                         <views:BarcodePropertiesView/>
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:ClipAreaViewModel}">
+                        <views:ClipAreaPropertiesView/>
+                    </DataTemplate>
                 </ContentControl.Resources>
             </ContentControl>
         </DockPanel>
@@ -223,7 +231,7 @@
         </Grid>
 
         <!--lower toolbar-->
-        <Border Margin="0,3,0,0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+        <Border Margin="0,0,0,0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid Background="White">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.55*"></ColumnDefinition>
@@ -238,7 +246,7 @@
                 </StackPanel>
                 
                 <ToolBarTray Grid.Column="1" DockPanel.Dock="Bottom" IsLocked="True" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White">
-                    <ToolBar>
+                    <ToolBar Background="White">
                         <Button Content="Out" Command="{Binding ZoomOutCommand}" Margin="5,0,5,0" ToolTip="Zoom Out"/>
 
                         <Slider x:Name="Slider"

@@ -15,34 +15,29 @@
  */
 namespace Aspose.OMR.Client.Utility
 {
+    using System.Collections.Generic;
+
     /// <summary>
-    /// Modes for selection rectangle
+    /// Represents all the data that may be recieved as a recognition result
     /// </summary>
-    public enum SelectionRectnagleModes
+    public class ImageRecognitionResult
     {
         /// <summary>
-        /// Simple elements selection
+        /// Gets or sets the recognized answers
         /// </summary>
-        Selection,
+        public string RecognizedAnswers { get; set; }
 
         /// <summary>
-        /// Create new element, choice box
+        /// Gets or sets list containing pairs of (imageName,imageData) for each specified clipped area
         /// </summary>
-        ChoiceBox,
+        public List<KeyValuePair<string, byte[]>> ClippedAreas { get; set; }
 
         /// <summary>
-        /// Create new element, grid
+        /// Initializes a new instance of the <see cref="ImageRecognitionResult"/> class.
         /// </summary>
-        Grid,
-
-        /// <summary>
-        /// Create new element, barcode
-        /// </summary>
-        Barcode,
-
-        /// <summary>
-        /// Create new element, clip area
-        /// </summary>
-        ClipArea
+        public ImageRecognitionResult()
+        {
+            this.ClippedAreas = new List<KeyValuePair<string, byte[]>>();
+        }
     }
 }

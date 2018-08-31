@@ -41,10 +41,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.OMR.Cloud.SDK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.OMR-Cloud.1.0.2\lib\Aspose.OMR.Cloud.SDK.dll</HintPath>
+      <HintPath>..\packages\Aspose.OMR-Cloud.1.0.3\lib\Aspose.OMR.Cloud.SDK.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Storage-Cloud, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Storage-Cloud.1.1.1\lib\Aspose.Storage-Cloud.dll</HintPath>
+    <Reference Include="Aspose.Storage.Cloud.Sdk, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Storage-Cloud.18.3.0\lib\net20\Aspose.Storage.Cloud.Sdk.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -74,6 +74,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\ClipAreaElement.cs" />
     <Compile Include="Controls\EnumBindingSourceExtension.cs" />
     <Compile Include="Controls\OmrBarcodeElement.cs" />
     <Compile Include="Controls\OmrGridElement.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Converters\BubbleBrushConverter.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="CoreApi.cs" />
+    <Compile Include="Utility\ClippedArea.cs" />
     <Compile Include="Utility\CloudStorageManager.cs" />
     <Compile Include="Utility\DialogManager.cs" />
     <Compile Include="Utility\EnumExtensions.cs" />
@@ -120,6 +122,7 @@
     <Compile Include="Utility\GlobalConstants.cs" />
     <Compile Include="Utility\HelpManager.cs" />
     <Compile Include="Utility\ImageProcessor.cs" />
+    <Compile Include="Utility\ImageRecognitionResult.cs" />
     <Compile Include="Utility\OmrFunctions.cs" />
     <Compile Include="Utility\PreprocessingConfiguration.cs" />
     <Compile Include="Utility\PreprocessingConfigurationManager.cs" />
@@ -133,6 +136,8 @@
     <Compile Include="Utility\UserSettingsUtility.cs" />
     <Compile Include="ViewModels\BarcodeViewModel.cs" />
     <Compile Include="ViewModels\BaseQuestionViewModel.cs" />
+    <Compile Include="ViewModels\ClipAreaPreviewViewModel.cs" />
+    <Compile Include="ViewModels\ClipAreaViewModel.cs" />
     <Compile Include="ViewModels\CorrectionErrorsViewModel.cs" />
     <Compile Include="ViewModels\CredentialsViewModel.cs" />
     <Compile Include="ViewModels\CustomMappingViewModel.cs" />
@@ -175,6 +180,12 @@
     </Compile>
     <Compile Include="Views\BarcodePropertiesView.xaml.cs">
       <DependentUpon>BarcodePropertiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ClipAreaPropertiesView.xaml.cs">
+      <DependentUpon>ClipAreaPropertiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ClipAreaView.xaml.cs">
+      <DependentUpon>ClipAreaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CommonPropertiesView.xaml.cs">
       <DependentUpon>CommonPropertiesView.xaml</DependentUpon>
@@ -244,6 +255,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BarcodePropertiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ClipAreaPropertiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ClipAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

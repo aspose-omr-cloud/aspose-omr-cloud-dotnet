@@ -24,8 +24,8 @@ namespace Aspose.OMR.Client
     using Storage.Cloud.Sdk.Model;
     using Storage.Cloud.Sdk;
     using Storage.Cloud.Sdk.Model.Requests;
-    using Com.Aspose.Omr.Api;
     using Com.Aspose.Omr.Model;
+    using Com.Aspose.Omr.Api;
     using TemplateModel;
     using Utility;
     using ViewModels;
@@ -108,6 +108,7 @@ namespace Aspose.OMR.Client
             byte[] imageFile = responseResult.ResponseFiles.First(x => x.Name.Contains(".png")).Data;
 
             TemplateViewModel templateViewModel = TemplateSerializer.JsonToTemplate(Encoding.UTF8.GetString(template));
+            templateViewModel.ImageFileFormat = ".png";
 
             TemplateGenerationContent generationContent = new TemplateGenerationContent();
             generationContent.ImageData = imageFile;
@@ -174,7 +175,7 @@ namespace Aspose.OMR.Client
         /// <param name="wasUploaded">Indicates if image was already uploaded on cloud</param>
         /// <param name="additionalParams">The additional parameters</param>
         /// <returns>Recognition results</returns>
-        public static string RecognizeImage(string imageName, byte[] imageData, string templateId, bool wasUploaded, string additionalParams)
+        public static ImageRecognitionResult RecognizeImage(string imageName, byte[] imageData, string templateId, bool wasUploaded, string additionalParams)
         {
             OMRResponse response = RunOmrTask(OmrFunctions.RecognizeImage, imageName, imageData, templateId, wasUploaded, true, additionalParams);
 
@@ -191,8 +192,22 @@ namespace Aspose.OMR.Client
                 throw new Exception(builder.ToString());
             }
 
-            string result = Encoding.UTF8.GetString(response.Payload.Result.ResponseFiles[0].Data);
-            return result;
+            ImageRecognitionResult recognitionResult = new ImageRecognitionResult();
+
+            foreach (Com.Aspose.Omr.Model.FileInfo file in responseResult.ResponseFiles)
+            {
+                if (file.Name.Contains(".dat"))
+                {
+                    byte[] answersBytes = responseResult.ResponseFiles.First(x => x.Name.Contains(".dat")).Data;
+                    recognitionResult.RecognizedAnswers = Encoding.UTF8.GetString(answersBytes);
+                }
+                else if (file.Name.Contains(".jpg"))
+                {
+                    recognitionResult.ClippedAreas.Add(new KeyValuePair<string, byte[]>(file.Name, file.Data));
+                }
+            }
+
+            return recognitionResult;
         }
 
         /// <summary>
@@ -319,7 +334,6 @@ namespace Aspose.OMR.Client
                 foreach (KeyValuePair<string, byte[]> item in imagesToUpload)
                 {
                     BusyIndicatorManager.UpdateText("Uploading image " + item.Key + "...");
-
 
                     string baseHost = new Uri(Basepath).GetComponents(UriComponents.SchemeAndServer, UriFormat.SafeUnescaped).ToString();
                     Configuration storageConfiguration = new Configuration();

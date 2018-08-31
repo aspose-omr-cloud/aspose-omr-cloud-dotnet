@@ -166,7 +166,7 @@ namespace Aspose.OMR.Client.ViewModels
         /// <summary>
         /// Gets or sets choice box orientation
         /// </summary>
-        public override Orientations Orientation
+        public Orientations Orientation
         {
             get { return this.orientation; }
             set

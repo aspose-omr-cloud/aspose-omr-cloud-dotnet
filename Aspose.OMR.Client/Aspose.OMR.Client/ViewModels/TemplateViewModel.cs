@@ -77,6 +77,11 @@ namespace Aspose.OMR.Client.ViewModels
         private bool isAddingBarcode;
 
         /// <summary>
+        /// Indicates that user is currently in adding clip area mode
+        /// </summary>
+        private bool isAddingClipArea;
+
+        /// <summary>
         /// Indicates that template correction has been done
         /// </summary>
         private bool correctionComplete;
@@ -428,7 +433,7 @@ namespace Aspose.OMR.Client.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether adding grid mode is enabled
+        /// Gets or sets a value indicating whether adding barcode mode is enabled
         /// </summary>
         public bool IsAddingBarcode
         {
@@ -445,11 +450,30 @@ namespace Aspose.OMR.Client.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether adding clip area mode is enabled
+        /// </summary>
+        public bool IsAddingClipArea
+        {
+            get { return this.isAddingClipArea; }
+            set
+            {
+                if (value)
+                {
+                    this.ResetAddingElementModes();
+                }
+
+                this.isAddingClipArea = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         private void ResetAddingElementModes()
         {
             this.IsAddingChoiceBox = false;
             this.IsAddingGrid = false;
             this.IsAddingBarcode = false;
+            this.IsAddingClipArea = false;
         }
 
         /// <summary>
@@ -538,6 +562,11 @@ namespace Aspose.OMR.Client.ViewModels
         /// Gets or sets a value indicating whether template image was already uploaded on cloud
         /// </summary>
         public bool WasUploaded { get; set; }
+
+        /// <summary>
+        /// Gets or sets temp location where user template image is stored
+        /// </summary>
+        public string TempImagePath { get; set; }
 
         /// <summary>
         /// Gets or sets page width
@@ -721,24 +750,32 @@ namespace Aspose.OMR.Client.ViewModels
         /// <param name="area">Element area</param>
         public void AddQuestion(Rect area)
         {
-            string nextName = NamingManager.GetNextAvailableElementName(this.PageQuestions);
-
+            string nextName;
             BaseQuestionViewModel newQuestion = null;
 
             if (this.IsAddingChoiceBox)
             {
+                nextName = NamingManager.GetNextAvailableElementName(this.PageQuestions);
                 newQuestion = new ChoiceBoxViewModel(nextName, area, this, null);
                 this.IsAddingChoiceBox = false;
             }
             else if(this.IsAddingGrid)
             {
+                nextName = NamingManager.GetNextAvailableElementName(this.PageQuestions);
                 newQuestion = new GridViewModel(nextName, area, this);
                 this.IsAddingGrid = false;
             }
             else if (this.IsAddingBarcode)
             {
+                nextName = NamingManager.GetNextAvailableBarcodeName(this.PageQuestions);
                 newQuestion = new BarcodeViewModel(nextName, area, this);
                 this.IsAddingBarcode = false;
+            }
+            else if (this.IsAddingClipArea)
+            {
+                nextName = NamingManager.GetNextAvailableAreaName(this.PageQuestions);
+                newQuestion = new ClipAreaViewModel(nextName, area, this);
+                this.IsAddingClipArea = false;
             }
 
             this.OnAddQuestion(newQuestion, true);
@@ -798,7 +835,8 @@ namespace Aspose.OMR.Client.ViewModels
                 return false;
             }
 
-            this.TemplateImage = this.LoadImageNoLock(path);
+            this.TemplateImage = ImageProcessor.LoadImageNoLock(path);
+            this.TempImagePath = ImageProcessor.CopyFileToTemp(path, this.TemplateImageName);
 
             if (this.TemplateImage.PixelWidth < 1200 || this.TemplateImage.PixelHeight < 1700)
             {
@@ -821,26 +859,6 @@ namespace Aspose.OMR.Client.ViewModels
             return true;
         }
 
-        /// <summary>
-        /// Load image without lock
-        /// </summary>
-        /// <param name="path">Path to the image</param>
-        /// <returns>Loaded bitmap image</returns>
-        private BitmapImage LoadImageNoLock(string path)
-        {
-            var bitmap = new BitmapImage();
-            var stream = File.OpenRead(path);
-
-            bitmap.BeginInit();
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.StreamSource = stream;
-            bitmap.EndInit();
-
-            stream.Close();
-            stream.Dispose();
-
-            return bitmap;
-        }
 
         /// <summary>
         /// Removes selected elements
@@ -1318,7 +1336,8 @@ namespace Aspose.OMR.Client.ViewModels
             {
                 // create new copy and update name and position
                 BaseQuestionViewModel copy = this.copiedQuestionsBuffer[i].CreateCopy();
-                copy.Name = NamingManager.GetNextAvailableElementName(this.PageQuestions);
+
+                copy.Name = GetNextElementName(copy);
                 copy.Top -= deltaTop;
                 copy.Left -= deltaLeft;
 
@@ -1329,6 +1348,32 @@ namespace Aspose.OMR.Client.ViewModels
             }
 
             ActionTracker.TrackAction(new AddElementsAction(copiedElements, this.PageQuestions));
+        }
+
+        /// <summary>
+        /// Get next element name based on element type
+        /// </summary>
+        /// <param name="element">The element to get name for</param>
+        /// <returns>Next avialable name for the element</returns>
+        private string GetNextElementName(BaseQuestionViewModel element)
+        {
+            string nextName = string.Empty;
+            var type = element.GetType();
+
+            if (type == typeof(ChoiceBoxViewModel) || type == typeof(GridViewModel))
+            {
+                nextName = NamingManager.GetNextAvailableElementName(this.PageQuestions);
+            }
+            else if (type == typeof(BarcodeViewModel))
+            {
+                nextName = NamingManager.GetNextAvailableBarcodeName(this.PageQuestions);
+            }
+            else if (type == typeof(ClipAreaViewModel))
+            {
+                nextName = NamingManager.GetNextAvailableAreaName(this.PageQuestions);
+            }
+
+            return nextName;
         }
     }
 }

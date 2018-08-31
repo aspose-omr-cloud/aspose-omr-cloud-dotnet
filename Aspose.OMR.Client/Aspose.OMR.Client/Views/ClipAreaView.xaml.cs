@@ -13,36 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Aspose.OMR.Client.Utility
+namespace Aspose.OMR.Client.Views
 {
+    using System.Linq;
+    using System.Windows;
+    using ViewModels;
+
     /// <summary>
-    /// Modes for selection rectangle
+    /// Interaction logic for ClipAreaView.xaml
     /// </summary>
-    public enum SelectionRectnagleModes
+    public partial class ClipAreaView : Window
     {
-        /// <summary>
-        /// Simple elements selection
-        /// </summary>
-        Selection,
-
-        /// <summary>
-        /// Create new element, choice box
-        /// </summary>
-        ChoiceBox,
-
-        /// <summary>
-        /// Create new element, grid
-        /// </summary>
-        Grid,
-
-        /// <summary>
-        /// Create new element, barcode
-        /// </summary>
-        Barcode,
-
-        /// <summary>
-        /// Create new element, clip area
-        /// </summary>
-        ClipArea
+        public ClipAreaView(ClipAreaPreviewViewModel context)
+        {
+            InitializeComponent();
+            this.DataContext = context;
+            this.Owner = Application.Current.Windows.OfType<MainWindow>().First();
+        }
     }
 }
