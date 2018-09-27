@@ -135,11 +135,15 @@ Simply make mobile snapshots or scan filled forms, upload them into OMR.Client o
 ## Roadmap
 In the upcoming releases, we are set to implement a number of new features:
 
- - [X] reduce your expenses by preprocessing and compressing your images;
- - [X] simplify OMR form preparation by introducing an easy markup language. For example, to get the particular survey form ready you only need to provide questions and answers; 
+ - [X] reduce your expenses by preprocessing and compressing your images
+ - [X] simplify OMR form preparation by introducing an easy markup language. For example, to get the particular survey form ready you only need to provide questions and answers 
  - [X] support PDF
- - [X] support barcodes generation and recognition
- - [ ] support diverse interviewee’s marks (ticks, crosses, corrections, etc) on various forms with the use of neural networks;
+ - [X] support barcodes and QR codes generation and recognition
+ - [X] Grade OMR results based on rules
+ - [ ] support diverse interviewee’s marks (ticks, crosses, corrections, etc) on various forms with the use of neural networks
+ - [ ] Support multipage templates
+ - [ ] API for gathering statistics over processed forms
+ - [ ] Handprinted text recognition
  
 
 
@@ -149,7 +153,7 @@ In the upcoming releases, we are set to implement a number of new features:
 ## Resources
 
 + **Website:** [www.aspose.com](https://www.aspose.com/)
-+ **Product Home:** [Aspose.OMR for Cloud](https://products.aspose.cloud/omr/cloud)
++ **Product Home:** [Aspose.OMR for Cloud](https://products.aspose.cloud/omr/net)
 + **Documentation:** [Aspose.OMR for Cloud Documentation](https://docs.aspose.cloud/display/omrcloud/Home)
 + **Cloud Dashboard:** [Aspose Cloud](https://dashboard.aspose.cloud/)
 + **Forum:** [Aspose.OMR for Cloud Forum](https://forum.aspose.cloud/c/omr)
