@@ -58,7 +58,7 @@ Check [Aspose.OMR.Demo](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dot
 
 Simply prepare your questions with our simple markup language. Below you can see survey example.
 
-<img src="TestData/Demonstration/markup.png" width=400>
+<img src="TestData/Demonstration/colored.png" width=400>
 
 ## What do you get?
 
