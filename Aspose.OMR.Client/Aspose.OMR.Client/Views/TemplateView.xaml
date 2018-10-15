@@ -69,7 +69,7 @@
                         </MenuItem>
                     </ContextMenu>
                 </Grid.ContextMenu>
-                    
+
                 <Image SnapsToDevicePixels="True"
                        Source="{Binding TemplateImage, Mode=OneWay}"
                        Width="{Binding Path=PageWidth, Mode=OneWay}"
@@ -83,7 +83,7 @@
                     <ItemsControl ItemsSource="{Binding PageQuestions, Mode=OneWay}" Width="{Binding PageWidth, Mode=OneWay}" Height="{Binding PageHeight, Mode=OneWay}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <controls:CustomCanvas Focusable="True" Background="Transparent" ClipToBounds="True" x:Name="RootCanvas"/>
+                                <controls:CustomCanvas Focusable="True" Background="Transparent" ClipToBounds="True" x:Name="RootCanvas" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemContainerStyle>
@@ -180,7 +180,6 @@
                     <TextBlock Text="You may also Drag &amp; Drop image file to open it" FontSize="16" Foreground="Gray"
                                VerticalAlignment="Center" Margin="5" HorizontalAlignment="Center"/>
                 </StackPanel>
-
             </Grid>
         </ScrollViewer>
 
@@ -242,15 +241,16 @@
                     <Image Source="/Icons/Info32.png" Margin="3"/>
                     
                     <TextBlock x:Name="HelpTextBlock" Text="{Binding HelpMessage, UpdateSourceTrigger=PropertyChanged}"
+                               ToolTip="{Binding HelpMessage, UpdateSourceTrigger=PropertyChanged}"
                                Margin="5,0,5,0" VerticalAlignment="Center" TextWrapping="WrapWithOverflow"></TextBlock>
                 </StackPanel>
                 
                 <ToolBarTray Grid.Column="1" DockPanel.Dock="Bottom" IsLocked="True" HorizontalAlignment="Right" VerticalAlignment="Center" Background="White">
-                    <ToolBar Background="White">
+                    <ToolBar Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
                         <Button Content="Out" Command="{Binding ZoomOutCommand}" Margin="5,0,5,0" ToolTip="Zoom Out"/>
 
                         <Slider x:Name="Slider"
-                                Orientation="Horizontal" Width="100" 
+                                Orientation="Horizontal" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Minimum="0.1" Maximum="4" Value="{Binding ZoomLevel}" 
                                 SmallChange="0.1" LargeChange="0.2"/>
 

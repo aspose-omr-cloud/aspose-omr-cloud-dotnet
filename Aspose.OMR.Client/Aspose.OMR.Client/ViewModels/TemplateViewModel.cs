@@ -24,6 +24,8 @@ namespace Aspose.OMR.Client.ViewModels
     using System.Threading.Tasks;
     using System.Linq;
     using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using TemplateModel;
     using UndoRedo;
@@ -117,7 +119,7 @@ namespace Aspose.OMR.Client.ViewModels
         private double pageHeight;
 
         /// <summary>
-        /// Help message containing various useful information displayed at lower toolbar
+        /// Help message containing various useful information displayed at the lower toolbar
         /// </summary>
         private string helpMessage;
 
@@ -299,37 +301,6 @@ namespace Aspose.OMR.Client.ViewModels
         }
 
         /// <summary>
-        /// Updates workflow stage depending on various conditions
-        /// </summary>
-        private void UpdateTemplateCreationStage()
-        {
-            if (this.TemplateImage == null)
-            {
-                this.CurrentStage = TemplateCreationStages.NoImage;
-            }
-            else if (this.PageQuestions.Count == 0)
-            {
-                this.CurrentStage = TemplateCreationStages.NoElements;
-            }
-            else if (this.PageQuestions.Count < 3)
-            {
-                this.CurrentStage = TemplateCreationStages.WorkWithElements;
-            }
-            else if (string.IsNullOrEmpty(this.TemplateId))
-            {
-                this.CurrentStage = TemplateCreationStages.NoValidation;
-            }
-            else if (this.ValidationFailed || (!string.IsNullOrEmpty(this.TemplateId) && !this.FinalizationComplete))
-            {
-                this.CurrentStage = TemplateCreationStages.ValidatedWithErrors;
-            }
-            else if (this.FinalizationComplete)
-            {
-                this.CurrentStage = TemplateCreationStages.ValidatedWithNoErrors;
-            }
-        }
-
-        /// <summary>
         /// Gets current template creation stage
         /// </summary>
         public TemplateCreationStages CurrentStage
@@ -340,7 +311,7 @@ namespace Aspose.OMR.Client.ViewModels
                 this.currentStage = value;
 
                 // update help message
-                this.HelpMessage = HelpManager.GetMessageByStage(value);
+                this.HelpMessage = HelpManager.GetTemplateMessageByStage(value);
             }
         }
 
@@ -466,14 +437,6 @@ namespace Aspose.OMR.Client.ViewModels
                 this.isAddingClipArea = value;
                 this.OnPropertyChanged();
             }
-        }
-
-        private void ResetAddingElementModes()
-        {
-            this.IsAddingChoiceBox = false;
-            this.IsAddingGrid = false;
-            this.IsAddingBarcode = false;
-            this.IsAddingClipArea = false;
         }
 
         /// <summary>
@@ -677,6 +640,8 @@ namespace Aspose.OMR.Client.ViewModels
 
         public RelayCommand ValidateTemplateCommand { get; private set; }
 
+        public RelayCommand PrintTemplateCommand { get; private set; }
+
         public RelayCommand CopyElementsCommand { get; private set; }
 
         public RelayCommand PasteElementsCommand { get; private set; }
@@ -720,6 +685,48 @@ namespace Aspose.OMR.Client.ViewModels
         #endregion
 
         #endregion
+
+        /// <summary>
+        /// Updates workflow stage depending on various conditions
+        /// </summary>
+        private void UpdateTemplateCreationStage()
+        {
+            if (this.TemplateImage == null)
+            {
+                this.CurrentStage = TemplateCreationStages.NoImage;
+            }
+            else if (this.PageQuestions.Count == 0)
+            {
+                this.CurrentStage = TemplateCreationStages.NoElements;
+            }
+            else if (this.PageQuestions.Count < 3)
+            {
+                this.CurrentStage = TemplateCreationStages.WorkWithElements;
+            }
+            else if (string.IsNullOrEmpty(this.TemplateId))
+            {
+                this.CurrentStage = TemplateCreationStages.NoValidation;
+            }
+            else if (this.ValidationFailed || (!string.IsNullOrEmpty(this.TemplateId) && !this.FinalizationComplete))
+            {
+                this.CurrentStage = TemplateCreationStages.ValidatedWithErrors;
+            }
+            else if (this.FinalizationComplete)
+            {
+                this.CurrentStage = TemplateCreationStages.ValidatedWithNoErrors;
+            }
+        }
+
+        /// <summary>
+        /// Resets chosen elements mode
+        /// </summary>
+        private void ResetAddingElementModes()
+        {
+            this.IsAddingChoiceBox = false;
+            this.IsAddingGrid = false;
+            this.IsAddingBarcode = false;
+            this.IsAddingClipArea = false;
+        }
 
         /// <summary>
         /// Unselect all elements
@@ -840,7 +847,7 @@ namespace Aspose.OMR.Client.ViewModels
 
             if (this.TemplateImage.PixelWidth < 1200 || this.TemplateImage.PixelHeight < 1700)
             {
-                DialogManager.ShowImageSizeWarning();
+                DialogManager.ShowImageSizeWarning(fileInfo.Name);
             }
 
             ZoomKoefficient = monitorWidth / this.TemplateImage.PixelWidth < 1
@@ -953,6 +960,8 @@ namespace Aspose.OMR.Client.ViewModels
 
             this.ValidateTemplateCommand = new RelayCommand(x => this.OnValidateTemplate(), x => this.CanValidate);
 
+            this.PrintTemplateCommand = new RelayCommand(x => this.OnPrintTemplate(), x => this.FinalizationComplete);
+
             this.CopyElementsCommand = new RelayCommand(x => this.OnCopyQuestions(), x => this.SelectedElements.Any());
 
             this.PasteElementsCommand = new RelayCommand(x =>
@@ -995,6 +1004,48 @@ namespace Aspose.OMR.Client.ViewModels
                 this.savedPropertiesWidth = this.PropertiesPanelWidth;
                 this.PropertiesPanelWidth = PropertiesPanelClosedWidth;
             });
+        }
+
+        /// <summary>
+        /// Prints template image
+        /// </summary>
+        private void OnPrintTemplate()
+        {
+            try
+            {
+                PrintDialog printDialog = new PrintDialog();
+                if (printDialog.ShowDialog() == true)
+                {
+                    DrawingVisual visual = new DrawingVisual();
+
+                    using (DrawingContext dc = visual.RenderOpen())
+                    {
+                        BitmapImage image = this.TemplateImage.Clone();
+
+                        double totalScale;
+                        double heightScale = printDialog.PrintableAreaHeight / image.PixelHeight;
+                        double widthScale = printDialog.PrintableAreaWidth / image.PixelWidth;
+
+                        if (heightScale <= 1 || widthScale <= 1)
+                        {
+                            totalScale = heightScale < widthScale ? heightScale : widthScale;
+                        }
+                        else
+                        {
+                            totalScale = heightScale > widthScale ? heightScale : widthScale;
+                        }
+
+                        Rect rc = new Rect(0, 0, totalScale * image.PixelWidth, totalScale * image.PixelHeight);
+                        dc.DrawImage(image, rc);
+                    }
+
+                    printDialog.PrintVisual(visual, "Print Template");
+                }
+            }
+            catch (Exception e)
+            {
+                DialogManager.ShowErrorDialog(e.Message);
+            }
         }
 
         /// <summary>

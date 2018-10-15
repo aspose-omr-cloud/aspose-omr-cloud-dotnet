@@ -10,7 +10,7 @@
             <RowDefinition Height="0.15*"></RowDefinition>
             <RowDefinition Height="0.5*"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid ItemsSource="{Binding RecognitionResults}" AutoGenerateColumns="False" 
+        <DataGrid ItemsSource="{Binding RecognitionResults}" AutoGenerateColumns="False" BorderThickness="0"
                   CanUserSortColumns="False" CanUserDeleteRows="False" CanUserAddRows="False"
                   SelectionMode="Single" ColumnWidth="*" MinColumnWidth="50" Background="White">
             <DataGrid.Columns>
@@ -19,10 +19,15 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <TextBlock Grid.Row="1" Text="Clipped Areas" Background="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2" FontSize="16"></TextBlock>
+        <Border Grid.Row="1" BorderThickness="0,1,0,1" BorderBrush="{StaticResource MainItemsBrush}">
+            <TextBlock  Text="Clipped Areas" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                       Margin="2" FontSize="16"
+            ></TextBlock>
+        </Border>
 
-        <DataGrid ItemsSource="{Binding ClippedAreas}" AutoGenerateColumns="False" Grid.Row="2" SelectedItem="{Binding SelectedClippedArea}"
-                  CanUserSortColumns="False" CanUserDeleteRows="False" CanUserAddRows="False"
+
+        <DataGrid ItemsSource="{Binding ClippedAreas}" AutoGenerateColumns="False" Grid.Row="2"
+                  CanUserSortColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" BorderThickness="0"
                   SelectionMode="Single" ColumnWidth="*" MinColumnWidth="50" Background="White">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding AreaName}" IsReadOnly="True"></DataGridTextColumn>

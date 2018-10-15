@@ -7,7 +7,7 @@
         Icon="/OMR.ico"
         Title="OMR Client"
         WindowStartupLocation="CenterScreen"
-        MinHeight="600" MinWidth="800"
+        MinHeight="600" MinWidth="900"
         Height="800" Width="1280">
 
     <Window.Resources>
@@ -221,7 +221,8 @@
                 </ContentControl>
                 
                 <ToolBarTray Background="White" IsLocked="True" DockPanel.Dock="Top" Visibility="{Binding IsRecognitionAvailable, Converter={converters:BoolToVisibilityConverter}}">
-                    <ToolBar Background="White">
+                    <ToolBar Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
+                        <Separator Background="{StaticResource MainItemsBrush}"/>
                         <Button Content="Recognize" Command="{Binding StartRecognitionCommand}"></Button>
                     </ToolBar>
                 </ToolBarTray>

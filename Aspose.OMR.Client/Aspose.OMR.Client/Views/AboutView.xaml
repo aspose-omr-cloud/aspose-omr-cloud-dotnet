@@ -41,7 +41,7 @@
 
         <TextBlock Grid.Row="3" Grid.Column="1" Margin="5"> 
             <Hyperlink 
-                NavigateUri="https://www.aspose.cloud/products/omr/cloud"
+                NavigateUri="https://www.aspose.cloud/products/omr/"
                 RequestNavigate="OnRequestNavigate"
             >OMR Cloud Product Page</Hyperlink>
         </TextBlock>

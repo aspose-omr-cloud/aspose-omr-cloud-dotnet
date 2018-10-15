@@ -50,13 +50,13 @@ namespace Aspose.OMR.Client.Utility
         {
             if (file.Length >= 1024 * 1024 * 50)
             {
-                DialogManager.ShowErrorDialog("File is too large. Please use images less than 50MB in size.");
+                DialogManager.ShowErrorDialog(string.Format("File \"{0}\" is too large. Please use images less than 50MB in size.", file.Name));
                 return false;
             }
 
             if (file.Length < 1024 * 100)
             {
-                DialogManager.ShowWarningDialog("File is too small. We recommend using images larger than 100KB.");
+                DialogManager.ShowWarningDialog(string.Format("File \"{0}\" is too small. We recommend using images larger than 100KB.", file.Name));
                 return true;
             }
 

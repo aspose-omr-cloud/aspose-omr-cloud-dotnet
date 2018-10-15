@@ -4,28 +4,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="400">
+             d:DesignHeight="100" d:DesignWidth="700">
     
     <Grid>
         <DockPanel>
             <ToolBarTray DockPanel.Dock="Top" IsLocked="True" Background="White">
-                
-                <ToolBar Background="White" BandIndex="0">
+
+                <ToolBar Background="White" BandIndex="0" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
                     <Button ToolTip="Load Images" Command="{Binding LoadImagesCommand}" Style="{StaticResource ImageButton}" Margin="0,0,6,0">
                         <Image Source="/Icons/Picture.png" />
                     </Button>
 
-                    <Button ToolTip="Load Folder" Command="{Binding LoadFolderCommand}" Style="{StaticResource ImageButton}">
+                    <Button ToolTip="Load Folder" Command="{Binding LoadFolderCommand}" Style="{StaticResource ImageButton}" Margin="0,0,6,0">
                         <Image Source="/Icons/AddFolder.png" />
                     </Button>
-                </ToolBar>
 
-                <ToolBar Background="White" BandIndex="1">
-                    <Button Content="Preprocessing Presets" Command="{Binding ShowPresetsCommand}">
+                    <Button ToolTip="Scan Template Image" Command="{Binding ScanImageCommand}" Style="{StaticResource ImageButton}">
+                        <Image Source="/Icons/Scanner.png" />
                     </Button>
+                    <Separator Background="{StaticResource MainItemsBrush}"/>
                 </ToolBar>
 
-                <ToolBar Background="White" BandIndex="2">
+                <ToolBar Background="White" BandIndex="1" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
+                    <Button Content="Preprocessing Presets" Command="{Binding ShowPresetsCommand}"/>
+                    <Separator Background="{StaticResource MainItemsBrush}"/>
+                </ToolBar>
+
+                <ToolBar Background="White" BandIndex="2" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
                     <Button Content="Recognize All Images" Command="{Binding RecognizeAllCommand}" Margin="0,0,5,0">
                     </Button>
 
@@ -34,9 +39,10 @@
 
                     <Button Content="Cancel All" Command="{Binding CancelAllCommand}">
                     </Button>
+                    <Separator Background="{StaticResource MainItemsBrush}"/>
                 </ToolBar>
 
-                <ToolBar Background="White" BandIndex="3">
+                <ToolBar Background="White" BandIndex="3" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
                     <Button Content="Export Results" Command="{Binding ExportDataCommand}" Margin="0,0,5,0">
                     </Button>
 

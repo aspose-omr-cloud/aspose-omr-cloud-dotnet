@@ -10,13 +10,15 @@
         <DockPanel>
             <ToolBarTray DockPanel.Dock="Top" IsLocked="True" Background="White">
 
-                <ToolBar BandIndex="0" Background="White">
+                <ToolBar BandIndex="0" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
+                    <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
                     <Button Command="{Binding LoadTemplateImageCommand}" ToolTip="Import Image" Style="{StaticResource ImageButton}" Margin="3,0,3,0">
                         <Image Source="/Icons/Image.png" />
                     </Button>
                 </ToolBar>
 
-                <ToolBar BandIndex="1" Background="White">
+                <ToolBar BandIndex="1" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
+                    <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
                     <Button Command="{Binding UndoCommand}" ToolTip="Undo" Style="{StaticResource ImageButton}" Margin="0,0,6,0">
                         <Image Source="/Icons/Undo.png" />
                     </Button>
@@ -25,7 +27,9 @@
                     </Button>
                 </ToolBar>
 
-                <ToolBar BandIndex="2" Background="White">
+
+                <ToolBar BandIndex="2" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
+                    <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
                     <Button ToolTip="Copy" Command="{Binding CopyElementsCommand}" Style="{StaticResource ImageButton}" Margin="0,0,6,0">
                         <Image Source="/Icons/Copy.png" />
                     </Button>
@@ -38,7 +42,8 @@
                     </Button>
                 </ToolBar>
 
-                <ToolBar BandIndex="3" Background="White">
+                <ToolBar BandIndex="3" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
+                    <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
                     <Button Command="{Binding AlignLeftCommand}" ToolTip="Align Left" Style="{StaticResource ImageButton}" Margin="0,0,5,0">
                         <Image Source="/Icons/AlignLeft.png" />
                     </Button>
@@ -53,17 +58,23 @@
                     </Button>
                 </ToolBar>
 
-                <ToolBar BandIndex="4" Background="White">
+                <ToolBar BandIndex="4" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
+                    <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
                     <ToggleButton Content="Add Choice Box" IsChecked="{Binding IsAddingChoiceBox}" Margin="0,0,5,0"></ToggleButton>
-                    <ToggleButton Content="Add Grid" IsChecked="{Binding IsAddingGrid}"></ToggleButton>
-                    <ToggleButton Content="Add Barcode" IsChecked="{Binding IsAddingBarcode}"></ToggleButton>
+                    <ToggleButton Content="Add Grid" IsChecked="{Binding IsAddingGrid}" Margin="0,0,5,0"></ToggleButton>
+                    <ToggleButton Content="Add Barcode" IsChecked="{Binding IsAddingBarcode}" Margin="0,0,5,0"></ToggleButton>
                     <ToggleButton Content="Add Clip Area" IsChecked="{Binding IsAddingClipArea}"></ToggleButton>
                 </ToolBar>
 
-                <ToolBar BandIndex="5" Background="White">
-                    <Button Content="Validate Template" Command="{Binding ValidateTemplateCommand}" 
+                <ToolBar BandIndex="5" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
+                    <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
+
+                    <Button Content="Validate Template" Command="{Binding ValidateTemplateCommand}" Margin="0,0,5,0"
                             ToolTip="Validates Template By Perfoming Template Correction and Finalization" 
                             ToolTipService.ShowOnDisabled="True"></Button>
+
+                    <Button Content="Print Template"  Command="{Binding PrintTemplateCommand}" ToolTip="Print Template" ToolTipService.ShowOnDisabled="True">
+                    </Button>
                 </ToolBar>
             </ToolBarTray>
         </DockPanel>
