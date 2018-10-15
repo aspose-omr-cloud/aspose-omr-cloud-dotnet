@@ -56,7 +56,7 @@ Check [Aspose.OMR.Demo](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dot
 
 ## How does it work?
 
-Simply prepare your questions with our simple markup language. Below you can see survey example.
+Simply prepare your questions with our simple markup language. Below you can see [survey example](TestData/AsposeTestBarcodes.txt).
 
 <img src="TestData/Demonstration/colored.png" width=400>
 
@@ -71,7 +71,7 @@ You’ll get a nice and sharp survey ready to print!
 
 Simply make mobile snapshots or scan filled forms, upload them into OMR.Client or call API and you have the results!
 
-<img src="TestData/Demonstration/AsposePhoto.jpg" height=300> <img src="TestData/Demonstration/AsposeRecognition.jpg" height=300> <img src="TestData/Demonstration/Answers.png" height=300>
+<img src="TestData/Demonstration/scanCrop.jpg"> <img src="TestData/Demonstration/scanResults.jpg">
 
 
 ## Roadmap
