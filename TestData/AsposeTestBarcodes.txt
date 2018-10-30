@@ -1,0 +1,54 @@
+?image=LogoImage1.jpg
+	align=left
+
+?text=Name__________________________________              Date____________
+
+?grid=ID
+	sections_count=8
+
+#What is Aspose.OMR main function?
+	() OCR () Capture human-marked data
+	() There is no main function () Enhance images
+#Can Aspose.OMR process not only scans, but also photos?
+	() Yes, indeed! () No
+#Aspose.OMR is available on any platform, because it is:
+	() Cross-platform code () Cloud service
+#Aspose.OMR works with any kind of OMR forms: tests, exams, questionnaires, surveys, etc.
+	() Yes, indeed! () No
+#Excellent recognition results can be achieved only for filled bubbles at least for:
+	() 40% () 60% () 75% () 98%
+#Does Aspose.OMR support bubbles mapping to any key names?
+	() No () Partially (only "A, B, C..." or "1, 2, 3...") () Yes, any key names
+#Do you have to mark up every question on the page?
+	(Yes) Yes, that will help a lot! (No) No
+#I found aspose omr to be a useful tool. (9 - strongly agree, 1 - strongly disagree)
+	(9) (8) (7) (6) (5) (4) (3) (2) (1)
+?text=						Answer sheet section
+
+?answer_sheet=MainQuestions
+	elements_count=15
+	columns_count=5
+
+?text=Sign________________________________
+
+?image=LogoImage2.png
+	align=right
+?barcode=Student_ID
+	value=5901234123457
+	barcode_type=ean13
+	x=900
+	y=3050
+	height=400
+?barcode=AsposeWebsite
+	value=aspose.com
+	barcode_type=qr
+	qr_version=1
+	x=2000
+	y=120
+	height=360
+?barcode=ArucoTest
+	value=53
+	barcode_type=aruco
+	x=140
+	y=3200
+	height=198

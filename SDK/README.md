@@ -35,45 +35,9 @@ using Com.Aspose.Omr.Com.Aspose.Omr.Model;
 <a name="getting-started"></a>
 ## Getting Started
 
-```csharp
-using System;
-using System.Diagnostics;
-using Com.Aspose.Omr.Api;
-using Com.Aspose.Omr.Client;
-using Com.Aspose.Omr.Model;
 
-namespace Example
-{
-    public class Example
-    {
-        public void main()
-        {
-            
-            // You can acquire App SID and App Key by registrating at Aspose Cloud Dashboard https://dashboard.aspose.cloud
-            string APP_KEY = "xxxxx";
-            string APP_SID = "xxxxx"
-
-            var apiInstance = new OmrApi(APP_KEY, APP_SID, "https://api.aspose.cloud/v1.1");
-            var name = name_example;  // string | Name of the file to recognize.
-            var actionName = actionName_example;  // string | Action name ['CorrectTemplate', 'FinalizeTemplate', 'RecognizeImage']
-            var param = new OMRFunctionParam(); // OMRFunctionParam | Function params, specific for each actionName (optional) 
-            var storage = storage_example;  // string | Image's storage. (optional) 
-            var folder = folder_example;  // string | Image's folder. (optional) 
-
-            try
-            {
-                // Run specific OMR task
-                OMRResponse result = apiInstance.PostRunOmrTask(name, actionName, param, storage, folder);
-                Debug.WriteLine(result);
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling OmrApi.PostRunOmrTask: " + e.Message );
-            }
-        }
-    }
-}
-```
+### Code example
+You can check out [OMR Demo](Aspose.OMR.Demo) project to get started with Aspose.OMR for Cloud.
 
 <a name="documentation-for-api-endpoints"></a>
 ## Documentation for API Endpoints
