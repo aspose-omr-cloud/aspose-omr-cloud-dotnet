@@ -31,7 +31,7 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid Background="White">
                             <!--busy indication-->
                             <Border Panel.ZIndex="1" Visibility="{Binding IsProcessing, Converter={converters:BoolToVisibilityConverter}}" Width="Auto" MaxWidth="110">
                                 <Border.Background>
@@ -80,7 +80,7 @@
                                 <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Stretch="Uniform" Width="100" HorizontalAlignment="Center" Margin="0,5,0,0" 
                                    Opacity="{Binding IsProcessed, Converter={converters:BoolToOpacityConverter}}">
                                     <Image.Source>
-                                        <BitmapImage UriSource="{Binding PathToImage, Converter={converters:ImageConverter}, Mode=OneWay}" DecodePixelWidth="100"/>
+                                        <BitmapImage UriSource="{Binding PathToImage, Converter={converters:StringToUriConverter}, Mode=OneWay}" DecodePixelWidth="100"/>
                                     </Image.Source>
                                     <Image.Effect>
                                         <DropShadowEffect Direction="0" BlurRadius="5" ShadowDepth="0" Color="Black"></DropShadowEffect>
@@ -91,6 +91,13 @@
                                    Visibility="{Binding IsProcessed, Converter={converters:BoolToVisibilityConverter}}">
                                     <Image.Source>
                                         <BitmapImage UriSource="/Icons/Check.png"/>
+                                    </Image.Source>
+                                </Image>
+
+                                <Image Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Stretch="None" VerticalAlignment="Bottom" 
+                                       Visibility="{Binding RecognitionError, Converter={converters:BoolToVisibilityConverter}}">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="/Icons/error.png"/>
                                     </Image.Source>
                                 </Image>
 
@@ -131,7 +138,7 @@
         </StackPanel>
 
         <!--Lower buttons-->
-        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2,2,2,2" Background="White">
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2,2,2,0" Background="White">
             <Grid  Margin="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -151,7 +158,7 @@
 
                 <Button Grid.Column="2" ToolTip="Remove Selected Image" Margin="2" Command="{Binding RemoveElementCommand}" Focusable="False" Style="{StaticResource ImageButton}"
                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Image Source="/Icons/DeleteCross32.png"/>
+                    <Image Source="/Icons/Trash32.png"/>
                 </Button>
 
             </Grid>

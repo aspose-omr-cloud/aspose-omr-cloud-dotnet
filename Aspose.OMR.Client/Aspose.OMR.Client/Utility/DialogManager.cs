@@ -40,7 +40,7 @@ namespace Aspose.OMR.Client.Utility
         /// <summary>
         /// The filter string for the dialog that saves clipped areas
         /// </summary>
-        private static readonly string ClipAreaImageFilterPromt = "Image files |*.jpg";
+        private static readonly string JpegImageFilterPromt = "Image files |*.jpg";
 
         /// <summary>
         /// The filter string for the dialog that opens generation text file.
@@ -155,10 +155,11 @@ namespace Aspose.OMR.Client.Utility
         /// <summary>
         /// Display image size warning
         /// </summary>
-        public static void ShowImageSizeWarning()
+        /// <param name="fileInfoName"></param>
+        public static void ShowImageSizeWarning(string fileInfoName)
         {
-            string message = "File is too small. We recommend using images at least 1200x1700 in size.";
-            MessageBox.Show(message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            string message = string.Format("File \"{0}\" is too small. We recommend using images at least 1200x1700 in size.", fileInfoName);
+            MessageBox.Show(message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK, System.Windows.MessageBoxOptions.DefaultDesktopOnly);
         }
 
         /// <summary>
@@ -208,9 +209,19 @@ namespace Aspose.OMR.Client.Utility
         public static string ShowSaveClipAreaDialog(string suggestedName)
         {
             SaveFileDialog dialog = new SaveFileDialog();
-            return ShowDialog(dialog, ClipAreaImageFilterPromt, suggestedName);
+            return ShowDialog(dialog, JpegImageFilterPromt, suggestedName);
         }
-        
+
+        /// <summary>
+        /// Shows save clip area file dialog.
+        /// </summary>
+        /// <returns>Path to selected file, or <c>null</c> if no file was selected.</returns>
+        public static string ShowSaveScannedImageDialog(string suggestedName)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            return ShowDialog(dialog, JpegImageFilterPromt, suggestedName);
+        }
+
         /// <summary>
         /// Shows Save Recognition Results file dialog.
         /// </summary>

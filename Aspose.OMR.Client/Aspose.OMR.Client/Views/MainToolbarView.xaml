@@ -21,7 +21,7 @@
     
     <Grid>
         <ToolBarTray DockPanel.Dock="Top" IsLocked="True" Background="White">
-            <ToolBar Background="White">
+            <ToolBar Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
                 <Button Command="{Binding NewTemplateCommand}" ToolTip="New Template" Margin="0,0,6,0">
                     <Image Source="/Icons/DocumentNew.png"/>
                 </Button>

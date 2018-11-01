@@ -22,15 +22,27 @@ namespace Aspose.OMR.Client.ViewModels
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Runtime.InteropServices;
     using System.Windows;
     using System.Windows.Media.Imaging;
     using Utility;
+    using WIA;
 
     /// <summary>
     /// View model for results view
     /// </summary>
     public class ResultsViewModel : TabViewModel
     {
+        /// <summary>
+        /// Current results processing workflow stage
+        /// </summary>
+        private ResultProcessingStages currentStage;
+
+        /// <summary>
+        /// Help message containing various useful information displayed at the lower toolbar
+        /// </summary>
+        private string helpMessage;
+
         /// <summary>
         /// Id of template which is used for recognition
         /// </summary>
@@ -88,6 +100,11 @@ namespace Aspose.OMR.Client.ViewModels
             this.zoomLevel = 1;
 
             this.InitCommands();
+
+            if (this.PreviewImages.Count == 0)
+            {
+                this.CurrentStage = ResultProcessingStages.NoImages;
+            }
         }
 
         /// <summary>
@@ -104,6 +121,34 @@ namespace Aspose.OMR.Client.ViewModels
         /// Gets or sets zoom koefficient for better representation of large images (values from 0 to 1)
         /// </summary>
         public static double ZoomKoefficient { get; set; }
+
+        /// <summary>
+        /// Gets current template creation stage
+        /// </summary>
+        public ResultProcessingStages CurrentStage
+        {
+            get { return this.currentStage; }
+            private set
+            {
+                this.currentStage = value;
+
+                // update help message
+                this.HelpMessage = HelpManager.GetResultsMessageByStage(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the help message displayed at lower toolbar
+        /// </summary>
+        public string HelpMessage
+        {
+            get { return this.helpMessage; }
+            set
+            {
+                this.helpMessage = value;
+                this.OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the collection of preview images
@@ -255,6 +300,8 @@ namespace Aspose.OMR.Client.ViewModels
 
         public RelayCommand ShowPresetsCommand { get; private set; }
 
+        public RelayCommand ScanImageCommand { get; private set; }
+
         #endregion
 
         /// <summary>
@@ -289,6 +336,56 @@ namespace Aspose.OMR.Client.ViewModels
             this.ExportAllCommand = new RelayCommand(x => this.OnExportAllData(), x => this.RecognitionResults != null);
 
             this.ShowPresetsCommand = new RelayCommand(x => this.OnShowPresets());
+
+            this.ScanImageCommand = new RelayCommand(x => this.OnScanImage());
+        }
+
+        /// <summary>
+        /// Performs image scanning, saving it to user specified location and loading it to the preview items 
+        /// </summary>
+        private void OnScanImage()
+        {
+            ImageFile image;
+
+            try
+            {
+                CommonDialog dialog = new CommonDialog();
+
+                image = dialog.ShowAcquireImage(
+                    WiaDeviceType.ScannerDeviceType,
+                    WiaImageIntent.GrayscaleIntent,
+                    WiaImageBias.MaximizeQuality,
+                    WIA.FormatID.wiaFormatPNG,
+                    false,
+                    true,
+                    false);
+
+                if (image == null)
+                {
+                    return;
+                }
+
+                string savePath = DialogManager.ShowSaveScannedImageDialog(string.Empty);
+                image.SaveFile(savePath);
+
+                this.LoadPreviewImage(savePath);
+            }
+            catch (COMException ex)
+            {
+                if (ex.ErrorCode == -2145320939)
+                {
+                    DialogManager.ShowErrorDialog(
+                        "Error retrieving a list of scanners. Please make sure your device is connected and turned on.");
+                }
+                else
+                {
+                    DialogManager.ShowErrorDialog("COM Exception : " + ex.Message);
+                }
+            }
+            catch (Exception e)
+            {
+                DialogManager.ShowErrorDialog("Error occured : " + e.Message);
+            }
         }
 
         /// <summary>
@@ -358,6 +455,7 @@ namespace Aspose.OMR.Client.ViewModels
             {
                 this.MainImage = null;
                 this.InitialPreviewPanelVisibility = Visibility.Visible;
+                this.CurrentStage = ResultProcessingStages.NoImages;
             }
             else
             {
@@ -414,27 +512,38 @@ namespace Aspose.OMR.Client.ViewModels
 
             foreach (string file in files)
             {
-                FileInfo fileInfo = new FileInfo(file);
-
-                if (!ResolutionUtility.CheckImageSize(fileInfo))
-                {
-                    continue;
-                }
-
-                // load image metadata to check width and height
-                var bitmapFrame = BitmapFrame.Create(new Uri(file), BitmapCreateOptions.DelayCreation, BitmapCacheOption.None);
-                if (bitmapFrame.PixelWidth < 1200 || bitmapFrame.PixelHeight < 1700)
-                {
-                    DialogManager.ShowImageSizeWarning();
-                }
-
-                var newItem = new ImagePreviewViewModel(file, Path.GetFileName(file), fileInfo.Length);
-                newItem.ImageFileFormat = fileInfo.Extension;
-                this.PreviewImages.Add(newItem);
+                this.LoadPreviewImage(file);
             }
 
-            this.InitialPreviewPanelVisibility = Visibility.Collapsed;
             this.SelectedPreviewImage = this.PreviewImages.First();
+        }
+
+        /// <summary>
+        /// Loads single preview image from specified path
+        /// </summary>
+        /// <param name="pathToImage"></param>
+        private void LoadPreviewImage(string pathToImage)
+        {
+            FileInfo fileInfo = new FileInfo(pathToImage);
+
+            if (!ResolutionUtility.CheckImageSize(fileInfo))
+            {
+                return;
+            }
+
+            // load image metadata to check width and height
+            BitmapFrame bitmapFrame = BitmapFrame.Create(new Uri(pathToImage), BitmapCreateOptions.DelayCreation, BitmapCacheOption.None);
+            if (bitmapFrame.PixelWidth < 1200 || bitmapFrame.PixelHeight < 1700)
+            {
+                    DialogManager.ShowImageSizeWarning(fileInfo.Name);
+            }
+
+            var newItem = new ImagePreviewViewModel(pathToImage, Path.GetFileName(pathToImage), fileInfo.Length);
+            newItem.ImageFileFormat = fileInfo.Extension;
+            this.PreviewImages.Add(newItem);
+
+            this.InitialPreviewPanelVisibility = Visibility.Collapsed;
+            this.CurrentStage = ResultProcessingStages.GotImagesToRecognize;
         }
 
         /// <summary>
@@ -459,6 +568,7 @@ namespace Aspose.OMR.Client.ViewModels
                     }
                 }
             };
+            worker.RunWorkerCompleted += ImagesProcessed;
 
             foreach (var item in this.PreviewImages)
             {
@@ -467,6 +577,21 @@ namespace Aspose.OMR.Client.ViewModels
             }
 
             worker.RunWorkerAsync();
+        }
+
+        /// <summary>
+        /// Check processed items state after recognition function call
+        /// </summary>
+        private void ImagesProcessed(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (this.PreviewImages.Any(x => x.RecognitionError))
+            {
+                this.CurrentStage = ResultProcessingStages.RecognitionError;
+            }
+            else
+            {
+                this.CurrentStage = ResultProcessingStages.GotResultsToExport;
+            }
         }
 
         /// <summary>
@@ -500,6 +625,7 @@ namespace Aspose.OMR.Client.ViewModels
             {
                 this.RecognizeImageRoutine(itemToProcess);
             };
+            worker.RunWorkerCompleted += ImagesProcessed;
 
             itemToProcess.IsProcessing = true;
             itemToProcess.StatusText = "Waiting...";
@@ -518,7 +644,7 @@ namespace Aspose.OMR.Client.ViewModels
             {
                 // ask user confirmation
                 if (!DialogManager.ShowConfirmDialog(
-                    string.Format("Image {0} was already recognized. Are you sure you want to run recognition again?",
+                    string.Format("Image \"{0}\" was already recognized. Are you sure you want to run recognition again?",
                         itemToProcess.Title)))
                 {
                     // if no confirmation, clean up and return
@@ -560,6 +686,7 @@ namespace Aspose.OMR.Client.ViewModels
                     itemToProcess.IsProcessing = false;
                     itemToProcess.StatusText = string.Empty;
                     itemToProcess.CanCancel = true;
+                    itemToProcess.RecognitionError = false;
                 });
             }
             catch (Exception e)
@@ -568,6 +695,7 @@ namespace Aspose.OMR.Client.ViewModels
                 itemToProcess.IsProcessing = false;
                 itemToProcess.StatusText = string.Empty;
                 itemToProcess.CanCancel = true;
+                itemToProcess.RecognitionError = true;
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {

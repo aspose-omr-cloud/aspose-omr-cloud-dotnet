@@ -13,19 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-namespace Aspose.OMR.Client.Views
+namespace Aspose.OMR.Client.Utility
 {
-    using System.Windows.Controls;
-
     /// <summary>
-    /// Interaction logic for TemplateToolbarView.xaml
+    /// Defined stages of results processing process
     /// </summary>
-    public partial class TemplateToolbarView : UserControl
+    public enum ResultProcessingStages
     {
-        public TemplateToolbarView()
-        {
-            this.InitializeComponent();
-        }
+        /// <summary>
+        /// Initial state, no images has been selected for the recognition
+        /// </summary>
+        NoImages,
+
+        /// <summary>
+        /// Images selected, but no recognition function called
+        /// </summary>
+        GotImagesToRecognize,
+
+        /// <summary>
+        /// Recognition successful, results ready for export
+        /// </summary>
+        GotResultsToExport,
+
+        /// <summary>
+        /// Recognition resulted with an error
+        /// </summary>
+        RecognitionError,
     }
 }

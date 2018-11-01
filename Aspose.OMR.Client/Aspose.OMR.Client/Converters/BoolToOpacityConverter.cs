@@ -41,7 +41,7 @@ namespace Aspose.OMR.Client.Converters
             }
             else
             {
-                return 0.5;
+                return 1.0;
             }
         }
 

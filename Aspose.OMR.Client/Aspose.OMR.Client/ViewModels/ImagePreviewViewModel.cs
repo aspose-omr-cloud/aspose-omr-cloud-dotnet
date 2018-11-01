@@ -54,6 +54,11 @@ namespace Aspose.OMR.Client.ViewModels
         private ObservableCollection<ClippedArea> clippedAreas;
 
         /// <summary>
+        /// Indicates whether item recognition resulted with an error
+        /// </summary>
+        private bool recognitionError;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ImagePreviewViewModel"/> class
         /// </summary>
         /// <param name="pathToImage">Path to image</param>
@@ -70,6 +75,22 @@ namespace Aspose.OMR.Client.ViewModels
             this.IsProcessing = false;
             this.IsProcessed = false;
             this.CanCancel = true;
+        }
+
+        /// <summary>
+        /// Gets or sets the value indicating whether this item faced errors during recognition
+        /// </summary>
+        public bool RecognitionError
+        {
+            get
+            {
+                return recognitionError;
+            }
+            set
+            {
+                recognitionError = value;
+                this.OnPropertyChanged();
+            }
         }
 
         /// <summary>

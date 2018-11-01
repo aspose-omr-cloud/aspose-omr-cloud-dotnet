@@ -24,9 +24,9 @@ namespace Aspose.OMR.Client.Converters
     /// <summary>
     /// Convers string image path to Uri consumed by xaml
     /// </summary>
-    public sealed class ImageConverter : MarkupExtension, IValueConverter
+    public sealed class StringToUriConverter : MarkupExtension, IValueConverter
     {
-        private static ImageConverter converter;
+        private static StringToUriConverter converter;
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -46,7 +46,7 @@ namespace Aspose.OMR.Client.Converters
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            return converter ?? (converter = new ImageConverter());
+            return converter ?? (converter = new StringToUriConverter());
         }
     }
 }
