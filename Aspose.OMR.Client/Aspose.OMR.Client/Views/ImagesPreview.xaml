@@ -32,14 +32,17 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid Background="White">
+
                             <!--busy indication-->
-                            <Border Panel.ZIndex="1" Visibility="{Binding IsProcessing, Converter={converters:BoolToVisibilityConverter}}" Width="Auto" MaxWidth="110">
+                            <Border Panel.ZIndex="1" 
+                                    Visibility="{Binding IsProcessing, Converter={converters:BoolToVisibilityConverter}}" 
+                                    Width="Auto" MaxWidth="110">
                                 <Border.Background>
-                                    <SolidColorBrush Color="DarkGray" Opacity="0.8"></SolidColorBrush>
+                                    <SolidColorBrush Color="White" Opacity="0.8"></SolidColorBrush>
                                 </Border.Background>
 
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Icons/LoadingWhite16.png" Stretch="None" RenderTransformOrigin="0.5, 0.5">
+                                    <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Icons/LoadingBlack24.png" Stretch="None" RenderTransformOrigin="0.5, 0.5">
                                         <Image.RenderTransform>
                                             <!-- giving the transform a name tells the framework not to freeze it -->
                                             <RotateTransform x:Name="noFreeze" />
@@ -56,13 +59,13 @@
                                         </Image.Triggers>
                                     </Image>
 
-                                    <TextBlock Text="{Binding StatusText}" TextWrapping="Wrap" Foreground="White" VerticalAlignment="Center" TextAlignment="Center"/>
+                                    <TextBlock Text="{Binding StatusText}" TextWrapping="Wrap" Foreground="Black" VerticalAlignment="Center" TextAlignment="Center"/>
 
                                     <Button BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Focusable="False"
                                         Visibility="{Binding CanCancel, Converter={converters:BoolToVisibilityConverter}}"
                                         Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.CancelSelectedCommand}"
                                         CommandParameter="{Binding}" ToolTip="Cancel Image Recognition">
-                                        <Image Source="/Icons/CancelWhite16.png" Stretch="None"/>
+                                        <Image Source="/Icons/CircleStop24.png" Stretch="None"/>
                                     </Button>
                                 </StackPanel>
                             </Border>
@@ -78,10 +81,8 @@
                                 </Grid.RowDefinitions>
 
                                 <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Stretch="Uniform" Width="100" HorizontalAlignment="Center" Margin="0,5,0,0" 
-                                   Opacity="{Binding IsProcessed, Converter={converters:BoolToOpacityConverter}}">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="{Binding PathToImage, Converter={converters:StringToUriConverter}, Mode=OneWay}" DecodePixelWidth="100"/>
-                                    </Image.Source>
+                                   Opacity="{Binding IsProcessed, Converter={converters:BoolToOpacityConverter}}"
+                                       Source="{Binding Path=PathToImage, Converter={converters:StringToUriConverter}}">
                                     <Image.Effect>
                                         <DropShadowEffect Direction="0" BlurRadius="5" ShadowDepth="0" Color="Black"></DropShadowEffect>
                                     </Image.Effect>
@@ -101,14 +102,26 @@
                                     </Image.Source>
                                 </Image>
 
-                                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Title}" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Title}" Margin="0,0,0,5" 
+                                           HorizontalAlignment="Left" TextWrapping="NoWrap" ToolTip="{Binding Title}"/>
 
-                                <Button Grid.Row="0" Grid.Column="1" ToolTip="Recognize Image" Margin="0,5,0,0" Focusable="False"
-                                    BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Background="White"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.RecognizeSelectedImageCommand}"
-                                    CommandParameter="{Binding}"
-                                    VerticalAlignment="Top" HorizontalAlignment="Right">
-                                    <Image Source="/Icons/CloudUpload.png" Stretch="None"/>
+                                <Button Grid.Row="0" Grid.Column="1" 
+                                        ToolTip="Recognize Image" Margin="0,5,0,0" Focusable="False" BorderThickness="0" 
+                                        Background="White"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext.RecognizeSelectedImageCommand}"
+                                        CommandParameter="{Binding}" 
+                                        VerticalAlignment="Top" HorizontalAlignment="Right">
+                                    <Image Source="/Icons/Show24.png" Stretch="None"/>
+                                    <Button.Style>
+                                        <Style>
+                                            <Setter Property="Button.Opacity" Value="0.5"></Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="Button.IsMouseOver" Value="True">
+                                                    <Setter Property="Button.Opacity" Value="1"></Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
                                 </Button>
                             </Grid>
                         </Grid>

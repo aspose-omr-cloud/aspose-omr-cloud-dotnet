@@ -62,6 +62,11 @@ namespace Aspose.OMR.Client.ViewModels
         private string extraStoragePath;
 
         /// <summary>
+        /// The selected predefined markup
+        /// </summary>
+        private PredefinedMarkups selectedPredefinedMarkup;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TemplateGeneratorViewModel"/> class
         /// </summary>
         public TemplateGeneratorViewModel()
@@ -175,6 +180,59 @@ namespace Aspose.OMR.Client.ViewModels
             {
                 this.selectedFontSize = value;
                 this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the user selected predefined markup
+        /// </summary>
+        public PredefinedMarkups SelectedPredefinedMarkup
+        {
+            get { return this.selectedPredefinedMarkup; }
+            set
+            {
+                this.selectedPredefinedMarkup = value;
+                UpdatePredefinedMarkup(value);
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Update text according to selected predefined markup
+        /// </summary>
+        /// <param name="value">New value</param>
+        private void UpdatePredefinedMarkup(PredefinedMarkups value)
+        {
+            if (this.IsDirty)
+            {
+                bool dialogRes = DialogManager.ShowConfirmDialog("You have unsaved generation text. Do you want to overwrite it?");
+                if (!dialogRes)
+                {
+                    return;
+                }
+            }
+
+            if (value == PredefinedMarkups.BlankPage)
+            {
+                this.TemplateDescription = string.Empty;
+            }
+            else if (value == PredefinedMarkups.BubbleSheet)
+            {
+                if (string.IsNullOrEmpty(this.TemplateName))
+                {
+                    this.TemplateName = "MyBubbleSheet";
+                }
+
+                this.TemplateDescription = File.ReadAllText(@"Examples/BubbleSheet.txt");
+            }
+            else if (value == PredefinedMarkups.Questionnaire)
+            {
+                if (string.IsNullOrEmpty(this.TemplateName))
+                {
+                    this.TemplateName = "MyQuestionnaire";
+                }
+
+                this.TemplateDescription = File.ReadAllText("Examples/Questionnaire.txt");
             }
         }
 

@@ -23,11 +23,11 @@ namespace Aspose.OMR.Client.Converters
     using Utility;
 
     /// <summary>
-    /// Converts enum description to user-friendly string according to description attribute
+    /// Converts enum name to user-friendly string according to name attribute
     /// </summary>
-    public class EnumDescriptionConverter : MarkupExtension, IValueConverter
+    public class EnumDisplayNameConverter : MarkupExtension, IValueConverter
     {
-        private static EnumDescriptionConverter converter;
+        private static EnumDisplayNameConverter converter;
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -41,11 +41,11 @@ namespace Aspose.OMR.Client.Converters
             {
                 if (string.Equals("markup", parameter))
                 {
-                    return StringToEnum<PredefinedMarkups>(value.ToString()).GetEnumDescription();
+                    return StringToEnum<PredefinedMarkups>(value.ToString()).GetEnumDisplayName();
                 }
                 else if (string.Equals("preset", parameter))
                 {
-                    return StringToEnum<PreprocessingPreset>(value.ToString()).GetEnumDescription();
+                    return StringToEnum<PreprocessingPreset>(value.ToString()).GetEnumDisplayName();
                 }
             }
 
@@ -64,7 +64,7 @@ namespace Aspose.OMR.Client.Converters
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            return converter ?? (converter = new EnumDescriptionConverter());
+            return converter ?? (converter = new EnumDisplayNameConverter());
         }
 
         public static T StringToEnum<T>(string name)

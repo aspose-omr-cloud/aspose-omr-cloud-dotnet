@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
-
 namespace Aspose.OMR.Client.Views
 {
+    using System;
     using System.Windows;
     using ViewModels;
     using Utility;
@@ -113,6 +112,21 @@ namespace Aspose.OMR.Client.Views
 
             // bring client window on top
             GetWindow(this).Activate();
+        }
+
+        /// <summary>
+        /// Hides notification panel after animation is completed
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The event args</param>
+        private void OkNotificationCompleted(object sender, EventArgs e)
+        {
+            var viewModel = this.DataContext as MainViewModel;
+            if (viewModel != null)
+            {
+                viewModel.ValidactionCompleteNotification = false;
+                viewModel.OkNotificationVisible = false;
+            }
         }
     }
 }

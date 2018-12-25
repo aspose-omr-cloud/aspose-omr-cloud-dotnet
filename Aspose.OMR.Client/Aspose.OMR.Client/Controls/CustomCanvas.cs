@@ -139,7 +139,7 @@ namespace Aspose.OMR.Client.Controls
         private void AdornerMouseUp(object sender, MouseButtonEventArgs e)
         {
             RubberbandAdorner adorner = (RubberbandAdorner) sender;
-            
+
             // remove adorner from adorner layer
             AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(this);
             adornerLayer?.Remove(adorner);
@@ -147,6 +147,7 @@ namespace Aspose.OMR.Client.Controls
             if (this.mode != SelectionRectnagleModes.Selection)
             {
                 TemplateViewModel context = (TemplateViewModel)this.DataContext;
+
                 context.AddQuestion(adorner.Rectangle);
             }
         }

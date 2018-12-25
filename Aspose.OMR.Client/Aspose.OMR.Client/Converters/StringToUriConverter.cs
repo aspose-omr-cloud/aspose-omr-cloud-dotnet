@@ -20,9 +20,10 @@ namespace Aspose.OMR.Client.Converters
     using System.Windows;
     using System.Windows.Data;
     using System.Windows.Markup;
+    using System.Windows.Media.Imaging;
 
     /// <summary>
-    /// Convers string image path to Uri consumed by xaml
+    /// Convers string image path to Uri and then to BitmapImage consumed by xaml
     /// </summary>
     public sealed class StringToUriConverter : MarkupExtension, IValueConverter
     {
@@ -30,10 +31,25 @@ namespace Aspose.OMR.Client.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null)
+            if (value == null)
             {
-                var uri = new Uri((string) value);
-                return uri;
+                return null;
+            }
+
+            if (value is string)
+            {
+                value = new Uri((string) value);
+            }
+
+            if (value is Uri)
+            {
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.DecodePixelWidth = 100;
+                image.DecodePixelHeight = 140;
+                image.UriSource = (Uri) value;
+                image.EndInit();
+                return image;
             }
 
             return null;

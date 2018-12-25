@@ -3,26 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Aspose.OMR.Client.Views"
         xmlns:converters="clr-namespace:Aspose.OMR.Client.Converters"
-        xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:controls="clr-namespace:Aspose.OMR.Client.Controls"
-        xmlns:templateModel="clr-namespace:Aspose.OMR.Client.Utility"
+        xmlns:utility="clr-namespace:Aspose.OMR.Client.Utility"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Image Preprocessing Presets"
         Height="600" Width="600">
 
     <Window.Resources>
-        <!--<converters:RadioButtonCheckedConverter x:Key="EnumConverter"/>
-        <converters:BoolInverseConverter x:Key="BoolInverse"/>
-        <system:Boolean x:Key="True">True</system:Boolean>
-        <system:Boolean x:Key="False">False</system:Boolean>-->
-
         <ResourceDictionary>
-            <ObjectDataProvider x:Key="PresetEnum" MethodName="GetValues" ObjectType="{x:Type templateModel:PreprocessingPreset}">
+            <ObjectDataProvider x:Key="PresetEnum" MethodName="GetValues" ObjectType="{x:Type utility:PreprocessingPreset}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="templateModel:PreprocessingPreset" />
+                    <x:Type TypeName="utility:PreprocessingPreset" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
         </ResourceDictionary>
@@ -41,7 +34,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,15,20,10" TextWrapping="Wrap" 
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="50,15,50,10" TextWrapping="Wrap"
                    TextAlignment="Center">
             <TextBlock.Inlines>
                 <Run Text="Image preprocessing"></Run>
@@ -78,13 +71,14 @@
                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                     <Border BorderThickness="1" BorderBrush="LightSkyBlue" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <ComboBox Margin="5" IsEnabled="{Binding IsPreprocessingEnabled}" FontSize="14" Width="150"
+                        <ComboBox Margin="5" IsEnabled="{Binding IsPreprocessingEnabled}" FontSize="14" Width="150" Background="White"
                                   ItemsSource="{Binding Source={StaticResource PresetEnum}}"
                                   SelectedItem="{Binding SelectedPreset, Mode=TwoWay}"
                                   Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={converters:EnumDescriptionConverter}}"/>
+                                    <TextBlock Text="{Binding Converter={converters:EnumDisplayNameConverter}, ConverterParameter=preset}"
+                                               ToolTip="{Binding Converter={converters:EnumDescriptionConverter}, ConverterParameter=preset}"/>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
@@ -184,15 +178,7 @@
                     Height="25" Width="60" Margin="5,5,50,5"
                     Command="{Binding ApplyCommand}"
                     BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"/>
-
-            <Button Content="Cancel"
-                    HorizontalAlignment="Right" VerticalAlignment="Center"
-                    Height="25" Width="60" Margin="5,5,50,5"
-                    Command="{Binding CancelCommand}"
-                    BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"/>
         </StackPanel>
-
-
 
     </Grid>
 </Window>

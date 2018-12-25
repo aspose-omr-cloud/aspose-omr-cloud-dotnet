@@ -27,6 +27,7 @@ namespace Aspose.OMR.Client.ViewModels
     using System.Windows.Controls;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
+    using System.Windows.Shapes;
     using TemplateModel;
     using UndoRedo;
     using Utility;
@@ -144,6 +145,16 @@ namespace Aspose.OMR.Client.ViewModels
         private double savedPropertiesWidth;
 
         /// <summary>
+        /// Min possible width of opened properties panel
+        /// </summary>
+        private double propertiesMinWidth = 180;
+
+        /// <summary>
+        /// Width on the properties pane in closed state.
+        /// </summary>
+        private const double PropertiesPanelClosedWidth = 24d;
+
+        /// <summary>
         /// Template Name
         /// </summary>
         private string templateName;
@@ -157,11 +168,6 @@ namespace Aspose.OMR.Client.ViewModels
         /// Indicated whether template validation has failed
         /// </summary>
         private bool validationFailed;
-
-        /// <summary>
-        /// Minimum width on the properties pane in closed state.
-        /// </summary>
-        private const double PropertiesPanelClosedWidth = 24d;
 
         /// <summary>
         /// Static zoom koefficient value for better representation of large images (values from 0 to 1)
@@ -192,11 +198,14 @@ namespace Aspose.OMR.Client.ViewModels
             this.CorrectionComplete = !string.IsNullOrEmpty(this.TemplateId);
             this.CanValidate = !this.FinalizationComplete;
             this.IsDirty = false;
-
-            this.UpdateTemplateCreationStage();
         }
 
         #region Properties
+
+        /// <summary>
+        /// Indicated whether snap lines are in the elements collections
+        /// </summary>
+        public bool GotSnapLines { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether template was generated
@@ -268,6 +277,19 @@ namespace Aspose.OMR.Client.ViewModels
             set
             {
                 this.propertiesPanelWidth = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the min allowed width of the properties panel
+        /// </summary>
+        public double PropertiesMinWidth
+        {
+            get { return propertiesMinWidth; }
+            set
+            {
+                propertiesMinWidth = value;
                 this.OnPropertyChanged();
             }
         }
@@ -630,6 +652,11 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         public event FinalizationApprovedDelegate FinalizationApproved;
 
+        /// <summary>
+        /// Fires when validation is finished successfully 
+        /// </summary>
+        public event FinalizationApprovedDelegate ValidationSuccessful;
+
         #region Commands
 
         public RelayCommand LoadTemplateImageCommand { get; private set; }
@@ -707,7 +734,7 @@ namespace Aspose.OMR.Client.ViewModels
             {
                 this.CurrentStage = TemplateCreationStages.NoValidation;
             }
-            else if (this.ValidationFailed || (!string.IsNullOrEmpty(this.TemplateId) && !this.FinalizationComplete))
+            else if (this.ValidationFailed)
             {
                 this.CurrentStage = TemplateCreationStages.ValidatedWithErrors;
             }
@@ -749,6 +776,48 @@ namespace Aspose.OMR.Client.ViewModels
             {
                 this.OnAddQuestion(question, false);
             }
+        }
+
+        /// <summary>
+        /// Add snap line view model to the page
+        /// </summary>
+        /// <param name="line">Line to display</param>
+        public void AddLine(Line line)
+        {
+            double top = Math.Min(line.Y1, line.Y2);
+            double left = Math.Min(line.X1, line.X2);
+
+            line.X1 = Math.Max(line.X1 - left, 1);
+            line.X2 = Math.Max(line.X2 - left, 1);
+            line.Y1 = Math.Max(line.Y1 - top, 1);
+            line.Y2 = Math.Max(line.Y2 - top, 1);
+
+            SnapLineViewModel vm = new SnapLineViewModel(line);
+
+            vm.Top = top;
+            vm.Left = left;
+            vm.Height = Math.Abs(line.Y2 - line.Y1);
+            vm.Width = Math.Abs(line.X2 - line.X1);
+
+            this.PageQuestions.Add(vm);
+            this.GotSnapLines = true;
+        }
+
+        /// <summary>
+        /// Remove all snap lines from view models
+        /// </summary>
+        public void CleanSnapLines()
+        {
+            for (int i = 0; i < this.PageQuestions.Count; i++)
+            {
+                if (this.PageQuestions[i] is SnapLineViewModel)
+                {
+                    this.PageQuestions.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            this.GotSnapLines = false;
         }
 
         /// <summary>
@@ -865,7 +934,6 @@ namespace Aspose.OMR.Client.ViewModels
 
             return true;
         }
-
 
         /// <summary>
         /// Removes selected elements
@@ -996,11 +1064,13 @@ namespace Aspose.OMR.Client.ViewModels
             this.ShowPropertiesCommand = new RelayCommand(x =>
             {
                 this.ShowPropertiesPanel = true;
+                this.PropertiesMinWidth = this.PropertiesMinWidth;
                 this.PropertiesPanelWidth = this.savedPropertiesWidth;
             });
             this.HidePropertiesCommand = new RelayCommand(x =>
             {
                 this.ShowPropertiesPanel = false;
+                this.PropertiesMinWidth = PropertiesPanelClosedWidth;
                 this.savedPropertiesWidth = this.PropertiesPanelWidth;
                 this.PropertiesPanelWidth = PropertiesPanelClosedWidth;
             });
@@ -1086,6 +1156,16 @@ namespace Aspose.OMR.Client.ViewModels
         /// <param name="distance">Distance to move elements</param>
         private void OnMoveElementsHorizontal(double distance)
         {
+            // check out of bound for each element
+            foreach (BaseQuestionViewModel element in this.SelectedElements)
+            {
+                if (element.Left + distance <= 0 && element.Left + distance >= PageWidth)
+                {
+                    return;
+                }
+            }
+
+            // move each element
             foreach (BaseQuestionViewModel element in this.SelectedElements)
             {
                 element.Left += distance;
@@ -1098,6 +1178,16 @@ namespace Aspose.OMR.Client.ViewModels
         /// <param name="distance">Distance to move elements</param>
         private void OnMoveElementsVertical(double distance)
         {
+            // check out of bound for each element
+            foreach (BaseQuestionViewModel element in this.SelectedElements)
+            {
+                if (element.Top + distance <= 0 || element.Top + distance >= PageHeight)
+                {
+                    return;
+                }
+            }
+
+            // move each element
             foreach (BaseQuestionViewModel element in this.SelectedElements)
             {
                 element.Top += distance;
@@ -1177,6 +1267,11 @@ namespace Aspose.OMR.Client.ViewModels
             // if validation is fully complete, disable validation until any changes to template are made
             if (this.FinalizationComplete)
             {
+                if (this.ValidationSuccessful != null)
+                {
+                    this.ValidationSuccessful();
+                }
+
                 this.CanValidate = false;
             }
         }
@@ -1234,7 +1329,7 @@ namespace Aspose.OMR.Client.ViewModels
 
                 // clean commands after correction complete
                 ActionTracker.ClearCommands();
-                this.Warnings.Add("Template Correction complete!");
+                //this.Warnings.Add("Template Correction complete!");
             }
             catch (Exception e)
             {
@@ -1259,7 +1354,7 @@ namespace Aspose.OMR.Client.ViewModels
 
             try
             {
-                string templateName = Path.GetFileNameWithoutExtension(this.TemplateImageName) + ".omrcr";
+                string templateName = System.IO.Path.GetFileNameWithoutExtension(this.TemplateImageName) + ".omrcr";
 
                 FinalizationData finalizationResult = await Task.Run(() => CoreApi.FinalizeTemplate(templateName,
                     Encoding.UTF8.GetBytes(templateData), this.TemplateId, additionalPars));
@@ -1426,5 +1521,7 @@ namespace Aspose.OMR.Client.ViewModels
 
             return nextName;
         }
+
+
     }
 }

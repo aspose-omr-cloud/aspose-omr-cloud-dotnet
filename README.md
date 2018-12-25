@@ -42,6 +42,12 @@ Check [releases](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/rel
 
 More info and documentation can be found at: [Client documentation](https://docs.aspose.cloud/display/omrcloud/Aspose.OMR.Client+Application)
 
+Get familiar with OMR Client with short Quickstart video:
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=gnCF-hlAcyg
+" target="_blank"><img src="http://img.youtube.com/vi/gnCF-hlAcyg/0.jpg" 
+alt="Aspose.OMR Client Quickstart" width="400" border="5" /></a>
+
 
 ## Using OMR Cloud API in your projects
 It is quite easy to use OMR in your projects. All you need to do is:
@@ -83,7 +89,7 @@ In the upcoming releases, we are set to implement a number of new features:
  - [X] Support barcodes and QR codes generation and recognition
  - [X] Support [Clip Areas](https://docs.aspose.cloud/display/omrcloud/Clip+areas+of+interest)
  - [X] [Grade OMR results](https://docs.aspose.cloud/display/omrcloud/Answers+Grading) based on rules
- - [ ] OMR.Client usability improvements: more hints&tips, built-in printer and scanner support
+ - [X] OMR.Client usability improvements: more hints&tips, built-in printer and scanner support
  - [ ] Support diverse interviewee’s marks (ticks, crosses, corrections, etc) on various forms with the use of neural networks
  - [ ] Support multipage templates
  - [ ] Handprinted text recognition

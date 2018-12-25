@@ -13,8 +13,8 @@
     <UserControl.Resources>
         <converters:GridLengthConverter x:Key="LengthConverter"></converters:GridLengthConverter>
     </UserControl.Resources>
-    
-    <Grid>
+
+    <Grid KeyboardNavigation.DirectionalNavigation="None">
         <Grid.RowDefinitions>
             <RowDefinition Height="3*" MinHeight="200"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -23,14 +23,16 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="360"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="{Binding Path=PropertiesPanelWidth, Mode=TwoWay, Converter={StaticResource LengthConverter}}" MinWidth="24" MaxWidth="400"/>
+            <ColumnDefinition Width="{Binding Path=PropertiesPanelWidth, Mode=TwoWay, Converter={StaticResource LengthConverter}}"
+                              MinWidth="{Binding Path=PropertiesMinWidth, Mode=TwoWay}"
+                              MaxWidth="400"/>
         </Grid.ColumnDefinitions>
 
         <!--Main area-->
-        <ScrollViewer Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" x:Name="MainScroll"
+        <ScrollViewer Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" x:Name="MainScroll" KeyboardNavigation.DirectionalNavigation="None"
                       HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Focusable="False"
                       CanContentScroll="True" PreviewMouseWheel="OnPreviewMouseWheel"
-                      AllowDrop="True" Drop="OnImageDrop">
+                      AllowDrop="True" Drop="OnImageDrop" IsTabStop="False">
 
             <Grid Background="{StaticResource BackgroundBrush}">
                 <Grid.LayoutTransform>
@@ -43,8 +45,8 @@
                                 <Image Source="/Icons/Copy.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-
-                        <MenuItem Header="_Paste" Command="{Binding PasteElementsCommand}" ToolTipService.ShowOnDisabled="True" InputGestureText="Ctrl+V" ToolTip="Paste Copied Elements">
+                        <MenuItem Header="_Paste" Command="{Binding PasteElementsCommand}" 
+                                  ToolTipService.ShowOnDisabled="True" InputGestureText="Ctrl+V" ToolTip="Paste Copied Elements">
                             <MenuItem.Icon>
                                 <Image Source="/Icons/Paste.png" />
                             </MenuItem.Icon>
@@ -83,7 +85,8 @@
                     <ItemsControl ItemsSource="{Binding PageQuestions, Mode=OneWay}" Width="{Binding PageWidth, Mode=OneWay}" Height="{Binding PageHeight, Mode=OneWay}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <controls:CustomCanvas Focusable="True" Background="Transparent" ClipToBounds="True" x:Name="RootCanvas" />
+                                <controls:CustomCanvas Focusable="True" ClipToBounds="True" x:Name="RootCanvas" Background="Transparent">
+                                </controls:CustomCanvas>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemContainerStyle>
@@ -96,12 +99,11 @@
                                 <Setter Property="MinHeight" Value="20"/>
                             </Style>
                         </ItemsControl.ItemContainerStyle>
-                        
                         <ItemsControl.Resources>
                             
                             <!--ChoiceBox data template defines how ChoiceBoxViewModel looks-->
                             <DataTemplate DataType="{x:Type viewModels:ChoiceBoxViewModel}">
-                                <controls:OmrChoiceBox Style="{StaticResource ChoiceBoxStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False">
+                                <controls:OmrChoiceBox Style="{StaticResource ChoiceBoxStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False" Focusable="False">
                                     <Border BorderThickness="0.5" BorderBrush="{StaticResource MainItemsBrush}">
                                         <ItemsControl ItemsSource="{Binding Bubbles, Mode=OneWay}" IsTabStop="False">
                                             <ItemsControl.ItemsPanel>
@@ -131,17 +133,22 @@
 
                             <!--Data template defines how BarcodeViewModel looks-->
                             <DataTemplate DataType="{x:Type viewModels:BarcodeViewModel}">
-                                <controls:OmrBarcodeElement Style="{StaticResource BarcodeStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False"/>
+                                <controls:OmrBarcodeElement Style="{StaticResource BarcodeStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False" Focusable="False"/>
                             </DataTemplate>
 
                             <!--Data template defines how ClipAreaViewModel looks-->
                             <DataTemplate DataType="{x:Type viewModels:ClipAreaViewModel}">
-                                <controls:ClipAreaElement Style="{StaticResource ClipAreaStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False"/>
+                                <controls:ClipAreaElement Style="{StaticResource ClipAreaStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False" Focusable="False"/>
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type viewModels:SnapLineViewModel}">
+                                <Line Stroke="Red" StrokeThickness="2" StrokeDashArray="3 3"
+                                      X1="{Binding X1}" X2="{Binding X2}" Y1="{Binding Y1}" Y2="{Binding Y2}"></Line>
                             </DataTemplate>
 
                             <!--Grid data template defines how GridViewModel looks-->
                             <DataTemplate DataType="{x:Type viewModels:GridViewModel}">
-                                <controls:OmrGridElement Style="{StaticResource GridStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False">
+                                <controls:OmrGridElement Style="{StaticResource GridStyle}" IsSelected="{Binding IsSelected, Mode=TwoWay}" IsTabStop="False" Focusable="False">
                                     <Border BorderThickness="1.5" BorderBrush="{StaticResource MainItemsBrush}">
                                         <ItemsControl ItemsSource="{Binding ChoiceBoxes, Mode=OneWay}" IsTabStop="False">
                                             <ItemsControl.ItemsPanel>
@@ -200,7 +207,24 @@
                 </Grid>
             </Border>
 
-            <ContentControl DataContext="{Binding PropertiesContext}" Content="{Binding}" >
+            <ContentControl DataContext="{Binding PropertiesContext}" Content="{Binding}" MinWidth="150">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content}" Value="{x:Null}">
+                                <Setter Property="ContentControl.Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0">
+                                                <TextBlock Foreground="DarkGray">Please select an element</TextBlock>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
                 <ContentControl.Resources>
                     <DataTemplate DataType="{x:Type viewModels:ChoiceBoxViewModel}">
                         <views:ChoiceBoxPropertiesView/>
@@ -233,7 +257,7 @@
         <Border Margin="0,0,0,0" BorderBrush="{StaticResource MainItemsBrush}" BorderThickness="2" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid Background="White">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.55*"></ColumnDefinition>
+                    <ColumnDefinition Width="1.3*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 

@@ -11,7 +11,9 @@
             <ToolBarTray DockPanel.Dock="Top" IsLocked="True" Background="White">
 
                 <ToolBar Background="White" BandIndex="0" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
-                    <Button ToolTip="Load Images" Command="{Binding LoadImagesCommand}" Style="{StaticResource ImageButton}" Margin="0,0,6,0">
+                    <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
+
+                    <Button ToolTip="Load Images" Command="{Binding LoadImagesCommand}" Style="{StaticResource ImageButton}" Margin="5,0,6,0">
                         <Image Source="/Icons/Picture.png" />
                     </Button>
 
@@ -22,31 +24,37 @@
                     <Button ToolTip="Scan Template Image" Command="{Binding ScanImageCommand}" Style="{StaticResource ImageButton}">
                         <Image Source="/Icons/Scanner.png" />
                     </Button>
-                    <Separator Background="{StaticResource MainItemsBrush}"/>
+                    <Separator Background="{StaticResource MainItemsBrush}" Margin="7,0,0,0"/>
                 </ToolBar>
 
                 <ToolBar Background="White" BandIndex="1" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
-                    <Button Content="Preprocessing Presets" Command="{Binding ShowPresetsCommand}"/>
+                    <Button Command="{Binding ShowPresetsCommand}" Content="Preprocessing Presets" ToolTip="Set settings for image preprocessing"/>
                     <Separator Background="{StaticResource MainItemsBrush}"/>
                 </ToolBar>
 
                 <ToolBar Background="White" BandIndex="2" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
-                    <Button Content="Recognize All Images" Command="{Binding RecognizeAllCommand}" Margin="0,0,5,0">
+                    <Button Command="{Binding RecognizeAllCommand}" Margin="0,0,5,0" ToolTip="Recognize All Images" ToolTipService.ShowOnDisabled="True">
+                        <StackPanel>
+                            <Image Source="/Icons/Show.png" Style="{StaticResource OpacityChangedImage}"/>
+                            <TextBlock Text="Recognize All"></TextBlock>
+                        </StackPanel>
                     </Button>
 
-                    <Button Content="Recognize Selected Image" Command="{Binding RecognizeSelectedImageCommand}" Margin="0,0,5,0">
-                    </Button>
-
-                    <Button Content="Cancel All" Command="{Binding CancelAllCommand}">
+                    <Button Command="{Binding CancelAllCommand}" ToolTip="Cancel the Recognition" ToolTipService.ShowOnDisabled="True">
+                        <StackPanel>
+                            <Image Source="/Icons/Circle Stop.png" Style="{StaticResource OpacityChangedImage}"/>
+                            <TextBlock Text="Cancel All"></TextBlock>
+                        </StackPanel>
                     </Button>
                     <Separator Background="{StaticResource MainItemsBrush}"/>
                 </ToolBar>
 
                 <ToolBar Background="White" BandIndex="3" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
-                    <Button Content="Export Results" Command="{Binding ExportDataCommand}" Margin="0,0,5,0">
-                    </Button>
-
-                    <Button Content="Export All" Command="{Binding ExportAllCommand}">
+                    <Button  Command="{Binding ExportAllCommand}" ToolTip="Export all results in csv format" ToolTipService.ShowOnDisabled="True">
+                        <StackPanel>
+                            <Image Source="/Icons/CSV-Export.png" Style="{StaticResource OpacityChangedImage}" />
+                            <TextBlock Text="Export All"></TextBlock>
+                        </StackPanel>
                     </Button>
                 </ToolBar>
             </ToolBarTray>

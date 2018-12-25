@@ -67,6 +67,9 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         private ObservableCollection<string> recentFiles;
 
+        private bool validactionCompleteNotification;
+        private bool okNotificationVisible;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
@@ -133,6 +136,10 @@ namespace Aspose.OMR.Client.ViewModels
         public RelayCommand ShowCredentialsSettingsCommand { get; set; }
 
         public RelayCommand ShowAboutCommand { get; set; }
+
+        public RelayCommand MoveElementsHorizontal { get; private set; }
+
+        public RelayCommand MoveElementsVertical { get; private set; }
 
         #endregion
 
@@ -276,6 +283,32 @@ namespace Aspose.OMR.Client.ViewModels
         }
 
         /// <summary>
+        /// Used to trigger notification animation
+        /// </summary>
+        public bool ValidactionCompleteNotification
+        {
+            get { return validactionCompleteNotification; }
+            set
+            {
+                validactionCompleteNotification = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether validation success notification panel should be visible 
+        /// </summary>
+        public bool OkNotificationVisible
+        {
+            get { return okNotificationVisible; }
+            set
+            {
+                okNotificationVisible = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Busy indicator manager busy state changed
         /// </summary>
         /// <param name="isEnabled">Indicates if busy state is enabled</param>
@@ -301,7 +334,7 @@ namespace Aspose.OMR.Client.ViewModels
             this.SaveTemplateCommand = new RelayCommand(x => this.OnSaveTemplate(), x => this.CanSaveTemplate());
             this.SaveAsTemplateCommand = new RelayCommand(x => this.OnSaveAsTemplate(), x => this.CanSaveAsTemplate());
 
-            this.StartRecognitionCommand = new RelayCommand(x => this.OnStartRecognition());
+            this.StartRecognitionCommand = new RelayCommand(x => this.OnStartRecognition(), x => this.FinalizationComplete);
 
             this.CloseTabCommand = new RelayCommand(x => this.OnCloseTab());
 
@@ -325,6 +358,9 @@ namespace Aspose.OMR.Client.ViewModels
 
             this.ShowCredentialsSettingsCommand = new RelayCommand(x => new CredentialsViewModel());
             this.ShowAboutCommand = new RelayCommand(x => new AboutView().ShowDialog());
+
+            this.MoveElementsHorizontal = new RelayCommand(x => this.OnMoveElementsHorizontal(double.Parse((string)x)), x => CanMove());
+            this.MoveElementsVertical = new RelayCommand(x => this.OnMoveElementsVertical(double.Parse((string)x)), x => CanMove());
 
             this.ExitCommand = new RelayCommand(x => this.Exit());
         }
@@ -607,6 +643,27 @@ namespace Aspose.OMR.Client.ViewModels
             return false;
         }
 
+        private void OnMoveElementsVertical(double delta)
+        {
+            ((TemplateViewModel)this.SelectedTab).MoveElementsVertical.Execute(delta);
+        }
+
+        private void OnMoveElementsHorizontal(double delta)
+        {
+            ((TemplateViewModel)this.SelectedTab).MoveElementsHorizontal.Execute(delta);
+        }
+
+        private bool CanMove()
+        {
+            var selectedTemplate = this.SelectedTab as TemplateViewModel;
+            if (selectedTemplate != null && selectedTemplate.MoveElementsHorizontal.CanExecute(null))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private void OnPasteCommand(object control)
         {
             // find parent canvas
@@ -810,7 +867,6 @@ namespace Aspose.OMR.Client.ViewModels
 
             templateViewModel.LoadedPath = file;
             templateViewModel.IsDirty = false;
-            templateViewModel.FinalizationApproved += this.OnStartRecognition;
 
             this.CloseActiveTemplateTab();
 
@@ -895,7 +951,6 @@ namespace Aspose.OMR.Client.ViewModels
 
             var templateVm = new TemplateViewModel(false, string.Empty);
             templateVm.TemplateName = "New Template";
-            templateVm.FinalizationApproved += this.OnStartRecognition;
 
             // reinit zoom koefficient
             TemplateViewModel.ZoomKoefficient = 1;
@@ -910,7 +965,7 @@ namespace Aspose.OMR.Client.ViewModels
         {
             if (!this.FinalizationComplete)
             {
-                DialogManager.ShowErrorDialog("There is no finalized template to work with!");
+                DialogManager.ShowErrorDialog("There is no validated template to work with!");
                 return;
             }
 
@@ -948,7 +1003,17 @@ namespace Aspose.OMR.Client.ViewModels
 
                 // subscriptions for template view model events
                 templateViewModel.FinalizationApproved += this.OnStartRecognition;
+                templateViewModel.ValidationSuccessful += this.ValidationSuccessful;
             }
+        }
+
+        /// <summary>
+        /// Updates states to display success notification
+        /// </summary>
+        private void ValidationSuccessful()
+        {
+            this.ValidactionCompleteNotification = true;
+            this.OkNotificationVisible = true;
         }
     }
 }

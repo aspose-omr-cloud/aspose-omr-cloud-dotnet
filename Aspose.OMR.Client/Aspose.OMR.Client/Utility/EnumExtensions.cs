@@ -16,11 +16,12 @@
 namespace Aspose.OMR.Client.Utility
 {
     using System;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Reflection;
 
     /// <summary>
-    /// Extensions methods for enum types
+    /// Extension methods for enum types
     /// </summary>
     public static class EnumExtensions
     {
@@ -28,7 +29,7 @@ namespace Aspose.OMR.Client.Utility
         /// Get display name according to display name attribute
         /// </summary>
         /// <param name="value">Enum value</param>
-        /// <returns>Display Name string</returns>
+        /// <returns>Display name string</returns>
         public static string GetEnumDisplayName(this Enum value)
         {
             FieldInfo fieldInfo = value.GetType().GetField(value.ToString());
@@ -38,6 +39,27 @@ namespace Aspose.OMR.Client.Utility
             if (attributes != null && attributes.Length > 0)
             {
                 return attributes[0].Name;
+            }
+            else
+            {
+                return value.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Get display description according to description attribute 
+        /// </summary>
+        /// <param name="value">Enum value</param>
+        /// <returns>Description string</returns>
+        public static string GetEnumDescription(this Enum value)
+        {
+            FieldInfo fieldInfo = value.GetType().GetField(value.ToString());
+
+            DescriptionAttribute[] attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+            if (attributes != null && attributes.Length > 0)
+            {
+                return attributes[0].Description;
             }
             else
             {

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<ProjectGuidesConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectItemGuides>
+    <ProjectItemGuide TargetFile="Views\ResultsToolbarView.xaml">
+      <GuideModels>
+        <GuideModel>
+          <Guides>
+            <Guide Alignment="Left" Position="3" />
+            <Guide Alignment="Left" Position="11" />
+            <Guide Alignment="Left" Position="27" />
+            <Guide Alignment="Left" Position="35" />
+            <Guide Alignment="Left" Position="51" />
+            <Guide Alignment="Left" Position="59" />
+            <Guide Alignment="Left" Position="83" />
+            <Guide Alignment="Left" Position="75" />
+          </Guides>
+        </GuideModel>
+      </GuideModels>
+    </ProjectItemGuide>
+    <ProjectItemGuide TargetFile="Views\TemplateToolbarView.xaml">
+      <GuideModels>
+        <GuideModel>
+          <Guides>
+            <Guide Alignment="Left" Position="3" />
+            <Guide Alignment="Left" Position="11" />
+            <Guide Alignment="Left" Position="27" />
+            <Guide Alignment="Left" Position="36" />
+            <Guide Alignment="Left" Position="44" />
+            <Guide Alignment="Left" Position="78" />
+            <Guide Alignment="Left" Position="87" />
+            <Guide Alignment="Left" Position="95" />
+            <Guide Alignment="Left" Position="154" />
+            <Guide Alignment="Left" Position="162" />
+            <Guide Alignment="Left" Position="163" />
+            <Guide Alignment="Left" Position="171" />
+            <Guide Alignment="Left" Position="258" />
+            <Guide Alignment="Left" Position="578" />
+            <Guide Alignment="Left" Position="586" />
+            <Guide Alignment="Left" Position="266" />
+            <Guide Alignment="Left" Position="273" />
+            <Guide Alignment="Left" Position="588" />
+            <Guide Alignment="Left" Position="593" />
+          </Guides>
+        </GuideModel>
+      </GuideModels>
+    </ProjectItemGuide>
+  </ProjectItemGuides>
+</ProjectGuidesConfiguration>

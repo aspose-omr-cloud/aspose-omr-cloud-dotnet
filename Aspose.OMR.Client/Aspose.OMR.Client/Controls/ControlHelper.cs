@@ -167,9 +167,33 @@ namespace Aspose.OMR.Client.Controls
             for (int i = 0; i < childsCount; i++)
             {
                 ContentPresenter childPresenter = (ContentPresenter) VisualTreeHelper.GetChild(canvas, i);
-                BaseOmrElement childOmrItem = (BaseOmrElement) VisualTreeHelper.GetChild(childPresenter, 0);
+                BaseOmrElement childOmrItem = VisualTreeHelper.GetChild(childPresenter, 0) as BaseOmrElement;
 
-                if (childOmrItem.IsSelected)
+                if (childOmrItem != null && childOmrItem.IsSelected)
+                {
+                    presenters.Add(childPresenter);
+                }
+            }
+
+            return presenters;
+        }
+
+        /// <summary>
+        /// Finds all unselected child presenters on parent canvas
+        /// </summary>
+        /// <param name="canvas">Canvas containing searched items</param>
+        /// <returns>List of content presenters with unselected items</returns>
+        public static List<ContentPresenter> GetUnselectedChildPresenters(CustomCanvas canvas)
+        {
+            List<ContentPresenter> presenters = new List<ContentPresenter>();
+            int childsCount = VisualTreeHelper.GetChildrenCount(canvas);
+
+            for (int i = 0; i < childsCount; i++)
+            {
+                ContentPresenter childPresenter = (ContentPresenter)VisualTreeHelper.GetChild(canvas, i);
+                BaseOmrElement childOmrItem = VisualTreeHelper.GetChild(childPresenter, 0) as BaseOmrElement;
+
+                if (childOmrItem != null && !childOmrItem.IsSelected)
                 {
                     presenters.Add(childPresenter);
                 }
