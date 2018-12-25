@@ -82,7 +82,7 @@ namespace Aspose.OMR.Client.Controls
 
                 case SelectionRectnagleModes.Barcode:
                 {
-                    this.rubberandBrush = (Brush)Application.Current.FindResource("BarcodeBrush");
+                    this.rubberandBrush = (Brush)Application.Current.FindResource("MainItemsBrush");
                     this.toSelect = false;
                     break;
                 }

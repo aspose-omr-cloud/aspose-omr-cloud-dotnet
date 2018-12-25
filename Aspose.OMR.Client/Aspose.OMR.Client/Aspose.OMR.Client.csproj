@@ -64,6 +64,9 @@
     <Reference Include="Aspose.Storage.Cloud.Sdk, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Aspose.Storage-Cloud.18.3.0\lib\net20\Aspose.Storage.Cloud.Sdk.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -78,6 +81,9 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -103,6 +109,7 @@
     <Compile Include="Converters\BoolToVisibilityInverseConverter.cs" />
     <Compile Include="Converters\BoolToWrappingConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
+    <Compile Include="Converters\EnumDisplayNameConverter.cs" />
     <Compile Include="Converters\GridLengthConverter.cs" />
     <Compile Include="UndoRedo\ApplyFormattingAction.cs" />
     <Compile Include="UndoRedo\ChangeBubblePositionAction.cs" />
@@ -145,6 +152,7 @@
     <Compile Include="Utility\ImageProcessor.cs" />
     <Compile Include="Utility\ImageRecognitionResult.cs" />
     <Compile Include="Utility\OmrFunctions.cs" />
+    <Compile Include="Utility\PredefinedMarkups.cs" />
     <Compile Include="Utility\PreprocessingConfiguration.cs" />
     <Compile Include="Utility\PreprocessingConfigurationManager.cs" />
     <Compile Include="Utility\PreprocessingPreset.cs" />
@@ -188,6 +196,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PreprocessingPresetsViewModel.cs" />
     <Compile Include="ViewModels\ResultsViewModel.cs" />
+    <Compile Include="ViewModels\SnapLineViewModel.cs" />
     <Compile Include="ViewModels\TabViewModel.cs" />
     <Compile Include="ViewModels\TemplateGeneratorViewModel.cs" />
     <Compile Include="ViewModels\TemplateViewModel.cs">
@@ -384,8 +393,29 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="Examples\BubbleSheet.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\Questionnaire.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Icons\Show24.png" />
+    <Resource Include="Icons\LoadingBlack24.png" />
+    <Resource Include="Icons\CircleStop24.png" />
+    <Resource Include="Icons\LoadingBlack16.png" />
+    <Resource Include="Icons\Circle Stop.png" />
+    <Resource Include="Icons\Stop.png" />
+    <Resource Include="Icons\CSV-Export.png" />
+    <Resource Include="Icons\CancelAll.png" />
+    <Resource Include="Icons\Gear.png" />
+    <Resource Include="Icons\Printer-WF.png" />
+    <Resource Include="Icons\Validate1.png" />
+    <Resource Include="Icons\Show.png" />
+    <Resource Include="Icons\Warning48.png" />
+    <Resource Include="Icons\Check48.png" />
+    <Resource Include="Icons\DocumentCreate.png" />
+    <Resource Include="Icons\logoSpin.png" />
     <Resource Include="Icons\Scanner.png" />
-    <Resource Include="Icons\Print.png" />
     <Resource Include="Icons\error.png" />
     <Resource Include="Icons\Trash32.png" />
     <Resource Include="Icons\Text.png" />
@@ -403,6 +433,7 @@
     <Content Include="Examples\AsposeTestExamples\Template.omr">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Design\projectGuides.guides" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -480,15 +511,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\CloudUpload.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\LoadingWhite32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\LoadingWhite16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\CancelWhite16.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\FitWidth.png" />

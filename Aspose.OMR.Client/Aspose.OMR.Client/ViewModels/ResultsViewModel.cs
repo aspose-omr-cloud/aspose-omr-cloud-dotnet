@@ -87,15 +87,16 @@ namespace Aspose.OMR.Client.ViewModels
             this.IsGeneratedTemplate = isGenerated;
             this.PreviewImages = new ObservableCollection<ImagePreviewViewModel>();
             this.InitialPreviewPanelVisibility = Visibility.Visible;
+            this.PresetShown = false;
 
             if (PreprocessingConfigurationManager.CheckConfigExists(this.templateId))
             {
                 this.SelectedPreprocessingConfiguration =
                     PreprocessingConfiguration.Deserialize(
                         PreprocessingConfigurationManager.GetConfigByKey(this.templateId));
+                this.PresetShown = true;
             }
 
-            this.PresetShown = false;
             ZoomKoefficient = 1;
             this.zoomLevel = 1;
 
@@ -393,6 +394,8 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         private void OnShowPresets()
         {
+            this.PresetShown = true;
+
             PreprocessingPresetsViewModel viewModel = new PreprocessingPresetsViewModel(this.IsGeneratedTemplate,
                 this.SelectedPreprocessingConfiguration);
 
@@ -554,7 +557,6 @@ namespace Aspose.OMR.Client.ViewModels
             if (!this.PresetShown)
             {
                 this.OnShowPresets();
-                this.PresetShown = true;
             }
 
             BackgroundWorker worker = new BackgroundWorker();
@@ -615,7 +617,6 @@ namespace Aspose.OMR.Client.ViewModels
             if (!this.PresetShown)
             {
                 this.OnShowPresets();
-                this.PresetShown = true;
             }
 
             var itemToProcess = imagePreview ?? this.SelectedPreviewImage;
@@ -666,7 +667,7 @@ namespace Aspose.OMR.Client.ViewModels
             byte[] imageData = this.PreprocessImage(itemToProcess.PathToImage, this.SelectedPreprocessingConfiguration);
             string additionalPars = string.Empty;
 
-            itemToProcess.StatusText = "Performing Recognition...";
+            itemToProcess.StatusText = "Recognizing...";
 
             try
             {
@@ -725,8 +726,7 @@ namespace Aspose.OMR.Client.ViewModels
             // simply pack data without resize
             else
             {
-                BitmapImage image = new BitmapImage(new Uri("file://" + pathToImage));
-                byte[] imageData = ImageProcessor.CompressImage(image, 0);
+                byte[] imageData = File.ReadAllBytes(pathToImage);
                 return imageData;
             }
         }

@@ -22,9 +22,9 @@
         <TextBlock TextWrapping="Wrap" Margin="40,15,40,5" Grid.Row="0" Grid.ColumnSpan="2"
                    FontSize="14"
                    HorizontalAlignment="Center" TextAlignment="Center"
-            Text="This is recognition results for template image recieved during finalization stage. Please make sure this results are correct.
-We reccomend using not filled OMR forms for template creation to achieve best recognition quality on filled forms. It is best to return to template creation stage and change template image.
-You can also continue with this template image and go to recognition stage.
+            Text="This is the recognition results for the template image recieved during finalization stage. Please make sure this results are correct.
+We reccomend using not filled OMR forms for template creation to achieve best recognition quality on filled forms. It is best to return to template creation stage and change the template image.
+You can also continue with this template image and go to the recognition stage.
                    "/>
         
         <views:AnswersView Grid.Row="1" Grid.Column="1" Margin="3" Background="White"/>

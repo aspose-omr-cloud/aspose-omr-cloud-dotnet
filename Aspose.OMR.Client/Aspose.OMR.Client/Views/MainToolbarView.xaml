@@ -20,12 +20,12 @@
     </UserControl.Resources>
     
     <Grid>
-        <ToolBarTray DockPanel.Dock="Top" IsLocked="True" Background="White">
+        <ToolBarTray DockPanel.Dock="Top" IsLocked="True" Background="White" VerticalAlignment="Center">
             <ToolBar Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
-                <Button Command="{Binding NewTemplateCommand}" ToolTip="New Template" Margin="0,0,6,0">
+                <Button Command="{Binding NewTemplateCommand}" ToolTip="New Template" Margin="0,0,0,0">
                     <Image Source="/Icons/DocumentNew.png"/>
                 </Button>
-                <Button Command="{Binding LoadTemplateCommand}" ToolTip="Load Template" Margin="0,0,6,0">
+                <Button Command="{Binding LoadTemplateCommand}" ToolTip="Load Template" Margin="0,0,2,0">
                     <Image Source="/Icons/Open.png"/>
                 </Button>
                 <Button ToolTip="Save Template" Command="{Binding SaveTemplateCommand}" Style="{StaticResource ImageButton}">

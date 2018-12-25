@@ -4,6 +4,8 @@
         xmlns:viewModels="clr-namespace:Aspose.OMR.Client.ViewModels"
         xmlns:views="clr-namespace:Aspose.OMR.Client.Views"
         xmlns:converters="clr-namespace:Aspose.OMR.Client.Converters"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         Icon="/OMR.ico"
         Title="OMR Client"
         WindowStartupLocation="CenterScreen"
@@ -11,6 +13,14 @@
         Height="800" Width="1280">
 
     <Window.Resources>
+        <Storyboard x:Key="ValidationOkAnimation" TargetName="OkPanel">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Completed="OkNotificationCompleted">
+                <EasingDoubleKeyFrame Value="0" KeyTime="0:0:0"></EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame Value="1" KeyTime="0:0:0.5"></EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame Value="1" KeyTime="0:0:1.5"></EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame Value="0" KeyTime="0:0:2"></EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Window.Resources>
 
     <Window.DataContext>
@@ -18,6 +28,11 @@
     </Window.DataContext>
 
     <Window.InputBindings>
+        <KeyBinding Key="Left" Command="{Binding MoveElementsHorizontal}" CommandParameter="-1"></KeyBinding>
+        <KeyBinding Key="Right" Command="{Binding MoveElementsHorizontal}" CommandParameter="1"></KeyBinding>
+        <KeyBinding Key="Up" Command="{Binding MoveElementsVertical}" CommandParameter="-1"></KeyBinding>
+        <KeyBinding Key="Down" Command="{Binding MoveElementsVertical}" CommandParameter="1"></KeyBinding>
+        
         <KeyBinding Modifiers="Control" Key="C" Command="{Binding CopyCommand}"/>
         <KeyBinding Modifiers="Control" Key="V" Command="{Binding PasteCommand}"  CommandParameter="{Binding ElementName=TabControl}"/>
         <KeyBinding Modifiers="Control" Key="A" Command="{Binding SelectAllCommand}"/>
@@ -39,37 +54,58 @@
         <KeyBinding Key="Delete" Command="{Binding DeleteCommand}"/>
     </Window.InputBindings>
 
+
+    <i:Interaction.Triggers>
+        <ei:DataTrigger Binding="{Binding ValidactionCompleteNotification}" Value="true">
+            <ei:ControlStoryboardAction Storyboard="{StaticResource ValidationOkAnimation}"
+                                        ControlStoryboardOption="Play"/>
+        </ei:DataTrigger>
+    </i:Interaction.Triggers>
+
     <Grid>
 
         <!--busy panel-->
         <Border Panel.ZIndex="1" IsEnabled="False" Visibility="{Binding Path=IsBusy, Converter={converters:BoolToVisibilityConverter}}">
             <Border.Background>
-                <SolidColorBrush Color="DarkGray" Opacity="0.7"></SolidColorBrush>
+                <SolidColorBrush Color="White" Opacity="0.85"></SolidColorBrush>
             </Border.Background>
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Icons/LoadingWhite32.png" Stretch="None" RenderTransformOrigin="0.5, 0.5">
+                <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Icons/logoSpin.png" Stretch="None" RenderTransformOrigin="0.5, 0.5">
                     <Image.RenderTransform>
                         <!-- giving the transform a name tells the framework not to freeze it -->
                         <RotateTransform x:Name="noFreeze" />
                     </Image.RenderTransform>
                     <Image.Triggers>
-                        <EventTrigger RoutedEvent="Loaded">
+                        <EventTrigger RoutedEvent="Image.Loaded">
                             <BeginStoryboard>
                                 <Storyboard>
                                     <DoubleAnimation
                                         Storyboard.TargetProperty="(Rectangle.RenderTransform).(RotateTransform.Angle)"
-                                        To="360" Duration="0:0:1" RepeatBehavior="Forever" />
+                                        To="360" Duration="0:0:0.6" RepeatBehavior="Forever" />
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>
                     </Image.Triggers>
                 </Image>
-                
-                <TextBlock Text="{Binding BusyIndicationMessage}" FontSize="22" Foreground="White" VerticalAlignment="Center" TextAlignment="Center"/>
+
+                <TextBlock Text="{Binding BusyIndicationMessage}" FontSize="22" Foreground="Black" VerticalAlignment="Center" TextAlignment="Center"/>
+            </StackPanel>
+         </Border>
+        
+        <!--Notification panels-->
+        <Border Panel.ZIndex="1" IsEnabled="False" x:Name="ValidationOkBorder"
+                Visibility="{Binding Path=OkNotificationVisible, Converter={converters:BoolToVisibilityConverter}}">
+            <Border.Background>
+                <SolidColorBrush Color="White" Opacity="0.85"></SolidColorBrush>
+            </Border.Background>
+
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="OkPanel">
+                <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="/Icons/Check48.png" Stretch="None"/>
+                <TextBlock Text="Validation Successful" FontSize="22" Foreground="Black" VerticalAlignment="Center" TextAlignment="Center"/>
             </StackPanel>
         </Border>
-        
+
         <DockPanel>
             
             <!--file menu-->
@@ -89,11 +125,15 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="_Generate Template..." Command="{Binding GenerateTemplateCommand}" ToolTip="Generate Template From Text Description"/>
+                    <MenuItem Header="_Generate Template..." Command="{Binding GenerateTemplateCommand}" ToolTip="Generate Template From Text Description">
+                        <MenuItem.Icon>
+                            <Image Source="/Icons/DocumentCreate.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
 
                     <MenuItem Header="_Save" Command="{Binding SaveTemplateCommand}" InputGestureText="Ctrl+S" ToolTip="Save Changes To Current Template">
                         <MenuItem.Icon>
-                            <Image Source="/Icons/Save.png"/>
+                            <Image Source="/Icons/Save.png" Style="{StaticResource OpacityChangedImage}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
@@ -120,41 +160,41 @@
 
                     <MenuItem Header="Undo" Command="{Binding UndoCommand}" ToolTipService.ShowOnDisabled="True" InputGestureText="Ctrl+Z" ToolTip="Undo">
                         <MenuItem.Icon>
-                            <Image Source="/Icons/Undo.png"/>
+                            <Image Source="/Icons/Undo.png" Style="{StaticResource OpacityChangedImage}"/>
                         </MenuItem.Icon>
                     </MenuItem>
                     
                     <MenuItem Header="Redo" Command="{Binding RedoCommand}" ToolTipService.ShowOnDisabled="True" InputGestureText="Ctrl+Y" ToolTip="Redo">
                         <MenuItem.Icon>
-                            <Image Source="/Icons/Redo.png"/>
+                            <Image Source="/Icons/Redo.png" Style="{StaticResource OpacityChangedImage}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
                     <MenuItem Header="Load Template _Image..." Command="{Binding LoadTemplateImageCommand}" ToolTip="Load Template Image">
                         <MenuItem.Icon>
-                            <Image Source="/Icons/Image.png" />
+                            <Image Source="/Icons/Image.png" Style="{StaticResource OpacityChangedImage}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
                     <MenuItem Header="_Copy" Command="{Binding CopyCommand}" ToolTipService.ShowOnDisabled="True" InputGestureText="Ctrl+C" ToolTip="Copy Selected Elements">
                         <MenuItem.Icon>
-                            <Image Source="/Icons/Copy.png" />
+                            <Image Source="/Icons/Copy.png" Style="{StaticResource OpacityChangedImage}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
                     <MenuItem Header="_Paste" Command="{Binding PasteCommand}" ToolTipService.ShowOnDisabled="True" InputGestureText="Ctrl+V" ToolTip="Paste Copied Elements">
                         <MenuItem.Icon>
-                            <Image Source="/Icons/Paste.png" />
+                            <Image Source="/Icons/Paste.png" Style="{StaticResource OpacityChangedImage}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
                     <MenuItem Header="_Delete" Command="{Binding DeleteCommand}" ToolTipService.ShowOnDisabled="True" InputGestureText="Del" ToolTip="Remove Selected Elements">
                         <MenuItem.Icon>
-                            <Image Source="/Icons/Delete.png" />
+                            <Image Source="/Icons/Delete.png" Style="{StaticResource OpacityChangedImage}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="_Select All" Command="{Binding SelectAllCommand}" InputGestureText="Ctrl+A" ToolTip="Select All Elements"/>
+                    <MenuItem Header="_Select All" Command="{Binding SelectAllCommand}" InputGestureText="Ctrl+A" ToolTip="Select All Elements" />
 
                     <MenuItem Header="_Apply Formatting" Command="{Binding ApplyFormattingCommand}" 
                               ToolTipService.ShowOnDisabled="True" ToolTip="Apply Formatting Of The Selected Element To All Elements"/>
@@ -162,7 +202,7 @@
                     <MenuItem Header="_Rename Group" Command="{Binding RenameGroupCommand}" 
                               ToolTipService.ShowOnDisabled="True" ToolTip="Quickly Rename Group Of Elements">
                         <MenuItem.Icon>
-                            <Image Source="/Icons/Text.png" />
+                            <Image Source="/Icons/Text.png" Style="{StaticResource OpacityChangedImage}"/>
                         </MenuItem.Icon>
                     </MenuItem>
 
@@ -170,7 +210,7 @@
                     <MenuItem Header="Shrink" Command="{Binding ShrinkElementCommand}" 
                               ToolTipService.ShowOnDisabled="True" ToolTip="Shrink Element's Area To Bounding Box Of Its Bubbles">
                         <MenuItem.Icon>
-                            <Image Source="/Icons/Shrink.png" />
+                            <Image Source="/Icons/Shrink.png" Style="{StaticResource OpacityChangedImage}"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
@@ -207,23 +247,28 @@
             </Menu>
 
             <!--toolbar-->
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="White">
-                <views:MainToolbarView  Height="30" Background="White"/>
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="White" Height="41">
+                <views:MainToolbarView Background="White"/>
                 <ContentControl Content="{Binding SelectedTab}" DockPanel.Dock="Right">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type viewModels:TemplateViewModel}">
-                            <views:TemplateToolbarView/>
+                            <views:TemplateToolbarView HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type viewModels:ResultsViewModel}">
-                            <views:ResultsToolbarView/>
+                            <views:ResultsToolbarView HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
                 
                 <ToolBarTray Background="White" IsLocked="True" DockPanel.Dock="Top" Visibility="{Binding IsRecognitionAvailable, Converter={converters:BoolToVisibilityConverter}}">
-                    <ToolBar Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
-                        <Separator Background="{StaticResource MainItemsBrush}"/>
-                        <Button Content="Recognize" Command="{Binding StartRecognitionCommand}"></Button>
+                    <ToolBar Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}" VerticalAlignment="Center">
+                        <Separator Background="{StaticResource MainItemsBrush}" Width="2"/>
+                        <Button Command="{Binding StartRecognitionCommand}" ToolTip="Recognize Images" ToolTipService.ShowOnDisabled="True">
+                            <StackPanel Orientation="Vertical">
+                                <Image Source="/Icons/Show.png" Style="{StaticResource OpacityChangedImage}"/>
+                                <TextBlock Text="Recognize"/>
+                            </StackPanel>
+                        </Button>
                     </ToolBar>
                 </ToolBarTray>
             </StackPanel>
@@ -279,6 +324,7 @@
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Generate template" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                    <Image Source="/Icons/DocumentCreate.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,5,5,5"/>
                                 </StackPanel>
                             </Button.Content>
                         </Button>

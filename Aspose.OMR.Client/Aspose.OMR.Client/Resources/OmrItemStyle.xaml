@@ -2,17 +2,15 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Aspose.OMR.Client.Controls"
                     xmlns:converters="clr-namespace:Aspose.OMR.Client.Converters"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+                    xmlns:system="clr-namespace:System;assembly=mscorlib" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
 
     <Color x:Key="BackgroundColor" >WhiteSmoke</Color>
-    <Color x:Key="MainItemsColor" >#FF87CEFA</Color>
+    <Color x:Key="MainItemsColor" >LightSkyBlue</Color>
     <Color x:Key="SelectionColor" >#FF778899</Color>
     <Color x:Key="InvalidBubbleColor" >#FFFF0000</Color>
-    <Color x:Key="BarcodeElementColor" >LightSkyBlue</Color>
 
     <SolidColorBrush Color="{StaticResource BackgroundColor}" x:Key="BackgroundBrush"/>
     <SolidColorBrush Color="{StaticResource MainItemsColor}" x:Key="MainItemsBrush"/>
-    <SolidColorBrush Color="{StaticResource BarcodeElementColor}" x:Key="BarcodeBrush"/>
     <SolidColorBrush Color="{StaticResource SelectionColor}" x:Key="SelectionBrush"/>
     <SolidColorBrush Color="{StaticResource InvalidBubbleColor}" x:Key="InvalidBubbleBrush"/>
 
@@ -28,7 +26,7 @@
     <ControlTemplate TargetType="{x:Type Thumb}" x:Key="MoveTextBarcodeTemplate">
         <TextBlock Text="{Binding Name}" 
                    MinWidth="20" Width="200" Margin="0, 0, 0, 0" FontSize="16"
-                   Background="{StaticResource BarcodeBrush}" Height="20" Opacity="0.7"
+                   Background="{StaticResource MainItemsBrush}" Height="20" Opacity="0.7"
                    HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </ControlTemplate>
 
@@ -85,14 +83,15 @@
     <!--Template of clip area move thumb-->
     <ControlTemplate TargetType="{x:Type Thumb}" x:Key="ClipAreaMoveThumb">
         <Grid SnapsToDevicePixels="True" Background="Transparent">
-            <Rectangle Fill="{StaticResource BarcodeBrush}" Opacity="0.7" Stroke="Black" StrokeThickness="2" StrokeDashCap="Square" StrokeDashArray="6"/>
+            <Rectangle Fill="{StaticResource MainItemsBrush}" Opacity="0.7" Stroke="Black" StrokeThickness="2" StrokeDashCap="Square" StrokeDashArray="6"/>
         </Grid>
     </ControlTemplate>
+    
 
     <!--Template of barcode move thumb-->
     <ControlTemplate TargetType="{x:Type Thumb}" x:Key="BarcodeMoveThumb">
         <Grid SnapsToDevicePixels="True" Background="Transparent">
-            <Rectangle Fill="{StaticResource BarcodeBrush}" Opacity="0.7"/>
+            <Rectangle Fill="{StaticResource MainItemsBrush}" Opacity="0.7"/>
         </Grid>
     </ControlTemplate>
 
@@ -290,7 +289,7 @@
         </Setter>
     </Style>
     <Style x:Key="ToolBarMainPanelBorderStyle" TargetType="{x:Type Border}">
-        <Setter Property="Margin" Value="0,0,11,0"/>
+        <Setter Property="Margin" Value="0,0,0,0"/>
         <Setter Property="CornerRadius" Value="3,3,3,3"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding Source={x:Static SystemParameters.HighContrast}}" Value="true">
@@ -303,9 +302,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToolBar}">
-                    <Grid x:Name="Grid" Margin="3,1,-8,1" SnapsToDevicePixels="true">
+                    <Grid x:Name="Grid"  SnapsToDevicePixels="true">
                         <Grid x:Name="OverflowGrid" HorizontalAlignment="Right" Visibility="Collapsed">
-                            <ToggleButton x:Name="OverflowButton" ClickMode="Press" FocusVisualStyle="{x:Null}" IsChecked="{Binding IsOverflowOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" IsEnabled="{TemplateBinding HasOverflowItems}" Style="{StaticResource ToolBarHorizontalOverflowButtonStyle}"/>
+                            <ToggleButton x:Name="OverflowButton"  ClickMode="Press" FocusVisualStyle="{x:Null}" IsChecked="{Binding IsOverflowOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" IsEnabled="{TemplateBinding HasOverflowItems}" Style="{StaticResource ToolBarHorizontalOverflowButtonStyle}"/>
                             <Popup x:Name="OverflowPopup" AllowsTransparency="true" Focusable="false" IsOpen="{Binding IsOverflowOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom" StaysOpen="false">
                                 <Themes:SystemDropShadowChrome x:Name="Shdw" Color="Transparent">
                                     <Border x:Name="ToolBarSubMenuBorder" BorderBrush="{StaticResource ToolBarMenuBorder}" BorderThickness="1" Background="{StaticResource ToolBarSubMenuBackground}" RenderOptions.ClearTypeHint="Enabled">

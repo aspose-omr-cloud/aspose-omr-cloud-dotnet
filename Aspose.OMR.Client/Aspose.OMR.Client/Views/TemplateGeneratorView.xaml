@@ -5,10 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Aspose.OMR.Client.Views"
         xmlns:converters="clr-namespace:Aspose.OMR.Client.Converters"
+        xmlns:utility="clr-namespace:Aspose.OMR.Client.Utility"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResize"
         mc:Ignorable="d"
         Title="Template Generation"
+        MinHeight="600" MinWidth="900"
         Height="800" Width="1000">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ObjectDataProvider x:Key="MarkupEnum" MethodName="GetValues" ObjectType="{x:Type utility:PredefinedMarkups}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="utility:PredefinedMarkups" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+        </ResourceDictionary>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -16,13 +29,12 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.9*"></RowDefinition>
+            <RowDefinition Height="0.8*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="0.8*"></RowDefinition>
+            <RowDefinition Height="0.8*"></RowDefinition>
             <RowDefinition Height="6*"></RowDefinition>
-            <RowDefinition Height="0.6*"></RowDefinition>
             <RowDefinition Height="0.7*"></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -62,34 +74,68 @@
                      Text="{Binding ExtraStoragePath}"></TextBox>
         </StackPanel>
 
-        <DockPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Background="White">
-            <ToolBar Background="White">
+        <ToolBarTray Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Background="White" VerticalAlignment="Center" IsLocked="True">
+            <ToolBar Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
+
+                <Button Command="{Binding LoadFromFileCommand}"
+                        ToolTip="Load markup from text file" 
+                        ToolTipService.ShowOnDisabled="True">
+                    <StackPanel>
+                        <Image Source="/Icons/Open.png" Style="{StaticResource OpacityChangedImage}"/>
+                        <TextBlock Text="Load From File..."></TextBlock>
+                    </StackPanel>
+                </Button>
+
+                <Button Command="{Binding SaveMarkupFileCommand}"
+                        ToolTip="Save markup to text file" 
+                        ToolTipService.ShowOnDisabled="True">
+                    <StackPanel>
+                        <Image Source="/Icons/Save.png" Style="{StaticResource OpacityChangedImage}"/>
+                        <TextBlock Text="Save Markup"></TextBlock>
+                    </StackPanel>
+                </Button>
+
+                <Separator Background="{StaticResource MainItemsBrush}"/>
+                <TextBlock Text="Predefined Markup" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
+                <Border BorderThickness="1" BorderBrush="LightSkyBlue" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ComboBox Width="100" ItemsSource="{Binding Source={StaticResource MarkupEnum}}" SelectedItem="{Binding SelectedPredefinedMarkup}"
+                              Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" HorizontalAlignment="Stretch" Margin="5">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={converters:EnumDisplayNameConverter}, ConverterParameter=markup}" 
+                                           ToolTip="{Binding Converter={converters:EnumDescriptionConverter}, ConverterParameter=markup}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                     </ComboBox>
+                </Border>
 
                 <TextBlock Text="Font Family" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
-                <ComboBox Width="150" ItemsSource="{Binding FontFamilies, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedFontFamily}"
-                          Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" HorizontalAlignment="Stretch" Margin="5"/>
-                <Separator></Separator>
+                <Border BorderThickness="1" BorderBrush="LightSkyBlue" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ComboBox Width="130" ItemsSource="{Binding FontFamilies, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedFontFamily}"
+                              Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" HorizontalAlignment="Stretch" Margin="5"/>
+                </Border>
 
                 <TextBlock Text="Font Size" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"></TextBlock>
-                <ComboBox Width="50" ItemsSource="{Binding FontSizes, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedFontSize}"
-                          Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" HorizontalAlignment="Stretch" Margin="5"/>
-                <Separator></Separator>
+                <Border BorderThickness="1" BorderBrush="LightSkyBlue" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ComboBox Width="50" ItemsSource="{Binding FontSizes, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedFontSize}"
+                              Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" HorizontalAlignment="Stretch" Margin="5"/>
+                </Border>
 
                 <ToggleButton x:Name="WrappingButton" Content="Text Wrapping" ToolTip="Enable or Disable Text Wrapping"
                               HorizontalAlignment="Center" VerticalAlignment="Center"
                               Margin="5"></ToggleButton>
 
-                <Separator></Separator>
+                <Separator Background="{StaticResource MainItemsBrush}"/>
 
                 <TextBlock Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"> 
                     <Hyperlink 
                         NavigateUri="https://docs.aspose.cloud/display/omrcloud/Template+generation"
                         RequestNavigate="OnRequestNavigate"
-                    >Template Generation Help</Hyperlink>
+                    >Help</Hyperlink>
                 </TextBlock>
 
             </ToolBar>
-        </DockPanel>
+        </ToolBarTray>
 
         <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,0" BorderBrush="LightSkyBlue" Background="White"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -98,27 +144,10 @@
                  TextWrapping="{Binding ElementName=WrappingButton, Path=IsChecked, Converter={converters:BoolToWrappingConverter}}">
         </TextBox>
 
-        <Button Grid.Row="6" Grid.Column="0" Content="Load From File..."
-                BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"
-                HorizontalAlignment="Left" VerticalAlignment="Center" Height="25" Width="100" Margin="386,12,0,0"
-                Command="{Binding LoadFromFileCommand}"/>
-
-        <Button Grid.Row="6" Grid.Column="1" Content="Save Markup..."
-                BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"
-                HorizontalAlignment="Right" VerticalAlignment="Center" Height="25" Margin="0,12,386,0"
-                Command="{Binding SaveMarkupFileCommand}" Width="100"/>
-
-        <Button Content="Generate" Grid.Row="7" Grid.Column="0" Margin="5"
+        <Button Content="Generate" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
-                Height="25" Width="100"
+                Height="35" Width="100"
                 BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"
                 Command="{Binding GenerateCommand}"/>
-
-        <Button Content="Close" Grid.Row="7" Grid.Column="1" Margin="5"  
-                HorizontalAlignment="Center" VerticalAlignment="Center"
-                Height="25" Width="100"
-                BorderThickness="1" BorderBrush="{StaticResource MainItemsBrush}" Style="{StaticResource ImageButton}"
-                Command="{Binding CloseCommand}"/>
-
     </Grid>
 </Window>

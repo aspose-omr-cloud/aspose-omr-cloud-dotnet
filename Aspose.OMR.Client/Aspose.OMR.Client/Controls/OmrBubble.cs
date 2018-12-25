@@ -58,7 +58,7 @@ namespace Aspose.OMR.Client.Controls
                 }
             }
 
-            this.Focus();
+            //this.Focus();
             e.Handled = false;
         }
 

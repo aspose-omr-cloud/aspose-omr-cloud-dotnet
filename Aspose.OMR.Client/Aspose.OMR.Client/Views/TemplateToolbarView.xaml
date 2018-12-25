@@ -12,29 +12,28 @@
 
                 <ToolBar BandIndex="0" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
                     <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
-                    <Button Command="{Binding LoadTemplateImageCommand}" ToolTip="Import Image" Style="{StaticResource ImageButton}" Margin="3,0,3,0">
+                    <Button Command="{Binding LoadTemplateImageCommand}" ToolTip="Import Image" Style="{StaticResource ImageButton}" Margin="5,0,0,0">
                         <Image Source="/Icons/Image.png" />
                     </Button>
                 </ToolBar>
 
                 <ToolBar BandIndex="1" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
-                    <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
-                    <Button Command="{Binding UndoCommand}" ToolTip="Undo" Style="{StaticResource ImageButton}" Margin="0,0,6,0">
-                        <Image Source="/Icons/Undo.png" />
+                    <Separator Background="{StaticResource MainItemsBrush}" Width="1" Margin="5,0,0,0"/>
+                    <Button Command="{Binding UndoCommand}" ToolTip="Undo" Style="{StaticResource ImageButton}" Margin="7,0,0,0">
+                        <Image Source="/Icons/Undo.png" Margin="0,0,3,0"/>
                     </Button>
                     <Button Command="{Binding RedoCommand}" ToolTip="Redo" Style="{StaticResource ImageButton}">
                         <Image Source="/Icons/Redo.png" />
                     </Button>
                 </ToolBar>
 
-
                 <ToolBar BandIndex="2" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
-                    <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
-                    <Button ToolTip="Copy" Command="{Binding CopyElementsCommand}" Style="{StaticResource ImageButton}" Margin="0,0,6,0">
+                    <Separator Background="{StaticResource MainItemsBrush}" Width="1" Margin="5,0,0,0"/>
+                    <Button ToolTip="Copy" Command="{Binding CopyElementsCommand}" Style="{StaticResource ImageButton}" Margin="6,0,5,0">
                         <Image Source="/Icons/Copy.png" />
                     </Button>
 
-                    <Button ToolTip="Paste" Command="{Binding PasteElementsCommand}" Style="{StaticResource ImageButton}" Margin="0,0,6,0">
+                    <Button ToolTip="Paste" Command="{Binding PasteElementsCommand}" Style="{StaticResource ImageButton}" Margin="0,0,5,0">
                         <Image Source="/Icons/Paste.png" />
                     </Button>
                     <Button ToolTip="Remove Selected Items" Command="{Binding RemoveElementCommand}" Style="{StaticResource ImageButton}">
@@ -43,8 +42,8 @@
                 </ToolBar>
 
                 <ToolBar BandIndex="3" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
-                    <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
-                    <Button Command="{Binding AlignLeftCommand}" ToolTip="Align Left" Style="{StaticResource ImageButton}" Margin="0,0,5,0">
+                    <Separator Background="{StaticResource MainItemsBrush}" Width="1" Margin="3,0,0,0"/>
+                    <Button Command="{Binding AlignLeftCommand}" ToolTip="Align Left" Style="{StaticResource ImageButton}" Margin="6,0,5,0">
                         <Image Source="/Icons/AlignLeft.png" />
                     </Button>
                     <Button Command="{Binding AlignRightCommand}" ToolTip="Align Right" Style="{StaticResource ImageButton}" Margin="0,0,5,0">
@@ -59,21 +58,30 @@
                 </ToolBar>
 
                 <ToolBar BandIndex="4" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
-                    <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
-                    <ToggleButton Content="Add Choice Box" IsChecked="{Binding IsAddingChoiceBox}" Margin="0,0,5,0"></ToggleButton>
+                    <Separator Background="{StaticResource MainItemsBrush}" Width="2" Margin="5,0,0,0"/>
+                    <ToggleButton Content="Add Choice Box" IsChecked="{Binding IsAddingChoiceBox}" Margin="5,0,5,0"></ToggleButton>
                     <ToggleButton Content="Add Grid" IsChecked="{Binding IsAddingGrid}" Margin="0,0,5,0"></ToggleButton>
                     <ToggleButton Content="Add Barcode" IsChecked="{Binding IsAddingBarcode}" Margin="0,0,5,0"></ToggleButton>
-                    <ToggleButton Content="Add Clip Area" IsChecked="{Binding IsAddingClipArea}"></ToggleButton>
+                    <ToggleButton Content="Add Clip Area" IsChecked="{Binding IsAddingClipArea}" ></ToggleButton>
                 </ToolBar>
 
                 <ToolBar BandIndex="5" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
-                    <Separator Background="{StaticResource MainItemsBrush}" Width="1"/>
+                    <Separator Background="{StaticResource MainItemsBrush}" Width="2"/>
 
-                    <Button Content="Validate Template" Command="{Binding ValidateTemplateCommand}" Margin="0,0,5,0"
-                            ToolTip="Validates Template By Perfoming Template Correction and Finalization" 
-                            ToolTipService.ShowOnDisabled="True"></Button>
+                    <Button Command="{Binding ValidateTemplateCommand}" Margin="0,0,5,0"
+                            ToolTip="Validate Template by perfoming Template Correction and Finalization" 
+                            ToolTipService.ShowOnDisabled="True">
+                        <StackPanel>
+                            <Image Source="/Icons/Validate1.png" Style="{StaticResource OpacityChangedImage}"/>
+                            <TextBlock Text="Validate Template"></TextBlock>
+                        </StackPanel>
+                    </Button>
 
-                    <Button Content="Print Template"  Command="{Binding PrintTemplateCommand}" ToolTip="Print Template" ToolTipService.ShowOnDisabled="True">
+                    <Button Command="{Binding PrintTemplateCommand}" ToolTip="Print Template" ToolTipService.ShowOnDisabled="True">
+                        <StackPanel>
+                            <Image Source="/Icons/Printer-WF.png" Style="{StaticResource OpacityChangedImage}"/>
+                            <TextBlock Text="Print Template"></TextBlock>
+                        </StackPanel>
                     </Button>
                 </ToolBar>
             </ToolBarTray>
