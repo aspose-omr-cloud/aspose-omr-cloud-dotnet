@@ -182,7 +182,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="_Paste" Command="{Binding PasteCommand}" ToolTipService.ShowOnDisabled="True" InputGestureText="Ctrl+V" ToolTip="Paste Copied Elements">
+                    <MenuItem Header="_Paste" Command="{Binding PasteCommand}" CommandParameter="menu" ToolTipService.ShowOnDisabled="True" InputGestureText="Ctrl+V" ToolTip="Paste Copied Elements">
                         <MenuItem.Icon>
                             <Image Source="/Icons/Paste.png" Style="{StaticResource OpacityChangedImage}"/>
                         </MenuItem.Icon>

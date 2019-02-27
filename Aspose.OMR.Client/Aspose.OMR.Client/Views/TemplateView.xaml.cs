@@ -109,5 +109,37 @@ namespace Aspose.OMR.Client.Views
             // handle event so it is not fired on main window
             e.Handled = true;
         }
+
+        /// <summary>
+        /// Fires when scrollviewer viewport is changed 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnScrollChange(object sender, ScrollChangedEventArgs e)
+        {
+            // choose appropriate point inside viewport for precise paste 
+            var scroll = sender as ScrollViewer;
+            var context = this.DataContext as TemplateViewModel;
+            
+            if (context != null && scroll != null)
+            {
+                // specify viewport paste position
+                double x = scroll.HorizontalOffset / TemplateViewModel.ZoomKoefficient + scroll.ViewportWidth / 2;
+                double y = scroll.VerticalOffset / TemplateViewModel.ZoomKoefficient + scroll.ViewportHeight / 2;
+                context.PasteViewPortPosition = new Point(x, y);
+            }
+        }
+
+        private void ScrollViewLoaded(object sender, RoutedEventArgs e)
+        {
+            var scroll = sender as ScrollViewer;
+            var context = this.DataContext as TemplateViewModel;
+
+            if (context != null && scroll != null)
+            {
+                context.ViewportWidth = scroll.ViewportWidth;
+                context.FitPageWidthCommand.Execute(scroll.ViewportWidth);
+            }
+        }
     }
 }

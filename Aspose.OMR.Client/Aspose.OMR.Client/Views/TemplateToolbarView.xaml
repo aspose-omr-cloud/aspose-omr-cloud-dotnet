@@ -33,7 +33,7 @@
                         <Image Source="/Icons/Copy.png" />
                     </Button>
 
-                    <Button ToolTip="Paste" Command="{Binding PasteElementsCommand}" Style="{StaticResource ImageButton}" Margin="0,0,5,0">
+                    <Button ToolTip="Paste" Command="{Binding PasteElementsCommand}" CommandParameter="menu" Style="{StaticResource ImageButton}" Margin="0,0,5,0">
                         <Image Source="/Icons/Paste.png" />
                     </Button>
                     <Button ToolTip="Remove Selected Items" Command="{Binding RemoveElementCommand}" Style="{StaticResource ImageButton}">

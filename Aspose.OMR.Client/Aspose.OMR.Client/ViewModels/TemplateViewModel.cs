@@ -264,6 +264,16 @@ namespace Aspose.OMR.Client.ViewModels
         }
 
         /// <summary>
+        /// Position to paste using context menu
+        /// </summary>
+        public Point PasteContextPosition { get; set; }
+
+        /// <summary>
+        /// Position to paste based on viewport
+        /// </summary>
+        public Point PasteViewPortPosition { get; set; }
+
+        /// <summary>
         /// Gets or sets the path that template was loaded from
         /// </summary>
         public string LoadedPath { get; set; }
@@ -657,6 +667,8 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         public event FinalizationApprovedDelegate ValidationSuccessful;
 
+        public double ViewportWidth { get; set; }
+
         #region Commands
 
         public RelayCommand LoadTemplateImageCommand { get; private set; }
@@ -884,6 +896,7 @@ namespace Aspose.OMR.Client.ViewModels
             }
 
             this.LoadTemplateImageFromFile(imagePath);
+            this.OnFitPageWidth(ViewportWidth);
         }
 
         /// <summary>
@@ -1032,12 +1045,7 @@ namespace Aspose.OMR.Client.ViewModels
 
             this.CopyElementsCommand = new RelayCommand(x => this.OnCopyQuestions(), x => this.SelectedElements.Any());
 
-            this.PasteElementsCommand = new RelayCommand(x =>
-            {
-                if (x == null)
-                    x = new Point(30, 30);
-                this.OnPasteQuestions((Point) x);
-            }, x => this.copiedQuestionsBuffer.Any());
+            this.PasteElementsCommand = new RelayCommand(x => this.ProcessPaste(x), x => this.copiedQuestionsBuffer.Any());
 
             this.FitPageWidthCommand = new RelayCommand(x => this.OnFitPageWidth((double)x));
             this.FitPageHeightCommand = new RelayCommand(x => this.OnFitPageHeight((Size)x));
@@ -1457,6 +1465,41 @@ namespace Aspose.OMR.Client.ViewModels
         }
 
         /// <summary>
+        /// Determine target position and call paste
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void ProcessPaste(object parameter)
+        {
+            // default paste point
+            Point pastePoint = new Point(50, 50);
+
+            // in case of shortcut paste position is already specified as parameter
+            if (parameter is Point)
+            {
+                var temp = (Point)parameter;
+                if (temp.X >= 0 || temp.Y >= 0)
+                {
+                    pastePoint = temp;
+                }
+            }
+            else if (parameter is string)
+            {
+                // based on source of command decide paste point
+                string parameterValue = (string)parameter;
+                if (string.Equals(parameterValue, "menu"))
+                {
+                    pastePoint = PasteViewPortPosition;
+                }
+                else if (string.Equals(parameterValue, "context"))
+                {
+                    pastePoint = PasteContextPosition;
+                }
+            }
+
+            this.OnPasteQuestions(pastePoint);
+        }
+
+        /// <summary>
         /// Paste questions in certain position
         /// </summary>
         /// <param name="position">Position to paste questions</param>
@@ -1464,59 +1507,101 @@ namespace Aspose.OMR.Client.ViewModels
         {
             this.ClearSelection();
 
-            // for the case when mouse position was out of UI change start position
-            if (position.X < 0 || position.Y < 0)
-            {
-                position.X = position.Y = 30;
-            }
+            Point pastePosition = position;
+            int count = this.copiedQuestionsBuffer.Count;
 
             // calculate delta between topmost item and paste position
             BaseQuestionViewModel topmostItem = this.copiedQuestionsBuffer.OrderByDescending(x => x.Top).Last();
-            double deltaTop = topmostItem.Top - position.Y;
-            double deltaLeft = topmostItem.Left - position.X;
+            double deltaTop = topmostItem.Top - pastePosition.Y;
+            double deltaLeft = topmostItem.Left - pastePosition.X;
 
-            // buffer for undo/redo
-            BaseQuestionViewModel[] copiedElements = new BaseQuestionViewModel[this.copiedQuestionsBuffer.Count];
+            // first, create copies and set their top and left according to initial paste position
+            List<BaseQuestionViewModel> copies = new List<BaseQuestionViewModel>();
 
-            for (int i = 0; i < this.copiedQuestionsBuffer.Count; i++)
+            for (int i = 0; i < count; i++)
             {
-                // create new copy and update name and position
                 BaseQuestionViewModel copy = this.copiedQuestionsBuffer[i].CreateCopy();
 
-                copy.Name = GetNextElementName(copy);
                 copy.Top -= deltaTop;
                 copy.Left -= deltaLeft;
-
-                this.OnAddQuestion(copy, true);
-                copy.IsSelected = true;
-
-                copiedElements[i] = copy;
+                copies.Add(copy);
+                copy.Name = GetNextElementName(copy, copies);
             }
 
-            ActionTracker.TrackAction(new AddElementsAction(copiedElements, this.PageQuestions));
+            // then, check out of bounds for all copies
+            double lowest = copies.OrderByDescending(x => x.Top + x.Height).Select(x => x.Top + x.Height).First();
+            double topmost = copies.OrderBy(x => x.Top).Select(x => x.Top).First();
+            double rightmost = copies.OrderByDescending(x => x.Left + x.Width).Select(x => x.Left + x.Width).First();
+            double leftmost = copies.OrderBy(x => x.Left).Select(x => x.Left).First();
+
+            // if any element is out of bounds, move all items accordingly
+            if (lowest > PageHeight)
+            {
+                double correctTop = lowest - PageHeight;
+                for (int i = 0; i < count; i++)
+                {
+                    copies[i].Top -= correctTop;
+                }
+            }
+
+            if (topmost < 0)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    copies[i].Top -= topmost;
+                }
+            }
+
+            if (rightmost > PageWidth)
+            {
+                double correctLeft = rightmost - PageWidth;
+                for (int i = 0; i < count; i++)
+                {
+                    copies[i].Left -= correctLeft;
+                }
+            }
+
+            if (leftmost < 0)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    copies[i].Left -= leftmost;
+                }
+            }
+
+            // finally, add copies on page
+            for (int i = 0; i < count; i++)
+            {
+                this.OnAddQuestion(copies[i], true);
+                copies[i].IsSelected = true;
+            }
+
+            // undo/redo tracker
+            ActionTracker.TrackAction(new AddElementsAction(copies.ToArray(), this.PageQuestions));
         }
 
         /// <summary>
         /// Get next element name based on element type
         /// </summary>
         /// <param name="element">The element to get name for</param>
+        /// <param name="copies"></param>
         /// <returns>Next avialable name for the element</returns>
-        private string GetNextElementName(BaseQuestionViewModel element)
+        private string GetNextElementName(BaseQuestionViewModel element, List<BaseQuestionViewModel> copies)
         {
             string nextName = string.Empty;
             var type = element.GetType();
 
             if (type == typeof(ChoiceBoxViewModel) || type == typeof(GridViewModel))
             {
-                nextName = NamingManager.GetNextAvailableElementName(this.PageQuestions);
+                nextName = NamingManager.GetNextAvailableElementName(this.PageQuestions.Union(copies).ToList());
             }
             else if (type == typeof(BarcodeViewModel))
             {
-                nextName = NamingManager.GetNextAvailableBarcodeName(this.PageQuestions);
+                nextName = NamingManager.GetNextAvailableBarcodeName(this.PageQuestions.Union(copies).ToList());
             }
             else if (type == typeof(ClipAreaViewModel))
             {
-                nextName = NamingManager.GetNextAvailableAreaName(this.PageQuestions);
+                nextName = NamingManager.GetNextAvailableAreaName(this.PageQuestions.Union(copies).ToList());
             }
 
             return nextName;
