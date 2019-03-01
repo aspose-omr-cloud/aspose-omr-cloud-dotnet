@@ -664,16 +664,25 @@ namespace Aspose.OMR.Client.ViewModels
             return false;
         }
 
-        private void OnPasteCommand(object control)
+        private void OnPasteCommand(object parameter)
         {
-            // find parent canvas
-            UIElement uiItem = (UIElement)control;
-            var canvas = uiItem.FindChild<CustomCanvas>(Properties.Resources.RootCanvasName);
+            if (parameter is UIElement)
+            {
+                // find parent canvas
+                UIElement uiItem = (UIElement)parameter;
+                var canvas = uiItem.FindChild<CustomCanvas>(Properties.Resources.RootCanvasName);
 
-            // get mouse position to use for paste questions
-            Point mousePos = Mouse.GetPosition(canvas);
+                // get mouse position to use for paste questions
+                Point mousePos = Mouse.GetPosition(canvas);
 
-            ((TemplateViewModel) this.SelectedTab).PasteElementsCommand.Execute(mousePos);
+                ((TemplateViewModel)this.SelectedTab).PasteElementsCommand.Execute(mousePos);
+            }
+            else
+            {
+                // we have string parameter -> command comes from menu, pass string as it is
+                string stringPar = (string)parameter;
+                ((TemplateViewModel)this.SelectedTab).PasteElementsCommand.Execute(stringPar);
+            }
         }
 
         private bool CanPaste()

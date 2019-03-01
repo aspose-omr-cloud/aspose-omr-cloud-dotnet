@@ -70,7 +70,17 @@ namespace Aspose.OMR.Client.Controls
         {
             base.OnMouseDown(e);
 
-            if (Equals(e.Source, this))
+            if (e.ChangedButton == MouseButton.Right)
+            {
+                // remember right click point position for precise paste and other context operations
+                var context = (TemplateViewModel)this.DataContext;
+                if (context != null)
+                {
+                    context.PasteContextPosition = Mouse.GetPosition(this);
+                }
+            }
+
+            if (e.ChangedButton == MouseButton.Left && Equals(e.Source, this))
             {
                 // remember click point in case of dragging
                 this.dragStartPoint = e.GetPosition(this);

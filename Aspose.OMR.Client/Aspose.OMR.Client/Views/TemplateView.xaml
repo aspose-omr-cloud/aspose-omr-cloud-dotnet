@@ -31,8 +31,8 @@
         <!--Main area-->
         <ScrollViewer Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" x:Name="MainScroll" KeyboardNavigation.DirectionalNavigation="None"
                       HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Focusable="False"
-                      CanContentScroll="True" PreviewMouseWheel="OnPreviewMouseWheel"
-                      AllowDrop="True" Drop="OnImageDrop" IsTabStop="False">
+                      CanContentScroll="True" PreviewMouseWheel="OnPreviewMouseWheel" ScrollChanged="OnScrollChange"
+                      AllowDrop="True" Drop="OnImageDrop" IsTabStop="False" Loaded="ScrollViewLoaded">
 
             <Grid Background="{StaticResource BackgroundBrush}">
                 <Grid.LayoutTransform>
@@ -45,7 +45,7 @@
                                 <Image Source="/Icons/Copy.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="_Paste" Command="{Binding PasteElementsCommand}" 
+                        <MenuItem Header="_Paste" Command="{Binding PasteElementsCommand}" CommandParameter="context"
                                   ToolTipService.ShowOnDisabled="True" InputGestureText="Ctrl+V" ToolTip="Paste Copied Elements">
                             <MenuItem.Icon>
                                 <Image Source="/Icons/Paste.png" />

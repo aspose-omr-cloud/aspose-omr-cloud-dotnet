@@ -385,7 +385,7 @@ namespace Aspose.OMR.Client.ViewModels
             }
             catch (Exception e)
             {
-                DialogManager.ShowErrorDialog("Error occured : " + e.Message);
+                DialogManager.ShowErrorDialog("Error occurred : " + e.Message);
             }
         }
 

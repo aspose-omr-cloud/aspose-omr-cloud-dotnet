@@ -90,6 +90,7 @@ In the upcoming releases, we are set to implement a number of new features:
  - [X] Support [Clip Areas](https://docs.aspose.cloud/display/omrcloud/Clip+areas+of+interest)
  - [X] [Grade OMR results](https://docs.aspose.cloud/display/omrcloud/Answers+Grading) based on rules
  - [X] OMR.Client usability improvements: more hints&tips, built-in printer and scanner support
+ - [X] Full UTF-8 support
  - [ ] Support diverse interviewee’s marks (ticks, crosses, corrections, etc) on various forms with the use of neural networks
  - [ ] Support multipage templates
  - [ ] Handprinted text recognition
@@ -102,11 +103,11 @@ In the upcoming releases, we are set to implement a number of new features:
 ## Resources
 
 + **Website:** [www.aspose.com](https://www.aspose.com/)
-+ **Product Home:** [Aspose.OMR for Cloud](https://products.aspose.cloud/omr/net)
++ **Product Home:** [Aspose.OMR for Cloud](https://products.aspose.cloud/omr)
 + **Documentation:** [Aspose.OMR for Cloud Documentation](https://docs.aspose.cloud/display/omrcloud/Home)
 + **Cloud Dashboard:** [Aspose Cloud](https://dashboard.aspose.cloud/)
 + **Forum:** [Aspose.OMR for Cloud Forum](https://forum.aspose.cloud/c/omr)
-+ **Blog:** [Aspose.OMR for Cloud Blog](https://blog.aspose.cloud/category/aspose-products/aspose.omr-product-family/)
++ **Blog:** [Aspose.OMR for Cloud Blog](https://blog.aspose.cloud/category/omr/)
 + **Nuget:** [Aspose.OMR-Cloud](https://www.nuget.org/packages/Aspose.OMR-Cloud/)
 + **OMR Client Releases:** [Github Releases](https://github.com/aspose-omr-cloud/aspose-omr-cloud-dotnet/releases)
 + **OMR Client Documentation:** [Aspose.OMR.Client Application](https://docs.aspose.cloud/display/omrcloud/Aspose.OMR.Client+Application)

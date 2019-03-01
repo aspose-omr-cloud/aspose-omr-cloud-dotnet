@@ -20,7 +20,7 @@
                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                    TextAlignment="Center">
             <TextBlock.Inlines>
-                <Run Text="Errors occured during Template correction. Some of the bubbles seem to be in invalid position." />
+                <Run Text="Errors occurred during Template correction. Some of the bubbles seem to be in invalid position." />
                 <Run FontStyle="Normal" Foreground="Black" Text="It could be caused by inaccurate mark-up and"/>
                 <Run FontStyle="Normal" Foreground="Red" Text="might greatly affect recognition quality." />
             </TextBlock.Inlines>

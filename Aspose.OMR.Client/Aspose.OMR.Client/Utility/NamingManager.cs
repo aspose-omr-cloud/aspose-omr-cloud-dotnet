@@ -16,7 +16,7 @@
 namespace Aspose.OMR.Client.Utility
 {
     using System;
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
     using ViewModels;
 
     /// <summary>
@@ -44,7 +44,7 @@ namespace Aspose.OMR.Client.Utility
         /// </summary>
         /// <param name="pageQuestions">Existing page questions</param>
         /// <returns>A new unused name for an element</returns>
-        public static string GetNextAvailableElementName(ObservableCollection<BaseQuestionViewModel> pageQuestions)
+        public static string GetNextAvailableElementName(IEnumerable<BaseQuestionViewModel> pageQuestions)
         {
             int currentTopNumber = 0;
             foreach (BaseQuestionViewModel element in pageQuestions)
@@ -68,7 +68,7 @@ namespace Aspose.OMR.Client.Utility
         /// </summary>
         /// <param name="pageQuestions">Existing page questions</param>
         /// <returns>A new unused name for the barcode</returns>
-        public static string GetNextAvailableBarcodeName(ObservableCollection<BaseQuestionViewModel> pageQuestions)
+        public static string GetNextAvailableBarcodeName(IEnumerable<BaseQuestionViewModel> pageQuestions)
         {
             int currentTopNumber = 0;
             foreach (BaseQuestionViewModel element in pageQuestions)
@@ -92,7 +92,7 @@ namespace Aspose.OMR.Client.Utility
         /// </summary>
         /// <param name="pageQuestions">Existing page questions</param>
         /// <returns>A new unused name for the clip area</returns>
-        public static string GetNextAvailableAreaName(ObservableCollection<BaseQuestionViewModel> pageQuestions)
+        public static string GetNextAvailableAreaName(IEnumerable<BaseQuestionViewModel> pageQuestions)
         {
             int currentTopNumber = 0;
             foreach (BaseQuestionViewModel element in pageQuestions)

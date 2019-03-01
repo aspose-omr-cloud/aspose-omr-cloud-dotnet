@@ -44,6 +44,7 @@ namespace Aspose.OMR.Client.Views
                 if (!result)
                 {
                     e.Cancel = true;
+                    return;
                 }
             }
 
@@ -53,7 +54,7 @@ namespace Aspose.OMR.Client.Views
             if (filesCount > 0)
             {
                 if (DialogManager.ShowConfirmDialog("During Your session " + filesCount +
-                                                    " files were uploaded for recognition to Aspose.Cloud Storage. Would like to delete them?"))
+                                                    " files were uploaded for the recognition to the Aspose.Cloud Storage. Would you like to delete them?"))
                 {
                     try
                     {
@@ -62,7 +63,7 @@ namespace Aspose.OMR.Client.Views
                     }
                     catch
                     {
-                        DialogManager.ShowErrorDialog("An error occured while attempting to delete files from storage. Please visit Cloud Dashboard to manage storage files.");
+                        DialogManager.ShowErrorDialog("An error occurred while attempting to delete files from the storage. Please visit Cloud Dashboard to manage storage files.");
                     }
                 }
             }
