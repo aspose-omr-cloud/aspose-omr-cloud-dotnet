@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Aspose.OMR.Client.Controls"
                     xmlns:converters="clr-namespace:Aspose.OMR.Client.Converters"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+                    xmlns:system="clr-namespace:System;assembly=mscorlib" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
 
     <Color x:Key="BackgroundColor" >WhiteSmoke</Color>
     <Color x:Key="MainItemsColor" >LightSkyBlue</Color>
