@@ -16,6 +16,7 @@
 namespace Aspose.OMR.Client.ViewModels
 {
     using System;
+    using System.Runtime.Serialization;
     using System.Collections.ObjectModel;
     using System.Collections.Generic;
     using System.IO;
@@ -858,30 +859,43 @@ namespace Aspose.OMR.Client.ViewModels
             }
 
             // load and deserialize template data
-            string jsonString = File.ReadAllText(file);
-            TemplateViewModel templateViewModel = TemplateSerializer.JsonToTemplate(jsonString);
-
-            // if no name in template, use name of the file
-            if (string.IsNullOrEmpty(templateViewModel.TemplateName))
+            try
             {
-                templateViewModel.TemplateName = Path.GetFileNameWithoutExtension(file);
+                string jsonString = File.ReadAllText(file);
+                TemplateViewModel templateViewModel = TemplateSerializer.JsonToTemplate(jsonString);
+
+                // if no name in template, use name of the file
+                if (string.IsNullOrEmpty(templateViewModel.TemplateName))
+                {
+                    templateViewModel.TemplateName = Path.GetFileNameWithoutExtension(file);
+                }
+
+                // load image and check if it was loaded
+                bool imageLoaded = templateViewModel.LoadTemplateImageFromFile(imageFiles[0]);
+                if (!imageLoaded)
+                {
+                    return;
+                }
+
+                templateViewModel.LoadedPath = file;
+                templateViewModel.IsDirty = false;
+
+                this.CloseActiveTemplateTab();
+
+                this.AddTab(templateViewModel);
+
+                RecentMenuManager.AddFileNameToRecentList(this.RecentFiles, file);
             }
-
-            // load image and check if it was loaded
-            bool imageLoaded = templateViewModel.LoadTemplateImageFromFile(imageFiles[0]);
-            if (!imageLoaded)
+            catch (SerializationException e)
             {
+                DialogManager.ShowErrorDialog("Failed to read or deserialize the template.\nReason: " + e.Message);
                 return;
             }
-
-            templateViewModel.LoadedPath = file;
-            templateViewModel.IsDirty = false;
-
-            this.CloseActiveTemplateTab();
-
-            this.AddTab(templateViewModel);
-
-            RecentMenuManager.AddFileNameToRecentList(this.RecentFiles, file);
+            catch (Exception e)
+            {
+                DialogManager.ShowErrorDialog("Unknown error while loading the template.\nError details: " + e.Message);
+                return;
+            }
         }
 
         /// <summary>
@@ -958,7 +972,7 @@ namespace Aspose.OMR.Client.ViewModels
                 return;
             }
 
-            var templateVm = new TemplateViewModel(false, string.Empty);
+            TemplateViewModel templateVm = new TemplateViewModel(false, string.Empty);
             templateVm.TemplateName = "New Template";
 
             // reinit zoom koefficient

@@ -45,6 +45,14 @@ namespace Aspose.OMR.Client
             page.ImageName = templateViewModel.TemplateImageName;
             page.ImageFormat = templateViewModel.ImageFileFormat;
 
+            if (templateViewModel.ReferencePointsModels != null && templateViewModel.ReferencePointsModels.Length > 0)
+            {
+                for (int i = 0; i < templateViewModel.ReferencePointsModels.Length; i++)
+                {
+                    page.AddRefPointElement(templateViewModel.ReferencePointsModels[i]);
+                }
+            }
+
             foreach (BaseQuestionViewModel element in templateViewModel.PageQuestions)
             {
                 if (element is ChoiceBoxViewModel)
@@ -87,6 +95,7 @@ namespace Aspose.OMR.Client
             templateViewModel.PageHeight = page.Height;
 
             List<BaseQuestionViewModel> elements = new List<BaseQuestionViewModel>();
+            List<ReferencePointElement> refPoints = new List<ReferencePointElement>();
 
             foreach (OmrElement modelElement in page.Elements)
             {
@@ -107,18 +116,21 @@ namespace Aspose.OMR.Client
                 }
                 else if (modelElement is ClipAreaElement)
                 {
-                    ClipAreaViewModel barcodeViewModel = CreateClipAreaViewModel((ClipAreaElement)modelElement, templateViewModel);
-                    elements.Add(barcodeViewModel);
+                    ClipAreaViewModel clipViewModel = CreateClipAreaViewModel((ClipAreaElement)modelElement, templateViewModel);
+                    elements.Add(clipViewModel);
+                }
+                else if (modelElement is ReferencePointElement)
+                {
+                    refPoints.Add((ReferencePointElement)modelElement);
                 }
             }
 
             templateViewModel.AddQuestions(elements);
+            templateViewModel.ReferencePointsModels = refPoints.ToArray();
 
             templateViewModel.IsDirty = false;
             return templateViewModel;
         }
-
-
 
         /// <summary>
         /// Check provided image size and format and compress image

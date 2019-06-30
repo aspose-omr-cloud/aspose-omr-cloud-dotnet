@@ -58,6 +58,19 @@
                 </ToolBar>
 
                 <ToolBar BandIndex="4" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
+                    <Button Content="Draw Reference Points" Command="{Binding DrawRefPointsCommand}" Margin="5,0,5,0" >
+                        <Button.ToolTip>
+                            <TextBlock Foreground="Black">
+                                Add reference points to the image. <LineBreak/>
+                                Reference points required to work with Aspose.OMR for .NET downloadable version.
+                            </TextBlock>
+                        </Button.ToolTip>
+
+                    </Button>
+                </ToolBar>
+
+
+                <ToolBar BandIndex="5" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
                     <Separator Background="{StaticResource MainItemsBrush}" Width="2" Margin="5,0,0,0"/>
                     <ToggleButton Content="Add Choice Box" IsChecked="{Binding IsAddingChoiceBox}" Margin="5,0,5,0"></ToggleButton>
                     <ToggleButton Content="Add Grid" IsChecked="{Binding IsAddingGrid}" Margin="0,0,5,0"></ToggleButton>
@@ -65,7 +78,7 @@
                     <ToggleButton Content="Add Clip Area" IsChecked="{Binding IsAddingClipArea}" ></ToggleButton>
                 </ToolBar>
 
-                <ToolBar BandIndex="5" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
+                <ToolBar BandIndex="6" Background="White" OverflowMode="Never" Style="{DynamicResource ToolBarStyleNoOverflow}">
                     <Separator Background="{StaticResource MainItemsBrush}" Width="2"/>
 
                     <Button Command="{Binding ValidateTemplateCommand}" Margin="0,0,5,0"

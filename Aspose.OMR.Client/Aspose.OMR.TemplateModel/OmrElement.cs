@@ -26,6 +26,7 @@ namespace Aspose.OMR.TemplateModel
     [KnownType(typeof(GridElement))]
     [KnownType(typeof(BarcodeElement))]
     [KnownType(typeof(ClipAreaElement))]
+    [KnownType(typeof(ReferencePointElement))]
     public abstract class OmrElement
     {
         /// <summary>

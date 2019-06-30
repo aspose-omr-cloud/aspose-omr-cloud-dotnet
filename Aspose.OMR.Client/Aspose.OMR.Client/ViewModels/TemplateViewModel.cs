@@ -203,6 +203,11 @@ namespace Aspose.OMR.Client.ViewModels
         #region Properties
 
         /// <summary>
+        /// Gets or sets the reference point model elements
+        /// </summary>
+        public ReferencePointElement[] ReferencePointsModels { get; set; }
+
+        /// <summary>
         /// Indicated whether snap lines are in the elements collections
         /// </summary>
         public bool GotSnapLines { get; set; }
@@ -671,6 +676,8 @@ namespace Aspose.OMR.Client.ViewModels
 
         #region Commands
 
+        public RelayCommand DrawRefPointsCommand { get; private set; }
+
         public RelayCommand LoadTemplateImageCommand { get; private set; }
 
         public RelayCommand DropPageImageCommand { get; private set; }
@@ -855,13 +862,13 @@ namespace Aspose.OMR.Client.ViewModels
             }
             else if (this.IsAddingBarcode)
             {
-                nextName = NamingManager.GetNextAvailableBarcodeName(this.PageQuestions);
+                nextName = NamingManager.GetNextNameWithPrefix(NamingManager.BarcodeNamePrefix, this.PageQuestions);
                 newQuestion = new BarcodeViewModel(nextName, area, this);
                 this.IsAddingBarcode = false;
             }
             else if (this.IsAddingClipArea)
             {
-                nextName = NamingManager.GetNextAvailableAreaName(this.PageQuestions);
+                nextName = NamingManager.GetNextNameWithPrefix(NamingManager.ClipAreaNamePrefix, this.PageQuestions);
                 newQuestion = new ClipAreaViewModel(nextName, area, this);
                 this.IsAddingClipArea = false;
             }
@@ -1033,6 +1040,8 @@ namespace Aspose.OMR.Client.ViewModels
         /// </summary>
         private void InitCommands()
         {
+            this.DrawRefPointsCommand = new RelayCommand(x => this.OnAddReferencePoints());
+
             this.RemoveElementCommand = new RelayCommand(x => this.OnRemoveElement(), x => this.SelectedElements.Any());
 
             this.LoadTemplateImageCommand = new RelayCommand(x => this.OnLoadTemplateImage());
@@ -1082,6 +1091,32 @@ namespace Aspose.OMR.Client.ViewModels
                 this.savedPropertiesWidth = this.PropertiesPanelWidth;
                 this.PropertiesPanelWidth = PropertiesPanelClosedWidth;
             });
+        }
+
+        /// <summary>
+        /// Draw reference points on user image
+        /// </summary>
+        private void OnAddReferencePoints()
+        {
+            if (this.IsDirty)
+            {
+                DialogManager.ShowWarningDialog(
+                    "Please save changes to the current template before adding reference points." +
+                    "\nTemplate with reference points will be considered new so that original image and template can be preserved.");
+                return;
+            }
+
+            // get pair of (white rects, black rects) to draw on image
+            Tuple<Rect[], Rect[]> points = ImageProcessor.ConstructReferencePoints(this.TemplateImage);
+            this.ReferencePointsModels = ImageProcessor.CreateReferencePointsModels(points.Item2);
+
+            this.TemplateImage = ImageProcessor.DrawReferencePoints(this.TemplateImage, points.Item1, points.Item2);
+            
+            // set template to be as a new one
+            this.TemplateName = "New Template";
+            this.LoadedPath = string.Empty;
+            this.TempImagePath = string.Empty;
+            this.IsDirty = true;
         }
 
         /// <summary>
@@ -1582,6 +1617,7 @@ namespace Aspose.OMR.Client.ViewModels
 
         /// <summary>
         /// Get next element name based on element type
+        /// Used during copy/paste
         /// </summary>
         /// <param name="element">The element to get name for</param>
         /// <param name="copies"></param>
@@ -1597,16 +1633,14 @@ namespace Aspose.OMR.Client.ViewModels
             }
             else if (type == typeof(BarcodeViewModel))
             {
-                nextName = NamingManager.GetNextAvailableBarcodeName(this.PageQuestions.Union(copies).ToList());
+                nextName = NamingManager.GetNextNameWithPrefix(NamingManager.BarcodeNamePrefix, this.PageQuestions.Union(copies).ToList());
             }
             else if (type == typeof(ClipAreaViewModel))
             {
-                nextName = NamingManager.GetNextAvailableAreaName(this.PageQuestions.Union(copies).ToList());
+                nextName = NamingManager.GetNextNameWithPrefix(NamingManager.ClipAreaNamePrefix, this.PageQuestions.Union(copies).ToList());
             }
 
             return nextName;
         }
-
-
     }
 }
