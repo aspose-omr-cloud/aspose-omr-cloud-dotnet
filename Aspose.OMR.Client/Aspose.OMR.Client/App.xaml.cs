@@ -15,6 +15,8 @@
  */
 namespace Aspose.OMR.Client
 {
+    using System;
+    using Utility;
     using System.Windows;
 
     /// <summary>
@@ -24,6 +26,26 @@ namespace Aspose.OMR.Client
     {
         public App()
         {
+            Application.Current.DispatcherUnhandledException += OnUnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += OnAppDomainUnhandledException;
+        }
+
+        private void OnAppDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception exception = e.ExceptionObject as Exception;
+            if (exception != null)
+            {
+                DialogManager.ShowErrorDialog("Unhandled error occured. Please contact support on Aspose support forums.\nDetails: " + exception.Message);
+            }
+            else
+            {
+                DialogManager.ShowErrorDialog("Unknown error occured. Please contact support on Aspose support forums.");
+            }
+        }
+
+        private void OnUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            DialogManager.ShowErrorDialog("Unhandled error occured. Please contact support on Aspose support forums.\nDetails: " + e.Exception.Message);
         }
     }
 }

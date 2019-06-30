@@ -53,6 +53,7 @@
     <Compile Include="OmrTemplate.cs" />
     <Compile Include="Orientations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReferencePointElement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

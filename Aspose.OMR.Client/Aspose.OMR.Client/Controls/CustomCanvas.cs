@@ -73,7 +73,7 @@ namespace Aspose.OMR.Client.Controls
             if (e.ChangedButton == MouseButton.Right)
             {
                 // remember right click point position for precise paste and other context operations
-                var context = (TemplateViewModel)this.DataContext;
+                var context = this.DataContext as TemplateViewModel;
                 if (context != null)
                 {
                     context.PasteContextPosition = Mouse.GetPosition(this);

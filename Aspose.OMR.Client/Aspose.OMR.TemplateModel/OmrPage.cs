@@ -53,12 +53,6 @@ namespace Aspose.OMR.TemplateModel
         /// <summary>
         /// Gets or sets the image data
         /// </summary>
-        [DataMember(Order = 4, Name = "ImageData")]
-        public string ImageData { get; set; }
-
-        /// <summary>
-        /// Gets or sets the image data
-        /// </summary>
         [DataMember(Order = 5, Name = "ImageName")]
         public string ImageName { get; set; }
 
@@ -125,6 +119,26 @@ namespace Aspose.OMR.TemplateModel
         public ClipAreaElement AddClipAreaElement(string name, int width, int height, int top, int left)
         {
             ClipAreaElement newElement = new ClipAreaElement
+            {
+                Name = name,
+                Width = width,
+                Height = height,
+                Top = top,
+                Left = left
+            };
+
+            this.Elements.Add(newElement);
+            return newElement;
+        }
+
+        public void AddRefPointElement(ReferencePointElement item)
+        {
+            this.Elements.Add(item);
+        }
+
+        public ReferencePointElement AddRefPointElement(string name, int width, int height, int top, int left)
+        {
+            ReferencePointElement newElement = new ReferencePointElement
             {
                 Name = name,
                 Width = width,

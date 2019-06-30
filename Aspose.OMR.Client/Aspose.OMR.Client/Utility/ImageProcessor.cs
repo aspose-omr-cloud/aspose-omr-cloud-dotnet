@@ -21,13 +21,116 @@ namespace Aspose.OMR.Client.Utility
     using System.Drawing.Imaging;
     using System.IO;
     using System.Windows.Media.Imaging;
+    using System.Windows;
+    using System.Windows.Media;
     using Encoder = System.Drawing.Imaging.Encoder;
+    using Point = System.Windows.Point;
+    using TemplateModel;
 
     /// <summary>
     /// Contains various image processing methods
     /// </summary>
     public static class ImageProcessor
     {
+        /// <summary>
+        /// The size of the reference point
+        /// </summary>
+        private static readonly int ReferencePointSize = 6;
+
+        /// <summary>
+        /// Calculate positions of reference points rectangles
+        /// </summary>
+        /// <param name="image">The input image</param>
+        /// <returns>Returns a tuple of (white rectangles, black rectangles)</returns>
+        public static Tuple<Rect[], Rect[]> ConstructReferencePoints(BitmapImage image)
+        {
+            double dpix = image.DpiX;
+            double dpiy = image.DpiY;
+            int width = (int)(image.PixelWidth * 96 / dpix);
+            int height = (int)(image.PixelHeight * 96 / dpiy);
+
+            // 1% white margin
+            int margin = width / 100;
+
+            // % total white zone area: margin + black area + margin
+            int whiteZone = width * ReferencePointSize / 100;
+
+            Rect topLeftWhite = new Rect(new Point(0, 0), new Point(whiteZone, whiteZone));
+            Rect topRightWhite = new Rect(new Point(width - whiteZone, 0), new Point(width, whiteZone));
+            Rect downLeftWhite = new Rect(new Point(0, height - whiteZone), new Point(whiteZone, height));
+            Rect downRightWhite = new Rect(new Point(width - whiteZone, height - whiteZone), new Point(width, height));
+
+            Rect topLeftBlack = new Rect(new Point(margin, margin), new Point(whiteZone - margin, whiteZone - margin));
+            Rect topRightBlack = new Rect(new Point(width - whiteZone + margin, margin), new Point(width - margin, whiteZone - margin));
+            Rect downLeftBlack = new Rect(new Point(margin, height - whiteZone + margin), new Point(whiteZone - margin, height - margin));
+            Rect downRightBlack = new Rect(new Point(width - whiteZone + margin, height - whiteZone + margin), new Point(width - margin, height - margin));
+
+            Rect[] whiteAreas = new Rect[] { topLeftWhite, topRightWhite, downLeftWhite, downRightWhite };
+            Rect[] refPoints = new Rect[] {topLeftBlack, topRightBlack, downLeftBlack, downRightBlack};
+            return new Tuple<Rect[], Rect[]>(whiteAreas, refPoints);
+        }
+
+        /// <summary>
+        /// Draw reference points on the image
+        /// </summary>
+        /// <param name="image">Image to draw</param>
+        /// <param name="whiteAreas">White rectangles for white margin areas</param>
+        /// <param name="refPoints">Black rectangles - actual reference points</param>
+        /// <returns>Image with drawn reference points</returns>
+        public static BitmapImage DrawReferencePoints(BitmapImage image, Rect[] whiteAreas, Rect[] refPoints)
+        {
+            // prepare resources
+            SolidColorBrush whiteBrush = new SolidColorBrush(Colors.White);
+            var blackBrush = new SolidColorBrush(Colors.Black);
+            var whitePen = new System.Windows.Media.Pen(whiteBrush, 1);
+            var blackPen = new System.Windows.Media.Pen(blackBrush, 1);
+            whiteBrush.Freeze();
+            blackBrush.Freeze();
+            whitePen.Freeze();
+            blackPen.Freeze();
+
+            var target = new RenderTargetBitmap(image.PixelWidth, image.PixelHeight, image.DpiX, image.DpiY, PixelFormats.Pbgra32);
+            var visual = new DrawingVisual();
+            using (DrawingContext r = visual.RenderOpen())
+            {
+                r.DrawImage(image, new Rect(0, 0, image.Width, image.Height));
+
+                for (int i = 0; i < whiteAreas.Length; i++)
+                {
+                    r.DrawRectangle(whiteBrush, whitePen, whiteAreas[i]);
+                    r.DrawRectangle(blackBrush, blackPen, refPoints[i]);
+                }
+            }
+
+            // call render to render all changes on the image
+            target.Render(visual);
+
+            return ConvertRenderTargetToBitmapImage(target);
+        }
+
+        /// <summary>
+        /// Create reference points model elements for the template
+        /// </summary>
+        /// <param name="refPoints">The reference points rectnagles</param>
+        /// <returns>Array of reference point elements</returns>
+        public static ReferencePointElement[] CreateReferencePointsModels(Rect[] refPoints)
+        {
+            ReferencePointElement[] result = new ReferencePointElement[refPoints.Length];
+            for (int i = 0; i < refPoints.Length; i++)
+            {
+                ReferencePointElement element = new ReferencePointElement();
+                element.Top = refPoints[i].Top;
+                element.Left = refPoints[i].Left;
+                element.Height = refPoints[i].Height;
+                element.Width = refPoints[i].Width;
+                element.Name = "ReferencePoint" + i.ToString();
+
+                result[i] = element;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Save template image as png by specified location
         /// </summary>
@@ -116,6 +219,7 @@ namespace Aspose.OMR.Client.Utility
 
             bitmap.BeginInit();
             bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
             bitmap.StreamSource = stream;
             bitmap.EndInit();
 
@@ -240,6 +344,33 @@ namespace Aspose.OMR.Client.Utility
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Convert render target bitmap to the bitmap image
+        /// </summary>
+        /// <param name="input">The render bitmap input</param>
+        /// <returns>The resulting bitmap image</returns>
+        private static BitmapImage ConvertRenderTargetToBitmapImage(RenderTargetBitmap input)
+        {
+            BitmapImage bitmapImage = new BitmapImage();
+
+            var bitmapEncoder = new PngBitmapEncoder();
+            bitmapEncoder.Frames.Add(BitmapFrame.Create(input));
+
+            using (var stream = new MemoryStream())
+            {
+                bitmapEncoder.Save(stream);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                bitmapImage.StreamSource = stream;
+                bitmapImage.EndInit();
+            }
+
+            return bitmapImage;
         }
     }
 }
