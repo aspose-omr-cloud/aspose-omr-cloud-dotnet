@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="ServerStat.cs">
+// <copyright company="Aspose" file="DiscUsage.cs">
 //   Copyright (c) 2019 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -33,19 +33,19 @@ namespace Aspose.Omr.Cloud.Sdk.Model
   using System.Text;
 
   /// <summary>
-  /// Represents information about part of the text.
+  /// Class for disc space information.
   /// </summary>  
-  public class ServerStat 
+  public class DiscUsage 
   {                       
         /// <summary>
-        /// Get or set StorageDownloadTime
+        /// Application used disc space.
         /// </summary>  
-        public string StorageDownloadTime { get; set; }
+        public long? UsedSize { get; set; }
 		
         /// <summary>
-        /// Get or set OmrFunctionCallTime
+        /// Total disc space.
         /// </summary>  
-        public string OmrFunctionCallTime { get; set; }
+        public long? TotalSize { get; set; }
 		
         /// <summary>
         /// Get the string presentation of the object
@@ -54,9 +54,9 @@ namespace Aspose.Omr.Cloud.Sdk.Model
         public override string ToString()  
         {
           var sb = new StringBuilder();
-          sb.Append("class ServerStat {\n");
-          sb.Append("  StorageDownloadTime: ").Append(this.StorageDownloadTime).Append("\n");
-          sb.Append("  OmrFunctionCallTime: ").Append(this.OmrFunctionCallTime).Append("\n");
+          sb.Append("class DiscUsage {\n");
+          sb.Append("  UsedSize: ").Append(this.UsedSize).Append("\n");
+          sb.Append("  TotalSize: ").Append(this.TotalSize).Append("\n");
           sb.Append("}\n");
           return sb.ToString();
         }

@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="ServerStat.cs">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Aspose" file="AuthType.cs">
 //   Copyright (c) 2019 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -23,42 +23,31 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System; 
-
-namespace Aspose.Omr.Cloud.Sdk.Model 
+namespace Aspose.Omr.Cloud.Sdk
 {
-  using System.Collections;
-  using System.Collections.Generic;
-  using System.Runtime.Serialization;
-  using System.Text;
-
-  /// <summary>
-  /// Represents information about part of the text.
-  /// </summary>  
-  public class ServerStat 
-  {                       
+    /// <summary>
+    /// Supported types of authentification.
+    /// </summary>
+    public enum AuthType
+    {
         /// <summary>
-        /// Get or set StorageDownloadTime
-        /// </summary>  
-        public string StorageDownloadTime { get; set; }
-		
-        /// <summary>
-        /// Get or set OmrFunctionCallTime
-        /// </summary>  
-        public string OmrFunctionCallTime { get; set; }
-		
-        /// <summary>
-        /// Get the string presentation of the object
+        /// OAuth2.0
         /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()  
-        {
-          var sb = new StringBuilder();
-          sb.Append("class ServerStat {\n");
-          sb.Append("  StorageDownloadTime: ").Append(this.StorageDownloadTime).Append("\n");
-          sb.Append("  OmrFunctionCallTime: ").Append(this.OmrFunctionCallTime).Append("\n");
-          sb.Append("}\n");
-          return sb.ToString();
-        }
+        OAuth2 = 0,
+
+        /// <summary>
+        /// Authentification with signing of url.
+        /// </summary>
+        RequestSignature = 1,
+
+        /// <summary>
+        /// Token for OAuth2 provided by caller
+        /// </summary>
+        ExternalAuth = 2,
+
+        /// <summary>
+        /// Token for JWT authorization of OCR
+        /// </summary>
+        JWT = 3,
     }
 }

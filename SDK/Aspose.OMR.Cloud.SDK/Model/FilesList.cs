@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="ServerStat.cs">
+// <copyright company="Aspose" file="FilesList.cs">
 //   Copyright (c) 2019 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -33,19 +33,14 @@ namespace Aspose.Omr.Cloud.Sdk.Model
   using System.Text;
 
   /// <summary>
-  /// Represents information about part of the text.
+  /// Files list
   /// </summary>  
-  public class ServerStat 
+  public class FilesList 
   {                       
         /// <summary>
-        /// Get or set StorageDownloadTime
+        /// Files and folders contained by folder StorageFile.
         /// </summary>  
-        public string StorageDownloadTime { get; set; }
-		
-        /// <summary>
-        /// Get or set OmrFunctionCallTime
-        /// </summary>  
-        public string OmrFunctionCallTime { get; set; }
+        public List<StorageFile> Value { get; set; }
 		
         /// <summary>
         /// Get the string presentation of the object
@@ -54,9 +49,8 @@ namespace Aspose.Omr.Cloud.Sdk.Model
         public override string ToString()  
         {
           var sb = new StringBuilder();
-          sb.Append("class ServerStat {\n");
-          sb.Append("  StorageDownloadTime: ").Append(this.StorageDownloadTime).Append("\n");
-          sb.Append("  OmrFunctionCallTime: ").Append(this.OmrFunctionCallTime).Append("\n");
+          sb.Append("class FilesList {\n");
+          sb.Append("  Value: ").Append(this.Value).Append("\n");
           sb.Append("}\n");
           return sb.ToString();
         }

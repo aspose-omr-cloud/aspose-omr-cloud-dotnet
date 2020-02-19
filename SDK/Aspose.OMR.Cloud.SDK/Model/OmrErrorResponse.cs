@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="ServerStat.cs">
-//   Copyright (c) 2019 Aspose.Omr for Cloud
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Aspose" file="ApiExceptionRequestHandler.cs">
+//   Copyright (c) 2018 Aspose.BarCode for Cloud
 // </copyright>
 // <summary>
 //   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,42 +23,28 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System; 
+using System.Text;
 
-namespace Aspose.Omr.Cloud.Sdk.Model 
+namespace Aspose.Omr.Cloud.Sdk.Model
 {
-  using System.Collections;
-  using System.Collections.Generic;
-  using System.Runtime.Serialization;
-  using System.Text;
+    public class OmrErrorResponse : AsposeResponse
+    {
+        /// <summary>
+        /// Error message.
+        /// </summary>  
+        public string Message { get; set; }
 
-  /// <summary>
-  /// Represents information about part of the text.
-  /// </summary>  
-  public class ServerStat 
-  {                       
-        /// <summary>
-        /// Get or set StorageDownloadTime
-        /// </summary>  
-        public string StorageDownloadTime { get; set; }
-		
-        /// <summary>
-        /// Get or set OmrFunctionCallTime
-        /// </summary>  
-        public string OmrFunctionCallTime { get; set; }
-		
         /// <summary>
         /// Get the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
-        public override string ToString()  
+        public override string ToString()
         {
-          var sb = new StringBuilder();
-          sb.Append("class ServerStat {\n");
-          sb.Append("  StorageDownloadTime: ").Append(this.StorageDownloadTime).Append("\n");
-          sb.Append("  OmrFunctionCallTime: ").Append(this.OmrFunctionCallTime).Append("\n");
-          sb.Append("}\n");
-          return sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("class OmrErrorResponse {\n");
+            sb.Append("  Message: ").Append(this.Message).Append("\n");
+            sb.Append("}\n");
+            return sb.ToString();
         }
     }
 }

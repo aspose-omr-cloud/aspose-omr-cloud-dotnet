@@ -34,8 +34,8 @@
     <Reference Include="Aspose.Storage.Cloud.Sdk, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Aspose.Storage-Cloud.18.3.0\lib\net20\Aspose.Storage.Cloud.Sdk.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net20\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net20\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -46,14 +46,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Aspose.OMR.Cloud.SDK\Aspose.OMR.Cloud.SDK.csproj">
-      <Project>{5731bac8-8227-4ce7-833d-cb917bd37c97}</Project>
-      <Name>Aspose.OMR.Cloud.SDK</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Aspose.OMR.Cloud.SDK\Aspose.Omr.Cloud.Sdk.csproj">
+      <Project>{ad03df83-506e-4a44-b7bd-ec11159e68ca}</Project>
+      <Name>Aspose.Omr.Cloud.Sdk</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

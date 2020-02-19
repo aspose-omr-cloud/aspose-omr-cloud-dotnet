@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose.OMR.Cloud.SDK", "Aspose.OMR.Cloud.SDK\Aspose.OMR.Cloud.SDK.csproj", "{5731BAC8-8227-4CE7-833D-CB917BD37C97}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose.OMR.Demo", "Aspose.OMR.Demo\Aspose.OMR.Demo.csproj", "{85885728-0D8F-4A60-AD03-02A48CAFED18}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspose.Omr.Cloud.Sdk", "Aspose.OMR.Cloud.SDK\Aspose.Omr.Cloud.Sdk.csproj", "{AD03DF83-506E-4A44-B7BD-EC11159E68CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,16 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5731BAC8-8227-4CE7-833D-CB917BD37C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5731BAC8-8227-4CE7-833D-CB917BD37C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5731BAC8-8227-4CE7-833D-CB917BD37C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5731BAC8-8227-4CE7-833D-CB917BD37C97}.Release|Any CPU.Build.0 = Release|Any CPU
 		{85885728-0D8F-4A60-AD03-02A48CAFED18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{85885728-0D8F-4A60-AD03-02A48CAFED18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85885728-0D8F-4A60-AD03-02A48CAFED18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85885728-0D8F-4A60-AD03-02A48CAFED18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD03DF83-506E-4A44-B7BD-EC11159E68CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD03DF83-506E-4A44-B7BD-EC11159E68CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD03DF83-506E-4A44-B7BD-EC11159E68CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD03DF83-506E-4A44-B7BD-EC11159E68CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F7DD495-B48C-4B7B-A0C9-CA57032BF803}
 	EndGlobalSection
 EndGlobal

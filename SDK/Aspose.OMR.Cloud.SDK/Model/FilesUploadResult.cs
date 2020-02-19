@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="ServerStat.cs">
+// <copyright company="Aspose" file="FilesUploadResult.cs">
 //   Copyright (c) 2019 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -33,19 +33,19 @@ namespace Aspose.Omr.Cloud.Sdk.Model
   using System.Text;
 
   /// <summary>
-  /// Represents information about part of the text.
+  /// File upload result
   /// </summary>  
-  public class ServerStat 
+  public class FilesUploadResult 
   {                       
         /// <summary>
-        /// Get or set StorageDownloadTime
+        /// List of uploaded file names
         /// </summary>  
-        public string StorageDownloadTime { get; set; }
+        public List<string> Uploaded { get; set; }
 		
         /// <summary>
-        /// Get or set OmrFunctionCallTime
+        /// List of errors.
         /// </summary>  
-        public string OmrFunctionCallTime { get; set; }
+        public List<Error> Errors { get; set; }
 		
         /// <summary>
         /// Get the string presentation of the object
@@ -54,9 +54,9 @@ namespace Aspose.Omr.Cloud.Sdk.Model
         public override string ToString()  
         {
           var sb = new StringBuilder();
-          sb.Append("class ServerStat {\n");
-          sb.Append("  StorageDownloadTime: ").Append(this.StorageDownloadTime).Append("\n");
-          sb.Append("  OmrFunctionCallTime: ").Append(this.OmrFunctionCallTime).Append("\n");
+          sb.Append("class FilesUploadResult {\n");
+          sb.Append("  Uploaded: ").Append(this.Uploaded).Append("\n");
+          sb.Append("  Errors: ").Append(this.Errors).Append("\n");
           sb.Append("}\n");
           return sb.ToString();
         }
