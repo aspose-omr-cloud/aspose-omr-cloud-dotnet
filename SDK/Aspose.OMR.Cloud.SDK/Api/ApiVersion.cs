@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="ServerStat.cs">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Aspose" file="ApiVersion.cs">
 //   Copyright (c) 2019 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -23,42 +23,37 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System; 
-
-namespace Aspose.Omr.Cloud.Sdk.Model 
+namespace Aspose.Omr.Cloud.Sdk
 {
-  using System.Collections;
-  using System.Collections.Generic;
-  using System.Runtime.Serialization;
-  using System.Text;
-
-  /// <summary>
-  /// Represents information about part of the text.
-  /// </summary>  
-  public class ServerStat 
-  {                       
-        /// <summary>
-        /// Get or set StorageDownloadTime
-        /// </summary>  
-        public string StorageDownloadTime { get; set; }
-		
-        /// <summary>
-        /// Get or set OmrFunctionCallTime
-        /// </summary>  
-        public string OmrFunctionCallTime { get; set; }
-		
-        /// <summary>
-        /// Get the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()  
+    /// <summary>
+    /// The availiable api versions.
+    /// </summary>
+    public class ApiVersion
+    {
+        public string Version { get; set; }
+        private ApiVersion(string version)
         {
-          var sb = new StringBuilder();
-          sb.Append("class ServerStat {\n");
-          sb.Append("  StorageDownloadTime: ").Append(this.StorageDownloadTime).Append("\n");
-          sb.Append("  OmrFunctionCallTime: ").Append(this.OmrFunctionCallTime).Append("\n");
-          sb.Append("}\n");
-          return sb.ToString();
+            Version = version;
+        }
+        /// <summary>
+        /// Current API version
+        /// </summary>
+        public static ApiVersion V1 = new ApiVersion("1.0");
+
+        /// <summary>
+        /// Stable version
+        /// </summary>
+        public static ApiVersion V2 = new ApiVersion("2.0");
+
+        /// <summary>
+        /// Frozen version
+        /// </summary>
+        public static ApiVersion V3 = new ApiVersion("3.0");
+
+        public override string ToString()
+        {
+            return Version;
         }
     }
+
 }

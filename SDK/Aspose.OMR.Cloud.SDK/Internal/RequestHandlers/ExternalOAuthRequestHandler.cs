@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="OmrFunctionParam.cs">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Aspose" file="OAuthRequestHandler.cs">
 //   Copyright (c) 2019 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -23,42 +23,41 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System; 
-
-namespace Aspose.Omr.Cloud.Sdk.Model 
+namespace Aspose.Omr.Cloud.Sdk.RequestHandlers
 {
-  using System.Collections;
-  using System.Collections.Generic;
-  using System.Runtime.Serialization;
-  using System.Text;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
 
-  /// <summary>
-  /// Represents information about file.
-  /// </summary>  
-  public class OmrFunctionParam 
-  {                       
-        /// <summary>
-        /// FunctionParam  depends on operation
-        /// </summary>  
-        public string FunctionParam { get; set; }
-		
-        /// <summary>
-        /// AdditionalParam depends on operation 
-        /// </summary>  
-        public string AdditionalParam { get; set; }
-		
-        /// <summary>
-        /// Get the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()  
+    using Newtonsoft.Json;
+
+    internal class ExternalAuthorizationRequestHandler : IRequestHandler
+    {
+        private readonly Configuration configuration;
+
+        public ExternalAuthorizationRequestHandler(Configuration configuration)
         {
-          var sb = new StringBuilder();
-          sb.Append("class OmrFunctionParam {\n");
-          sb.Append("  FunctionParam: ").Append(this.FunctionParam).Append("\n");
-          sb.Append("  AdditionalParam: ").Append(this.AdditionalParam).Append("\n");
-          sb.Append("}\n");
-          return sb.ToString();
+            this.configuration = configuration;
         }
+
+        public string ProcessUrl(string url)
+        {
+            return url;
+        }
+
+        public void BeforeSend(WebRequest request, Stream streamToSend)
+        {
+            if (this.configuration.AuthType == AuthType.OAuth2 && string.IsNullOrEmpty(this.configuration.JwtToken))
+            {
+                throw new ApiException(401, "Authorization header value required");
+            }
+
+            request.Headers.Add("Authorization", "Bearer " + this.configuration.JwtToken);
+        }
+
+        public void ProcessResponse(HttpWebResponse response, Stream resultStream)
+        {
+        }
+
     }
 }

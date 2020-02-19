@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="ServerStat.cs">
+// <copyright company="Aspose" file="StorageFile.cs">
 //   Copyright (c) 2019 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -33,19 +33,34 @@ namespace Aspose.Omr.Cloud.Sdk.Model
   using System.Text;
 
   /// <summary>
-  /// Represents information about part of the text.
+  /// File or folder information
   /// </summary>  
-  public class ServerStat 
+  public class StorageFile 
   {                       
         /// <summary>
-        /// Get or set StorageDownloadTime
+        /// File or folder name.
         /// </summary>  
-        public string StorageDownloadTime { get; set; }
+        public string Name { get; set; }
 		
         /// <summary>
-        /// Get or set OmrFunctionCallTime
+        /// True if it is a folder.
         /// </summary>  
-        public string OmrFunctionCallTime { get; set; }
+        public bool? IsFolder { get; set; }
+		
+        /// <summary>
+        /// File or folder last modified DateTime.
+        /// </summary>  
+        public DateTime? ModifiedDate { get; set; }
+		
+        /// <summary>
+        /// File or folder size.
+        /// </summary>  
+        public long? Size { get; set; }
+		
+        /// <summary>
+        /// File or folder path.
+        /// </summary>  
+        public string Path { get; set; }
 		
         /// <summary>
         /// Get the string presentation of the object
@@ -54,9 +69,12 @@ namespace Aspose.Omr.Cloud.Sdk.Model
         public override string ToString()  
         {
           var sb = new StringBuilder();
-          sb.Append("class ServerStat {\n");
-          sb.Append("  StorageDownloadTime: ").Append(this.StorageDownloadTime).Append("\n");
-          sb.Append("  OmrFunctionCallTime: ").Append(this.OmrFunctionCallTime).Append("\n");
+          sb.Append("class StorageFile {\n");
+          sb.Append("  Name: ").Append(this.Name).Append("\n");
+          sb.Append("  IsFolder: ").Append(this.IsFolder).Append("\n");
+          sb.Append("  ModifiedDate: ").Append(this.ModifiedDate).Append("\n");
+          sb.Append("  Size: ").Append(this.Size).Append("\n");
+          sb.Append("  Path: ").Append(this.Path).Append("\n");
           sb.Append("}\n");
           return sb.ToString();
         }

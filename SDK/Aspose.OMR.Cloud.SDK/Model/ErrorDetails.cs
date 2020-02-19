@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="ServerStat.cs">
+// <copyright company="Aspose" file="ErrorDetails.cs">
 //   Copyright (c) 2019 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -33,19 +33,19 @@ namespace Aspose.Omr.Cloud.Sdk.Model
   using System.Text;
 
   /// <summary>
-  /// Represents information about part of the text.
+  /// The error details
   /// </summary>  
-  public class ServerStat 
+  public class ErrorDetails 
   {                       
         /// <summary>
-        /// Get or set StorageDownloadTime
+        /// The request id
         /// </summary>  
-        public string StorageDownloadTime { get; set; }
+        public string RequestId { get; set; }
 		
         /// <summary>
-        /// Get or set OmrFunctionCallTime
+        /// Date
         /// </summary>  
-        public string OmrFunctionCallTime { get; set; }
+        public DateTime? Date { get; set; }
 		
         /// <summary>
         /// Get the string presentation of the object
@@ -54,9 +54,9 @@ namespace Aspose.Omr.Cloud.Sdk.Model
         public override string ToString()  
         {
           var sb = new StringBuilder();
-          sb.Append("class ServerStat {\n");
-          sb.Append("  StorageDownloadTime: ").Append(this.StorageDownloadTime).Append("\n");
-          sb.Append("  OmrFunctionCallTime: ").Append(this.OmrFunctionCallTime).Append("\n");
+          sb.Append("class ErrorDetails {\n");
+          sb.Append("  RequestId: ").Append(this.RequestId).Append("\n");
+          sb.Append("  Date: ").Append(this.Date).Append("\n");
           sb.Append("}\n");
           return sb.ToString();
         }

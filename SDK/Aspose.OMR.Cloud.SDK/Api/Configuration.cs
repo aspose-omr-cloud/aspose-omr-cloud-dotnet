@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="ServerStat.cs">
+// <copyright company="Aspose" file="Configuration.cs">
 //   Copyright (c) 2019 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -23,42 +23,62 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System; 
-
-namespace Aspose.Omr.Cloud.Sdk.Model 
+namespace Aspose.Omr.Cloud.Sdk
 {
-  using System.Collections;
-  using System.Collections.Generic;
-  using System.Runtime.Serialization;
-  using System.Text;
-
-  /// <summary>
-  /// Represents information about part of the text.
-  /// </summary>  
-  public class ServerStat 
-  {                       
+    /// <summary>
+    /// Represents a set of configuration settings
+    /// </summary>
+    public class Configuration
+    {
         /// <summary>
-        /// Get or set StorageDownloadTime
-        /// </summary>  
-        public string StorageDownloadTime { get; set; }
-		
-        /// <summary>
-        /// Get or set OmrFunctionCallTime
-        /// </summary>  
-        public string OmrFunctionCallTime { get; set; }
-		
-        /// <summary>
-        /// Get the string presentation of the object
+        /// Aspose Cloud API base URL.
         /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()  
+        public string ApiBaseUrl { get; set; }
+
+        /// <summary>
+        /// Gets or sets the app key.
+        /// </summary>
+        public string AppKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets the app sid.
+        /// </summary>
+        public string AppSid { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Jwt token.
+        /// If set the library would handle auth internally
+        /// </summary>
+        public string JwtToken { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether debug mode.
+        /// </summary>
+        public bool DebugMode { get; set; }
+
+        /// <summary>
+        /// Authentification type.
+        /// </summary>
+        public AuthType AuthType { get; set; }
+
+        /// <summary>
+        /// Get or sets Cloud API Version.
+        /// </summary>
+        public ApiVersion ApiVersion { get; set; }
+
+        public Configuration()
         {
-          var sb = new StringBuilder();
-          sb.Append("class ServerStat {\n");
-          sb.Append("  StorageDownloadTime: ").Append(this.StorageDownloadTime).Append("\n");
-          sb.Append("  OmrFunctionCallTime: ").Append(this.OmrFunctionCallTime).Append("\n");
-          sb.Append("}\n");
-          return sb.ToString();
+            ApiBaseUrl = "https://api.aspose.cloud";
+            DebugMode = false;
+            ApiVersion = ApiVersion.V3;
+            AuthType = AuthType.JWT;
+        }
+
+        internal string GetApiRootUrl()
+        {
+            var result = this.ApiBaseUrl + "/v" + ApiVersion;
+
+            return result.EndsWith("/") ? result.Substring(0, result.Length - 1) : result;
         }
     }
 }

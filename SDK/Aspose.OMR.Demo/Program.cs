@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+using Aspose.Omr.Cloud.Sdk;
+using Aspose.Omr.Cloud.Sdk.Model;
+using Aspose.Omr.Cloud.Sdk.Model.Requests;
+
 namespace Aspose.OMR.Demo
 {
     using System;
@@ -23,10 +27,9 @@ namespace Aspose.OMR.Demo
     using Storage.Cloud.Sdk.Api;
     using Storage.Cloud.Sdk.Model;
     using Storage.Cloud.Sdk.Model.Requests;
-    using Com.Aspose.Omr.Api;
-    using Com.Aspose.Omr.Model;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using FileInfo = Aspose.Omr.Cloud.Sdk.Model.FileInfo;
 
     class Program
     {
@@ -159,7 +162,7 @@ namespace Aspose.OMR.Demo
             storageConfiguration.ApiBaseUrl = baseHost;
             this.StorageApi = new StorageApi(storageConfiguration);
 
-            this.OmrApi = new OmrApi(this.AppKey, this.AppSid, this.Basepath);
+            this.OmrApi = new OmrApi(this.AppKey, this.AppSid);
         }
 
         /// <summary>
@@ -172,7 +175,7 @@ namespace Aspose.OMR.Demo
             this.UploadDemoFiles(this.DataFolder);
 
             Console.WriteLine("\t\tGenerate template...");
-            OMRResponse generateReponse = this.GenerateTemplate(Path.Combine(this.DataFolder, this.TemplateGenerationFileName), this.LogosFolderName);
+            OmrResponse generateReponse = this.GenerateTemplate(Path.Combine(this.DataFolder, this.TemplateGenerationFileName), this.LogosFolderName);
             if (generateReponse.ErrorCode == 0)
             {
                 Utility.DeserializeFiles(generateReponse.Payload.Result.ResponseFiles, this.PathToOutput);
@@ -201,20 +204,21 @@ namespace Aspose.OMR.Demo
         /// <param name="templateFilePath">Path to template text description</param>
         /// <param name="logosFolder">Name of the cloud folder with logo images</param>
         /// <returns>Generation response</returns>
-        protected OMRResponse GenerateTemplate(string templateFilePath, string logosFolder)
+        protected OmrResponse GenerateTemplate(string templateFilePath, string logosFolder)
         {
             // upload template text description
             string fileName = Path.GetFileName(templateFilePath);
             this.UploadFile(templateFilePath, fileName);
 
             // provide function parameters
-            OMRFunctionParam callParams = new OMRFunctionParam();
+            OmrFunctionParam callParams = new OmrFunctionParam();
             callParams.FunctionParam = JsonConvert.SerializeObject(new Dictionary<string, string>
             {
                 { "ExtraStoragePath", logosFolder}
             }, Formatting.Indented);
 
-            return this.OmrApi.PostRunOmrTask(fileName, "GenerateTemplate", callParams, null, null);
+            PostRunOmrTaskRequest request = new PostRunOmrTaskRequest(fileName, "GenerateTemplate", callParams);
+            return this.OmrApi.PostRunOmrTask(request);
         }
 
         /// <summary>
@@ -225,7 +229,7 @@ namespace Aspose.OMR.Demo
         /// <returns>Template ID</returns>
         protected string ValidateTemplate(string templateImagePath, string templateDataDir)
         {
-            OMRResponse correctReponse = this.CorrectTemplate(templateImagePath, templateDataDir);
+            OmrResponse correctReponse = this.CorrectTemplate(templateImagePath, templateDataDir);
 
             // save correction results and provide them to the template finalization 
             string correctedTemplatePath = string.Empty;
@@ -246,7 +250,7 @@ namespace Aspose.OMR.Demo
             }
 
             string templateId = correctReponse.Payload.Result.TemplateId;
-            OMRResponse finalizeReponse = this.FinalizeTemplate(templateId, correctedTemplatePath);
+            OmrResponse finalizeReponse = this.FinalizeTemplate(templateId, correctedTemplatePath);
             return templateId;
         }
 
@@ -256,7 +260,7 @@ namespace Aspose.OMR.Demo
         /// <param name="templateImagePath">Path to template image</param>
         /// <param name="templateDataDir">Path to template data file (.omr)</param>
         /// <returns>Correction response</returns>
-        protected OMRResponse CorrectTemplate(string templateImagePath, string templateDataDir)
+        protected OmrResponse CorrectTemplate(string templateImagePath, string templateDataDir)
         {
             // upload template image
             string imageFileName = Path.GetFileName(templateImagePath);
@@ -264,11 +268,12 @@ namespace Aspose.OMR.Demo
 
             // locate generated template file (.omr) and provide it's data as function parameter
             string templateDataPath = Path.Combine(templateDataDir, Path.GetFileNameWithoutExtension(imageFileName) + ".omr");
-            OMRFunctionParam callParams = new OMRFunctionParam();
+            OmrFunctionParam callParams = new OmrFunctionParam();
             callParams.FunctionParam = Utility.SerializeFiles(new string[] { templateDataPath });
 
             // call template correction
-            return this.OmrApi.PostRunOmrTask(imageFileName, "CorrectTemplate", callParams, null, null);
+            PostRunOmrTaskRequest request = new PostRunOmrTaskRequest(imageFileName, "CorrectTemplate", callParams);
+            return this.OmrApi.PostRunOmrTask(request);
         }
 
         /// <summary>
@@ -277,18 +282,19 @@ namespace Aspose.OMR.Demo
         /// <param name="templateId">Template id recieved after template correction</param>
         /// <param name="correctedTemplatePath">Path to corrected template (.omrcr)</param>
         /// <returns>Finalization response</returns>
-        protected OMRResponse FinalizeTemplate(string templateId, string correctedTemplatePath)
+        protected OmrResponse FinalizeTemplate(string templateId, string correctedTemplatePath)
         {
             // upload corrected template data on cloud
             string templateFileName = Path.GetFileName(correctedTemplatePath);
             this.UploadFile(correctedTemplatePath, templateFileName);
 
             // provide template id as function parameter
-            OMRFunctionParam callParams = new OMRFunctionParam();
+            OmrFunctionParam callParams = new OmrFunctionParam();
             callParams.FunctionParam = templateId;
 
             // call template finalization
-            return this.OmrApi.PostRunOmrTask(templateFileName, "FinalizeTemplate", callParams, null, null);
+            PostRunOmrTaskRequest request = new PostRunOmrTaskRequest(templateFileName, "FinalizeTemplate", callParams);
+            return this.OmrApi.PostRunOmrTask(request);
         }
 
         /// <summary>
@@ -297,18 +303,19 @@ namespace Aspose.OMR.Demo
         /// <param name="templateId">Template ID</param>
         /// <param name="imagePath">Path to the image</param>
         /// <returns>Recognition response</returns>
-        protected OMRResponse RecognizeImage(string templateId, string imagePath)
+        protected OmrResponse RecognizeImage(string templateId, string imagePath)
         {
             // upload image on cloud
             string imageFileName = Path.GetFileName(imagePath);
             this.UploadFile(imagePath, imageFileName);
 
             // provide template id as function parameter
-            OMRFunctionParam callParams = new OMRFunctionParam();
+            OmrFunctionParam callParams = new OmrFunctionParam();
             callParams.FunctionParam = templateId;
 
             // call image recognition
-            return this.OmrApi.PostRunOmrTask(imageFileName, "RecognizeImage", callParams, null, null);
+            PostRunOmrTaskRequest request = new PostRunOmrTaskRequest(imageFileName, "RecognizeImage", callParams);
+            return this.OmrApi.PostRunOmrTask(request);
         }
 
         /// <summary>
@@ -366,7 +373,7 @@ namespace Aspose.OMR.Demo
         /// <param name="files">List of response files</param>
         /// <param name="dstPath">Location to deserialize files to</param>
         /// <returns>Path to deserialized files</returns>
-        public static List<string> DeserializeFiles(List<Com.Aspose.Omr.Model.FileInfo> files, string dstPath)
+        public static List<string> DeserializeFiles(List<FileInfo> files, string dstPath)
         {
             List<string> result = new List<string>();
             foreach (var info in files)
@@ -383,7 +390,7 @@ namespace Aspose.OMR.Demo
         /// <param name="fileInfo">Response file to deserialize</param>
         /// <param name="dstPath">Location to deserialize files to</param>
         /// <returns>Path to deserialized file</returns>
-        public static string DeserializeFile(Com.Aspose.Omr.Model.FileInfo fileInfo, string dstPath)
+        public static string DeserializeFile(FileInfo fileInfo, string dstPath)
         {
             if (!Directory.Exists(dstPath))
             {

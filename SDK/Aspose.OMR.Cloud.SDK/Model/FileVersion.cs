@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="ServerStat.cs">
+// <copyright company="Aspose" file="FileVersion.cs">
 //   Copyright (c) 2019 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -33,19 +33,19 @@ namespace Aspose.Omr.Cloud.Sdk.Model
   using System.Text;
 
   /// <summary>
-  /// Represents information about part of the text.
+  /// File Version
   /// </summary>  
-  public class ServerStat 
+  public class FileVersion : StorageFile 
   {                       
         /// <summary>
-        /// Get or set StorageDownloadTime
+        /// File Version ID.
         /// </summary>  
-        public string StorageDownloadTime { get; set; }
+        public string VersionId { get; set; }
 		
         /// <summary>
-        /// Get or set OmrFunctionCallTime
+        /// Specifies whether the file is (true) or is not (false) the latest version of an file.
         /// </summary>  
-        public string OmrFunctionCallTime { get; set; }
+        public bool? IsLatest { get; set; }
 		
         /// <summary>
         /// Get the string presentation of the object
@@ -54,9 +54,9 @@ namespace Aspose.Omr.Cloud.Sdk.Model
         public override string ToString()  
         {
           var sb = new StringBuilder();
-          sb.Append("class ServerStat {\n");
-          sb.Append("  StorageDownloadTime: ").Append(this.StorageDownloadTime).Append("\n");
-          sb.Append("  OmrFunctionCallTime: ").Append(this.OmrFunctionCallTime).Append("\n");
+          sb.Append("class FileVersion {\n");
+          sb.Append("  VersionId: ").Append(this.VersionId).Append("\n");
+          sb.Append("  IsLatest: ").Append(this.IsLatest).Append("\n");
           sb.Append("}\n");
           return sb.ToString();
         }

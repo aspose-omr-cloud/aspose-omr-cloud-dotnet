@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="Payload.cs">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Aspose" file="IRequestHandler.cs">
 //   Copyright (c) 2019 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -23,36 +23,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System; 
-
-namespace Aspose.Omr.Cloud.Sdk.Model 
+namespace Aspose.Omr.Cloud.Sdk
 {
-  using System.Collections;
-  using System.Collections.Generic;
-  using System.Runtime.Serialization;
-  using System.Text;
+    using System.IO;
+    using System.Net;
 
-  /// <summary>
-  /// Represents information about file.
-  /// </summary>  
-  public class Payload 
-  {                       
-        /// <summary>
-        /// OMR result
-        /// </summary>  
-        public OmrResponseContent Result { get; set; }
-		
-        /// <summary>
-        /// Get the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()  
-        {
-          var sb = new StringBuilder();
-          sb.Append("class Payload {\n");
-          sb.Append("  Result: ").Append(this.Result).Append("\n");
-          sb.Append("}\n");
-          return sb.ToString();
-        }
+    internal interface IRequestHandler
+    {
+        string ProcessUrl(string url);
+
+        void BeforeSend(WebRequest request, Stream streamToSend);
+
+        void ProcessResponse(HttpWebResponse response, Stream resultStream);
     }
 }

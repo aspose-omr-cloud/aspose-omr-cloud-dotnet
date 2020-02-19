@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="ServerStat.cs">
+// <copyright company="Aspose" file="ObjectExist.cs">
 //   Copyright (c) 2019 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -33,19 +33,19 @@ namespace Aspose.Omr.Cloud.Sdk.Model
   using System.Text;
 
   /// <summary>
-  /// Represents information about part of the text.
+  /// Object exists
   /// </summary>  
-  public class ServerStat 
+  public class ObjectExist 
   {                       
         /// <summary>
-        /// Get or set StorageDownloadTime
+        /// Indicates that the file or folder exists.
         /// </summary>  
-        public string StorageDownloadTime { get; set; }
+        public bool? Exists { get; set; }
 		
         /// <summary>
-        /// Get or set OmrFunctionCallTime
+        /// True if it is a folder, false if it is a file.
         /// </summary>  
-        public string OmrFunctionCallTime { get; set; }
+        public bool? IsFolder { get; set; }
 		
         /// <summary>
         /// Get the string presentation of the object
@@ -54,9 +54,9 @@ namespace Aspose.Omr.Cloud.Sdk.Model
         public override string ToString()  
         {
           var sb = new StringBuilder();
-          sb.Append("class ServerStat {\n");
-          sb.Append("  StorageDownloadTime: ").Append(this.StorageDownloadTime).Append("\n");
-          sb.Append("  OmrFunctionCallTime: ").Append(this.OmrFunctionCallTime).Append("\n");
+          sb.Append("class ObjectExist {\n");
+          sb.Append("  Exists: ").Append(this.Exists).Append("\n");
+          sb.Append("  IsFolder: ").Append(this.IsFolder).Append("\n");
           sb.Append("}\n");
           return sb.ToString();
         }
