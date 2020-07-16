@@ -15,17 +15,18 @@
  */
 namespace Aspose.OMR.Client
 {
+    using Omr.Cloud.Sdk;
+    using Omr.Cloud.Sdk.Model;
+    using Omr.Cloud.Sdk.Model.Requests;
+    using Storage.Cloud.Sdk;
+    using Storage.Cloud.Sdk.Api;
+    using Storage.Cloud.Sdk.Model;
+    using Storage.Cloud.Sdk.Model.Requests;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text;
-    using Storage.Cloud.Sdk.Api;
-    using Storage.Cloud.Sdk.Model;
-    using Storage.Cloud.Sdk;
-    using Storage.Cloud.Sdk.Model.Requests;
-    using Com.Aspose.Omr.Model;
-    using Com.Aspose.Omr.Api;
     using TemplateModel;
     using Utility;
     using ViewModels;
@@ -98,7 +99,7 @@ namespace Aspose.OMR.Client
         {
             imagesPath = @"{ ""ExtraStoragePath"":""" + imagesPath + @"""}";
 
-            OMRResponse response = RunOmrTask(OmrFunctions.GenerateTemplate, descriptionFileName, descriptionData,
+            OmrResponse response = RunOmrTask(OmrFunctions.GenerateTemplate, descriptionFileName, descriptionData,
                 imagesPath, false, false, additionalParams);
 
             OmrResponseContent responseResult = response.Payload.Result;
@@ -130,7 +131,7 @@ namespace Aspose.OMR.Client
         {
             string packedTemplate = PackTemplate(imageName, templateData);
 
-            OMRResponse response = RunOmrTask(OmrFunctions.CorrectTemplate, imageName, imageData, packedTemplate,
+            OmrResponse response = RunOmrTask(OmrFunctions.CorrectTemplate, imageName, imageData, packedTemplate,
                 wasUploaded, false, additionalParams);
 
             OmrResponseContent responseResult = response.Payload.Result;
@@ -156,7 +157,7 @@ namespace Aspose.OMR.Client
         /// <returns>Finalization data containing warnings</returns>
         public static FinalizationData FinalizeTemplate(string templateName, byte[] templateData, string templateId, string additionalParams)
         {
-            OMRResponse response = RunOmrTask(OmrFunctions.FinalizeTemplate, templateName, templateData, templateId, false, false, additionalParams);
+            OmrResponse response = RunOmrTask(OmrFunctions.FinalizeTemplate, templateName, templateData, templateId, false, false, additionalParams);
             OmrResponseContent responseResult = response.Payload.Result;
             CheckTaskResult(response.Payload.Result);
 
@@ -177,7 +178,7 @@ namespace Aspose.OMR.Client
         /// <returns>Recognition results</returns>
         public static ImageRecognitionResult RecognizeImage(string imageName, byte[] imageData, string templateId, bool wasUploaded, string additionalParams)
         {
-            OMRResponse response = RunOmrTask(OmrFunctions.RecognizeImage, imageName, imageData, templateId, wasUploaded, true, additionalParams);
+            OmrResponse response = RunOmrTask(OmrFunctions.RecognizeImage, imageName, imageData, templateId, wasUploaded, true, additionalParams);
 
             OmrResponseContent responseResult = response.Payload.Result;
             if (responseResult.Info.SuccessfulTasksCount < 1 || responseResult.Info.Details.RecognitionStatistics[0].TaskResult != "Pass")
@@ -194,7 +195,7 @@ namespace Aspose.OMR.Client
 
             ImageRecognitionResult recognitionResult = new ImageRecognitionResult();
 
-            foreach (Com.Aspose.Omr.Model.FileInfo file in responseResult.ResponseFiles)
+            foreach (Omr.Cloud.Sdk.Model.FileInfo file in responseResult.ResponseFiles)
             {
                 if (file.Name.Contains(".dat"))
                 {
@@ -221,7 +222,7 @@ namespace Aspose.OMR.Client
         /// <param name="trackFile">Track file so that it can be deleted from cloud</param>
         /// <param name="additionalParam">The additional (debug) parameters</param>
         /// <returns>Task response</returns>
-        public static OMRResponse RunOmrTask(OmrFunctions action, string fileName, byte[] fileData, string functionParam, bool wasUploaded, bool trackFile, string additionalParam)
+        public static OmrResponse RunOmrTask(OmrFunctions action, string fileName, byte[] fileData, string functionParam, bool wasUploaded, bool trackFile, string additionalParam)
         {
             if (string.IsNullOrEmpty(AppKey) || string.IsNullOrEmpty(AppSid))
             {
@@ -263,9 +264,9 @@ namespace Aspose.OMR.Client
                 }
             }
 
-            OmrApi omrApi = new OmrApi(AppKey, AppSid, Basepath);
+            OmrApi omrApi = new OmrApi(AppKey, AppSid);
 
-            OMRFunctionParam param = new OMRFunctionParam();
+            OmrFunctionParam param = new OmrFunctionParam();
             param.FunctionParam = functionParam;
             param.AdditionalParam = additionalParam;
 
@@ -288,7 +289,10 @@ namespace Aspose.OMR.Client
             }
 
             BusyIndicatorManager.UpdateText(busyMessage);
-            OMRResponse response = omrApi.PostRunOmrTask(fileName, action.ToString(), param, null, null);
+
+            var request = new PostRunOmrTaskRequest(fileName, action.ToString(), param);
+            OmrResponse response = omrApi.PostRunOmrTask(request);
+
             CheckForError(response);
             return response;
         }
@@ -403,9 +407,9 @@ namespace Aspose.OMR.Client
         /// Check response for error
         /// </summary>
         /// <param name="response">Response to check</param>
-        private static void CheckForError(OMRResponse response)
+        private static void CheckForError(OmrResponse response)
         {
-            if (response.ErrorCode != 0 )
+            if (response.ErrorCode != 0)
             {
                 throw new Exception(response.ErrorText);
             }
