@@ -70,7 +70,7 @@ namespace Aspose.OMR.Demo
         /// }
         /// Provide your own app_key and app_sid, which you can receive by registering at Aspose Cloud Dashboard (https://dashboard.aspose.cloud/) 
         /// </summary>
-        string configFileName = "test_config.json";
+        string configFileName = "test_config_sample.json";
 
         /// <summary>
         /// Name of the submodule with demo data and configuration file
@@ -137,10 +137,12 @@ namespace Aspose.OMR.Demo
             string configFileRelativePath = Path.Combine(this.demoDataSubmoduleName, this.configFileName);
 
             // Locate submodule folder containing demo data and config
-            while (current != null && !File.Exists(Path.Combine(current.FullName, configFileRelativePath)))
-            {
-                current = current.Parent;
-            }
+            //while (current != null && !File.Exists(Path.Combine(current.FullName, configFileRelativePath)))
+            //{
+            //    current = current.Parent;
+            //}
+
+            
 
             // Check if config file exists
             if (current == null)
@@ -148,7 +150,8 @@ namespace Aspose.OMR.Demo
                 throw new Exception($"Unable to find {this.configFileName}");
             }
 
-            string configFilePath = Path.Combine(current.FullName, configFileRelativePath);
+            // string configFilePath = Path.Combine(current.FullName, configFileRelativePath);
+            string configFilePath = Path.Combine($"C:\\Users\\MAKS\\Desktop\\Новая папка\\aspose-omr-cloud-dotnet", configFileRelativePath);
 
             // parse config
             this.Config = JObject.Parse(File.ReadAllText(configFilePath));
