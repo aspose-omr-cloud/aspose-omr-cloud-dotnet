@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="OAuthRequestHandler.cs">
-//   Copyright (c) 2019 Aspose.Omr for Cloud
+// <copyright company="Aspose" file="ExternalOAuthRequestHandler.cs">
+//   Copyright (c) 2020 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
 //   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,11 +25,8 @@
 
 namespace Aspose.Omr.Cloud.Sdk.RequestHandlers
 {
-    using System.Collections.Generic;
     using System.IO;
     using System.Net;
-
-    using Newtonsoft.Json;
 
     internal class ExternalAuthorizationRequestHandler : IRequestHandler
     {

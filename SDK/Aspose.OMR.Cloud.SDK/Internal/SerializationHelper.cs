@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright company="Aspose" file="SerializationHelper.cs">
-//   Copyright (c) 2019 Aspose.Omr for Cloud
+//   Copyright (c) 2020 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
 //   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,10 +28,7 @@ namespace Aspose.Omr.Cloud.Sdk
     using System;
     using System.IO;
 
-    using Aspose.Omr.Cloud.Sdk.Model;
-
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
 
     internal class SerializationHelper
     {
