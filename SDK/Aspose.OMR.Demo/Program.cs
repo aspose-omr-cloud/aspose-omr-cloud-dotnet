@@ -61,7 +61,7 @@ namespace Aspose.OMR.Demo
         /// {
         ///     "app_key"  : "xxxxx",
         ///     "app_sid"   : "xxx-xxx-xxx-xxx-xxx",
-        ///     "base_path" : "https://api.aspose.cloud/v1.1",
+        ///     "base_path" : "https://api.aspose.cloud/v3.0",
         ///     "data_folder" : "Data"
         /// }
         /// Provide your own app_key and app_sid, which you can receive by registering at Aspose Cloud Dashboard (https://dashboard.aspose.cloud/) 
@@ -338,7 +338,10 @@ namespace Aspose.OMR.Demo
             using (FileStream fs = new FileStream(srcFile, FileMode.Open))
             {
                 FilesUploadResult response = FileApi.UploadFile(new UploadFileRequest(dstPath, fs));
-                Console.WriteLine($"File {dstPath} uploaded successfully with response {response}");
+                if(response.Errors.Count == 0)
+                {
+                    Console.WriteLine($"File {dstPath} uploaded successfully with response Status: Ok");
+                }
             }
         }
 
