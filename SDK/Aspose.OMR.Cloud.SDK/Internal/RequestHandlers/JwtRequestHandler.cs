@@ -14,7 +14,7 @@ namespace Aspose.Omr.Cloud.Sdk.RequestHandlers
         private readonly ApiInvoker apiInvoker;
 
         private string accessToken;
-        private string refreshToken;
+        //private string refreshToken;
 
         public JwtRequestHandler(Configuration configuration)
         {
