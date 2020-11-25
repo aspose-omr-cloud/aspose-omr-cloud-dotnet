@@ -66,7 +66,7 @@ namespace Aspose.OMR.Demo
         /// }
         /// Provide your own app_key and app_sid, which you can receive by registering at Aspose Cloud Dashboard (https://dashboard.aspose.cloud/) 
         /// </summary>
-        string configFileName = "test_config_sample.json";
+        string configFileName = "test_config.json";
 
         /// <summary>
         /// Name of the submodule with demo data and configuration file
