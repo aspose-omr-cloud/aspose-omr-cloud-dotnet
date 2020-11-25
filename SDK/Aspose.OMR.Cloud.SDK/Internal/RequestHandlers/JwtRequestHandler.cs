@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
-using Aspose.Omr.Cloud.Sdk.RequestHandlers;
 using Newtonsoft.Json;
 
 namespace Aspose.Omr.Cloud.Sdk.RequestHandlers
@@ -14,7 +11,6 @@ namespace Aspose.Omr.Cloud.Sdk.RequestHandlers
         private readonly ApiInvoker apiInvoker;
 
         private string accessToken;
-        //private string refreshToken;
 
         public JwtRequestHandler(Configuration configuration)
         {
