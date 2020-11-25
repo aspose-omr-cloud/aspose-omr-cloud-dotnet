@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright company="Aspose" file="ApiInvoker.cs">
-//   Copyright (c) 2019 Aspose.Omr for Cloud
+//   Copyright (c) 2020 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
 //   Permission is hereby granted, free of charge, to any person obtaining a copy

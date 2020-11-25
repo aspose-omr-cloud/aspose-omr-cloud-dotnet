@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright company="Aspose" file="AsposeResponse.cs">
-//   Copyright (c) 2019 Aspose.BarCode for Cloud
+//   Copyright (c) 2020 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
 //   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,13 +23,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Aspose.Omr.Cloud.Sdk.Model
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
     using System.Text;
 
     /// <summary>

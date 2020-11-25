@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2018 Aspose Pty Ltd. All Rights Reserved.
+ * Copyright (c) 2020 Aspose Pty Ltd. All Rights Reserved.
  *
  * Licensed under the MIT (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-using Aspose.Omr.Cloud.Sdk;
-using Aspose.Omr.Cloud.Sdk.Model;
-using Aspose.Omr.Cloud.Sdk.Model.Requests;
-
 namespace Aspose.OMR.Demo
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using Storage.Cloud.Sdk;
-    using Storage.Cloud.Sdk.Api;
-    using Storage.Cloud.Sdk.Model;
-    using Storage.Cloud.Sdk.Model.Requests;
+    using Aspose.Omr.Cloud.Sdk;
+    using Aspose.Omr.Cloud.Sdk.Api;
+    using Aspose.Omr.Cloud.Sdk.Model;
+    using Aspose.Omr.Cloud.Sdk.Model.Requests;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using FileInfo = Aspose.Omr.Cloud.Sdk.Model.FileInfo;
@@ -65,12 +61,12 @@ namespace Aspose.OMR.Demo
         /// {
         ///     "app_key"  : "xxxxx",
         ///     "app_sid"   : "xxx-xxx-xxx-xxx-xxx",
-        ///     "base_path" : "https://api.aspose.cloud/v1.1",
+        ///     "base_path" : "https://api.aspose.cloud/v3.0",
         ///     "data_folder" : "Data"
         /// }
         /// Provide your own app_key and app_sid, which you can receive by registering at Aspose Cloud Dashboard (https://dashboard.aspose.cloud/) 
         /// </summary>
-        string configFileName = "test_config.json";
+        string configFileName = "test_config_sample.json";
 
         /// <summary>
         /// Name of the submodule with demo data and configuration file
@@ -126,6 +122,16 @@ namespace Aspose.OMR.Demo
         private StorageApi StorageApi = null;
 
         /// <summary>
+        /// Instance of Cloud Folder API
+        /// </summary>
+        private FolderApi FolderApi = null;
+
+        /// <summary>
+        /// Instance of Cloud File API
+        /// </summary>
+        private FileApi FileApi = null;
+
+        /// <summary>
         /// Instance of OMR API
         /// </summary>
         private OmrApi OmrApi = null;
@@ -156,13 +162,17 @@ namespace Aspose.OMR.Demo
 
             // create storage api and provide parameters
             string baseHost = new Uri(this.Basepath).GetComponents(UriComponents.SchemeAndServer, UriFormat.SafeUnescaped).ToString();
+
             Configuration storageConfiguration = new Configuration();
             storageConfiguration.AppKey = this.AppKey;
             storageConfiguration.AppSid = this.AppSid;
             storageConfiguration.ApiBaseUrl = baseHost;
-            this.StorageApi = new StorageApi(storageConfiguration);
 
-            this.OmrApi = new OmrApi(this.AppKey, this.AppSid);
+            this.StorageApi = new StorageApi(storageConfiguration);
+            this.FolderApi = new FolderApi(storageConfiguration);
+            this.FileApi = new FileApi(storageConfiguration);
+
+            this.OmrApi = new OmrApi(storageConfiguration);
         }
 
         /// <summary>
@@ -327,8 +337,11 @@ namespace Aspose.OMR.Demo
         {
             using (FileStream fs = new FileStream(srcFile, FileMode.Open))
             {
-                UploadResponse response = this.StorageApi.PutCreate(new PutCreateRequest(dstPath, fs));
-                Console.WriteLine($"File {dstPath} uploaded successfully with response {response.Status}");
+                FilesUploadResult response = FileApi.UploadFile(new UploadFileRequest(dstPath, fs));
+                if(response.Errors.Count == 0)
+                {
+                    Console.WriteLine($"File {dstPath} uploaded successfully with response Status: Ok");
+                }
             }
         }
 
@@ -339,18 +352,18 @@ namespace Aspose.OMR.Demo
         protected void UploadDemoFiles(string dataDirPath)
         {
             // check if folder already exists on storage
-            FileExistResponse response = this.StorageApi.GetIsExist(new GetIsExistRequest(this.LogosFolderName));
-            if (response.FileExist.IsExist == false)
+            ObjectExist response = this.StorageApi.ObjectExists(new ObjectExistsRequest(this.LogosFolderName));
+            if (response.Exists == false)
             {
-                this.StorageApi.PutCreateFolder(new PutCreateFolderRequest(this.LogosFolderName));
+                FolderApi.CreateFolder(new CreateFolderRequest(this.LogosFolderName, "storage"));
             }
 
             // upload logo images
             foreach (string logo in this.templateLogosImagesNames)
             {
                 string destLogoPath = $"{this.LogosFolderName}/{logo}";
-                response = this.StorageApi.GetIsExist(new GetIsExistRequest(destLogoPath));
-                if (response.FileExist.IsExist == false)
+                response = this.StorageApi.ObjectExists(new ObjectExistsRequest(destLogoPath));
+                if (response.Exists == false)
                 {
                     this.UploadFile(Path.Combine(dataDirPath, logo), destLogoPath);
                 }

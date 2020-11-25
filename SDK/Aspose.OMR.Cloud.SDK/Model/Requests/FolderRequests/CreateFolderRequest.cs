@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="IRequestHandler.cs">
+// <copyright company="Aspose" file="CreateFolderRequest.cs">
 //   Copyright (c) 2020 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -23,17 +23,39 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Aspose.Omr.Cloud.Sdk
+namespace Aspose.Omr.Cloud.Sdk.Model.Requests
 {
-    using System.IO;
-    using System.Net;
-
-    internal interface IRequestHandler
+    /// <summary>
+    /// Request model for <see cref="Aspose.Omr.Cloud.Sdk.Api.OmrApi.CreateFolder" /> operation.
+    /// </summary>
+    public class CreateFolderRequest
     {
-        string ProcessUrl(string url);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateFolderRequest"/> class.
+        /// </summary>        
+        public CreateFolderRequest()
+        {
+        }
 
-        void BeforeSend(WebRequest request, Stream streamToSend);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateFolderRequest"/> class.
+        /// </summary>
+        /// <param name="path">Folder path to create e.g. &#39;folder_1/folder_2/&#39;</param>
+        /// <param name="storageName">Storage name</param>
+        public CreateFolderRequest(string path, string storageName)
+        {
+            this.path = path;
+            this.storageName = storageName;
+        }
 
-        void ProcessResponse(HttpWebResponse response, Stream resultStream);
+        /// <summary>
+        /// Folder path to create e.g. 'folder_1/folder_2/'
+        /// </summary>  
+        public string path { get; set; }
+
+        /// <summary>
+        /// Storage name
+        /// </summary>  
+        public string storageName { get; set; }
     }
 }

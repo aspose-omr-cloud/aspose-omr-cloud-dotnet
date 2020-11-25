@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright company="Aspose" file="OmrApi.cs">
-//   Copyright (c) 2019 Aspose.Omr for Cloud
+//   Copyright (c) 2020 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
 //   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -76,7 +76,7 @@ namespace Aspose.Omr.Cloud.Sdk
                     requestHandlers.Add(new JwtRequestHandler(this.configuration));
                     break;
                 default:
-                    throw new ApiException(1000, "Authorization method is not supported for OCR API. USE AuthType.JWT");
+                    throw new ApiException(1000, "Authorization method is not supported for OMR API. USE AuthType.JWT");
             }
 
             requestHandlers.Add(new DebugLogRequestHandler(this.configuration));

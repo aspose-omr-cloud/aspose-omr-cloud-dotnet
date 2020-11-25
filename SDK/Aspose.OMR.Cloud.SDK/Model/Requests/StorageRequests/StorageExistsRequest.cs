@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="IRequestHandler.cs">
+// <copyright company="Aspose" file="StorageExistsRequest.cs">
 //   Copyright (c) 2020 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -23,17 +23,32 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Aspose.Omr.Cloud.Sdk
+namespace Aspose.Omr.Cloud.Sdk.Model.Requests
 {
-    using System.IO;
-    using System.Net;
-
-    internal interface IRequestHandler
+    /// <summary>
+    /// Request model for <see cref="Aspose.Omr.Cloud.Sdk.Api.OmrApi.StorageExists" /> operation.
+    /// </summary>  
+    public class StorageExistsRequest
     {
-        string ProcessUrl(string url);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StorageExistsRequest"/> class.
+        /// </summary>        
+        public StorageExistsRequest()
+        {
+        }
 
-        void BeforeSend(WebRequest request, Stream streamToSend);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StorageExistsRequest"/> class.
+        /// </summary>
+        /// <param name="storageName">Storage name</param>
+        public StorageExistsRequest(string storageName)
+        {
+            this.storageName = storageName;
+        }
 
-        void ProcessResponse(HttpWebResponse response, Stream resultStream);
+        /// <summary>
+        /// Storage name
+        /// </summary>  
+        public string storageName { get; set; }
     }
 }

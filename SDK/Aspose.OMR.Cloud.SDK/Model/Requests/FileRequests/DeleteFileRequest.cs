@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="IRequestHandler.cs">
+// <copyright company="Aspose" file="DeleteFileRequest.cs">
 //   Copyright (c) 2020 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -23,17 +23,46 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Aspose.Omr.Cloud.Sdk
+namespace Aspose.Omr.Cloud.Sdk.Model.Requests
 {
-    using System.IO;
-    using System.Net;
-
-    internal interface IRequestHandler
+    /// <summary>
+    /// Request model for <see cref="Aspose.Omr.Cloud.Sdk.Api.OmrApi.DeleteFile" /> operation.
+    /// </summary>  
+    public class DeleteFileRequest
     {
-        string ProcessUrl(string url);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteFileRequest"/> class.
+        /// </summary>        
+        public DeleteFileRequest()
+        {
+        }
 
-        void BeforeSend(WebRequest request, Stream streamToSend);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteFileRequest"/> class.
+        /// </summary>
+        /// <param name="path">File path e.g. &#39;/folder/file.ext&#39;</param>
+        /// <param name="storageName">Storage name</param>
+        /// <param name="versionId">File version ID to delete</param>
+        public DeleteFileRequest(string path, string storageName = null, string versionId = null)
+        {
+            this.path = path;
+            this.storageName = storageName;
+            this.versionId = versionId;
+        }
 
-        void ProcessResponse(HttpWebResponse response, Stream resultStream);
+        /// <summary>
+        /// File path e.g. '/folder/file.ext'
+        /// </summary>  
+        public string path { get; set; }
+
+        /// <summary>
+        /// Storage name
+        /// </summary>  
+        public string storageName { get; set; }
+
+        /// <summary>
+        /// File version ID to delete
+        /// </summary>  
+        public string versionId { get; set; }
     }
 }

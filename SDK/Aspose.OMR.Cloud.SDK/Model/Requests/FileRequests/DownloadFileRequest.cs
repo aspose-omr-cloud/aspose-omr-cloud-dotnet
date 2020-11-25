@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="ExternalOAuthRequestHandler.cs">
+// <copyright company="Aspose" file="DownloadFileRequest.cs">
 //   Copyright (c) 2020 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -23,38 +23,46 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Aspose.Omr.Cloud.Sdk.RequestHandlers
+namespace Aspose.Omr.Cloud.Sdk.Model.Requests
 {
-    using System.IO;
-    using System.Net;
-
-    internal class ExternalAuthorizationRequestHandler : IRequestHandler
+    /// <summary>
+    /// Request model for <see cref="Aspose.Omr.Cloud.Sdk.Api.OmrApi.DownloadFile" /> operation.
+    /// </summary>  
+    public class DownloadFileRequest
     {
-        private readonly Configuration configuration;
-
-        public ExternalAuthorizationRequestHandler(Configuration configuration)
-        {
-            this.configuration = configuration;
-        }
-
-        public string ProcessUrl(string url)
-        {
-            return url;
-        }
-
-        public void BeforeSend(WebRequest request, Stream streamToSend)
-        {
-            if (this.configuration.AuthType == AuthType.OAuth2 && string.IsNullOrEmpty(this.configuration.JwtToken))
-            {
-                throw new ApiException(401, "Authorization header value required");
-            }
-
-            request.Headers.Add("Authorization", "Bearer " + this.configuration.JwtToken);
-        }
-
-        public void ProcessResponse(HttpWebResponse response, Stream resultStream)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DownloadFileRequest"/> class.
+        /// </summary>        
+        public DownloadFileRequest()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DownloadFileRequest"/> class.
+        /// </summary>
+        /// <param name="path">File path e.g. &#39;/folder/file.ext&#39;</param>
+        /// <param name="storageName">Storage name</param>
+        /// <param name="versionId">File version ID to download</param>
+        public DownloadFileRequest(string path, string storageName = null, string versionId = null)
+        {
+            this.path = path;
+            this.storageName = storageName;
+            this.versionId = versionId;
+        }
+
+        /// <summary>
+        /// File path e.g. '/folder/file.ext'
+        /// </summary>  
+        public string path { get; set; }
+
+        /// <summary>
+        /// Storage name
+        /// </summary>  
+        public string storageName { get; set; }
+
+        /// <summary>
+        /// File version ID to download
+        /// </summary>  
+        public string versionId { get; set; }
     }
 }

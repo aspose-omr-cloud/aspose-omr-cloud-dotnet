@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright company="Aspose" file="ObjectExist.cs">
-//   Copyright (c) 2019 Aspose.Omr for Cloud
+//   Copyright (c) 2020 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
 //   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,10 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 // </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System; 
+// -------------------------------------------------------------------------------------------------------------------- 
 
 namespace Aspose.Omr.Cloud.Sdk.Model 
 {
-  using System.Collections;
-  using System.Collections.Generic;
-  using System.Runtime.Serialization;
   using System.Text;
 
   /// <summary>

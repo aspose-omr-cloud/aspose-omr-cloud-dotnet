@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Aspose" file="IRequestHandler.cs">
+// <copyright company="Aspose" file="GetFileVersionsRequest.cs">
 //   Copyright (c) 2020 Aspose.Omr for Cloud
 // </copyright>
 // <summary>
@@ -23,17 +23,39 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Aspose.Omr.Cloud.Sdk
+namespace Aspose.Omr.Cloud.Sdk.Model.Requests
 {
-    using System.IO;
-    using System.Net;
-
-    internal interface IRequestHandler
+    /// <summary>
+    /// Request model for <see cref="Aspose.Omr.Cloud.Sdk.Api.OmrApi.GetFileVersions" /> operation.
+    /// </summary>  
+    public class GetFileVersionsRequest
     {
-        string ProcessUrl(string url);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetFileVersionsRequest"/> class.
+        /// </summary>        
+        public GetFileVersionsRequest()
+        {
+        }
 
-        void BeforeSend(WebRequest request, Stream streamToSend);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetFileVersionsRequest"/> class.
+        /// </summary>
+        /// <param name="path">File path e.g. &#39;/file.ext&#39;</param>
+        /// <param name="storageName">Storage name</param>
+        public GetFileVersionsRequest(string path, string storageName = null)
+        {
+            this.path = path;
+            this.storageName = storageName;
+        }
 
-        void ProcessResponse(HttpWebResponse response, Stream resultStream);
+        /// <summary>
+        /// File path e.g. '/file.ext'
+        /// </summary>  
+        public string path { get; set; }
+
+        /// <summary>
+        /// Storage name
+        /// </summary>  
+        public string storageName { get; set; }
     }
 }
