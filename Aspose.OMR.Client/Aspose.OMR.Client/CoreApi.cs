@@ -15,13 +15,6 @@
  */
 namespace Aspose.OMR.Client
 {
-    using Omr.Cloud.Sdk;
-    using Omr.Cloud.Sdk.Model;
-    using Omr.Cloud.Sdk.Model.Requests;
-    using Storage.Cloud.Sdk;
-    using Storage.Cloud.Sdk.Api;
-    using Storage.Cloud.Sdk.Model;
-    using Storage.Cloud.Sdk.Model.Requests;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -30,6 +23,11 @@ namespace Aspose.OMR.Client
     using TemplateModel;
     using Utility;
     using ViewModels;
+    using FileInfo = Com.Aspose.Omr.Model.FileInfo;
+
+    using Com.Aspose.Omr.Api;
+    using Com.Aspose.Omr.Model;
+    using Com.Aspose.Omr.Model.Requests;
 
     /// <summary>
     /// Provides API to communicate with Omr Core
@@ -39,7 +37,7 @@ namespace Aspose.OMR.Client
         /// <summary>
         /// The base path to call REST API
         /// </summary>
-        private static readonly string Basepath = "http://api.aspose.cloud/v1.1";
+        private static readonly string Basepath = "https://api.aspose.cloud/v3.0";
 
         /// <summary>
         /// The app key
@@ -195,7 +193,7 @@ namespace Aspose.OMR.Client
 
             ImageRecognitionResult recognitionResult = new ImageRecognitionResult();
 
-            foreach (Omr.Cloud.Sdk.Model.FileInfo file in responseResult.ResponseFiles)
+            foreach (FileInfo file in responseResult.ResponseFiles)
             {
                 if (file.Name.Contains(".dat"))
                 {
@@ -245,11 +243,11 @@ namespace Aspose.OMR.Client
                     storageConfiguration.AppKey = AppKey;
                     storageConfiguration.AppSid = AppSid;
                     storageConfiguration.ApiBaseUrl = baseHost;
-                    StorageApi storageApi = new StorageApi(storageConfiguration);
+                    FileApi fileApi = new FileApi(storageConfiguration);
 
                     using (Stream stream = new MemoryStream(fileData))
                     {
-                        storageApi.PutCreate(new PutCreateRequest(fileName, stream));
+                        fileApi.UploadFile(new UploadFileRequest(fileName, stream));
                     }
                 }
                 catch (ApiException e)
@@ -309,15 +307,16 @@ namespace Aspose.OMR.Client
             storageConfiguration.AppSid = AppSid;
             storageConfiguration.ApiBaseUrl = baseHost;
             StorageApi storageApi = new StorageApi(storageConfiguration);
+            FileApi fileApi = new FileApi(storageConfiguration);
 
             foreach (string file in files)
             {
                 BusyIndicatorManager.UpdateText("Storage clean up...\n Deleting file: " + file);
 
-                FileExistResponse existsResponse = storageApi.GetIsExist(new GetIsExistRequest(file));
-                if (existsResponse.FileExist.IsExist == true)
+                ObjectExist existsResponse = storageApi.ObjectExists(new ObjectExistsRequest(file));
+                if (existsResponse.Exists == false)
                 {
-                    RemoveFileResponse deleteResponse = storageApi.DeleteFile(new DeleteFileRequest(file));
+                    fileApi.DeleteFile(new DeleteFileRequest(file));
                 }
             }
         }
@@ -344,11 +343,11 @@ namespace Aspose.OMR.Client
                     storageConfiguration.AppKey = AppKey;
                     storageConfiguration.AppSid = AppSid;
                     storageConfiguration.ApiBaseUrl = baseHost;
-                    StorageApi storageApi = new StorageApi(storageConfiguration);
+                    FileApi fileApi = new FileApi(storageConfiguration);
 
                     using (Stream stream = new MemoryStream(item.Value))
                     {
-                        storageApi.PutCreate(new PutCreateRequest(item.Key, stream));
+                        fileApi.UploadFile(new UploadFileRequest(item.Key, stream));
                     }
                 }
             }
